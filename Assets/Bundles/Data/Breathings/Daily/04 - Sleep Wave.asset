@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd4ad0bdfe1043ec923297c67218a4e8, type: 3}
+  m_Name: 04 - Sleep Wave
+  m_EditorClassIdentifier: 
+  name: Sleep Wave
+  description: Use this slow and calming breathing technique to prepare the body
+    for restful sleep by quieting the mind and promoting relaxation.
+  music: 
+  breathingTiming:
+    InhaleDuration: 4
+    AfterInhaleDuration: 7
+    ExhaleDuration: 8
+    AfterExhaleDuration: 0
+  breathingTargetTime:
+    FromHour: 18
+    ToHour: 24
+    AnyTime: 0
+  rounds: 5
+  label: 

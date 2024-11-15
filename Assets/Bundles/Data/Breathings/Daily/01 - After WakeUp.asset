@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd4ad0bdfe1043ec923297c67218a4e8, type: 3}
+  m_Name: 01 - After WakeUp
+  m_EditorClassIdentifier: 
+  name: Sunrise Booster
+  description: Start your morning with a refreshing breathing technique to boost
+    energy, awaken the body, and prepare the mind for the day.
+  music: 
+  breathingTiming:
+    InhaleDuration: 4
+    AfterInhaleDuration: 4
+    ExhaleDuration: 6
+    AfterExhaleDuration: 0
+  breathingTargetTime:
+    FromHour: 4
+    ToHour: 9
+    AnyTime: 0
+  rounds: 5
+  label: 

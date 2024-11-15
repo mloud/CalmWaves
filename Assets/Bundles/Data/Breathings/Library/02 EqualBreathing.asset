@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd4ad0bdfe1043ec923297c67218a4e8, type: 3}
+  m_Name: 02 EqualBreathing
+  m_EditorClassIdentifier: 
+  name: Equal breathing
+  description: "Equal breathing, or Sama Vritti in yoga, is simple and easy to remember,
+    as both the inhale and exhale are of equal length. It\u2019s great for creating
+    balance and grounding your mind."
+  music: BoxMusic
+  inhaleDuration: 4
+  afterInhaleDuration: 0
+  exhaleDuration: 4
+  afterExhaleDuration: 0
+  breathingTiming:
+    InhaleDuration: 4
+    AfterInhaleDuration: 0
+    ExhaleDuration: 4
+    AfterExhaleDuration: 0
+  rounds: 20
+  label: Beginner

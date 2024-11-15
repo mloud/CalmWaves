@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d702231a7ee44faa290c72493181a8c, type: 3}
+  m_Name: LibraryBreathingExerciseDb
+  m_EditorClassIdentifier: 
+  builtInSettings:
+  - {fileID: 11400000, guid: b1e55435240b842fd9106830fd2ef406, type: 2}
+  - {fileID: 11400000, guid: 3bb8af0f6719445b7bf832c1cc026515, type: 2}
+  - {fileID: 11400000, guid: 8a2a351d7e63e489fb5a25b1d6608bb2, type: 2}
+  - {fileID: 11400000, guid: 59996f93ecbe64b80b46ac223bce1be9, type: 2}
+  - {fileID: 11400000, guid: 1bb7f644ccf044186aa7a7183c85e83c, type: 2}
+  - {fileID: 11400000, guid: 5f923983cb9dc4aadb9713adadb5ce63, type: 2}

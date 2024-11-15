@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd4ad0bdfe1043ec923297c67218a4e8, type: 3}
+  m_Name: 02 - Focus Box
+  m_EditorClassIdentifier: 
+  name: Focus Box
+  description: This exercise helps to stabilize your mind, enhance focus, and create
+    a sense of calm before diving into deep work.
+  music: 
+  breathingTiming:
+    InhaleDuration: 4
+    AfterInhaleDuration: 4
+    ExhaleDuration: 4
+    AfterExhaleDuration: 4
+  breathingTargetTime:
+    FromHour: 9
+    ToHour: 12
+    AnyTime: 0
+  rounds: 4
+  label: 

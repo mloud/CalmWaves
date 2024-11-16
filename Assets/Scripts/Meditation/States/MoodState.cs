@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
 using Meditation.Data;
@@ -14,29 +15,27 @@ namespace Meditation.States
         private MoodView moodView;
         private AddressableAsset<GameObject> moodPrefab;
         private AddressableAsset<MoodDb> moodDbAsset;
-        
-        private IBreathingApi breathingApi;
-
+        private IBreathGeneratorApi generatorApi;
         private HashSet<int> selectedMoods;
         
         public override async UniTask Initialize()
         {
             selectedMoods = new HashSet<int>();
-            breathingApi = ServiceLocator.Get<IBreathingApi>();
+            generatorApi = ServiceLocator.Get<IBreathGeneratorApi>();
             moodDbAsset = await ServiceLocator.Get<IDataManager>().GetMoodSettings();
             moodPrefab = await ServiceLocator.Get<IAssetManager>().GetAssetAsync<GameObject>("MoodButton");
             moodView = LookUp.Get<MoodView>().GetFirst();
             moodView.Initialize(moodDbAsset.GetReference(), moodPrefab.GetReference().GetComponent<Mood>(), OnMoodSelectionChanged);
             moodView
                 .BindAction(moodView.BackButton, OnBackButtonClicked)
-                .BindAsyncAction(moodView.StartButton, OnStartClick);
+                .BindAsyncAction(moodView.GenerateButton.Button, OnStartClick);
       
            // await moodView.InitializeStartButton(()=>OnStartClick().Forget());
         }
 
         public override async UniTask EnterAsync(StateData stateData = null)
         { 
-            moodView.ResetMoods();
+            moodView.Reset();
             await moodView.Show(true);
         }
 
@@ -50,6 +49,12 @@ namespace Meditation.States
         
         private async UniTask OnStartClick()
         {
+            await moodView.SwitchToGenerateMode();
+            var moods = selectedMoods
+                .Select(i => moodDbAsset.GetReference().Moods.ElementAt(i));
+
+            var settings = await generatorApi.Generate(moods);
+            
             // var settings = await breathingApi.GetBreathingSettingsForCurrentPartOfTheDay();
             //
             // StateMachine.SetStateAsync<BreathingState>(
@@ -57,7 +62,7 @@ namespace Meditation.States
             //     .Forget();
             
             // ask api to generate breathing settings
-            var settings = await breathingApi.GetBreathingSettingsForCurrentPartOfTheDay();
+            //var settings = await breathingApi.GetBreathingSettingsForCurrentPartOfTheDay();
             
             StateMachine.SetStateAsync<BreathingState>(
                     StateData.Create(("Settings", settings)), false)

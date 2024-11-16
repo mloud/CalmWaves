@@ -25,7 +25,7 @@ namespace Meditation.Ui.Views
 
         protected override void OnInit()
         {
-            Cg.alpha = 0;
+            base.OnInit();
             LookUp.Get<MenuView>().Register(this);
         }
  

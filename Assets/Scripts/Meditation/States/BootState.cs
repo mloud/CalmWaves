@@ -15,6 +15,8 @@ namespace Meditation.States
         {
             await LookUp.Get<MenuView>().GetFirst().Hide(false);
             await LookUp.Get<BreathingView>().GetFirst().Hide(false);
+            await LookUp.Get<MoodView>().GetFirst().Hide(false);
+
             StateMachine.SetStateAsync<MenuState>().Forget();
         }
 

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ccb9b2aff70404ea6e460b1612cec91, type: 3}
   m_Name: MoodDb
   m_EditorClassIdentifier: 
+  maxSelectedMoods: 3
   moods:
   - Calm
   - Stressed

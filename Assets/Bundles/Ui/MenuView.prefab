@@ -647,7 +647,7 @@ GameObject:
   - component: {fileID: 1238349367896116960}
   - component: {fileID: 9060756508776163540}
   m_Layer: 5
-  m_Name: TimeLabel (1)
+  m_Name: TimeLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

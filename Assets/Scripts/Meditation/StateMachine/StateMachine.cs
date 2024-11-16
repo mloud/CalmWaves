@@ -43,10 +43,12 @@ namespace Meditation.States
             }
         }
 
-        public async UniTask RegisterState<T> () where T: IState
+        public async UniTask RegisterState<T> () where T: IState, new()
         {
-            var state =  (T)Activator.CreateInstance(typeof(T));
-            state.StateMachine = this;
+            var state = new T
+            {
+                StateMachine = this
+            };
             states.Add(typeof(T), state);
             await state.Initialize();
         }

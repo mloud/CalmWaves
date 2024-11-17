@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
 using Meditation.Apis.Data;
+using Meditation.Apis.Settings;
 using Meditation.States;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Meditation
         [SerializeField] private UiManager uiManager;
         [SerializeField] private DataManager dataManager;
         [SerializeField] private SmartBreathGeneratorApi smartBreathGenerator;
+        [SerializeField] private SettingsApi settingsApi;
         private void Awake()
         {
             Boot().Forget();
@@ -25,11 +27,16 @@ namespace Meditation
             ServiceLocator.Register<IUiManager>(uiManager);
             ServiceLocator.Register<IDataManager>(dataManager);
             ServiceLocator.Register<IBreathGeneratorApi>(smartBreathGenerator);
+            ServiceLocator.Register<ISettingsApi>(settingsApi);
           
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
             
             ServiceLocator.Register<IBreathingApi>(new BreathingApi());
             ServiceLocator.ForEach(x => x.Initialize());
+           
+            ServiceLocator.Get<ISettingsApi>().RegisterModule<IVolumeModule>(new VolumeModule());
+            ServiceLocator.Get<ISettingsApi>().RegisterModule<ISoundSettingsModule>(new SettingsModule());
+
             
             StateMachineEnvironment.UnregisterAll();
             StateMachineEnvironment.RegisterStateMachine("Application", new StateMachine(), true);

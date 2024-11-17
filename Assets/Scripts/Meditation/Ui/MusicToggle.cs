@@ -6,11 +6,19 @@ namespace Meditation.Ui
     {
         [SerializeField] private CToggle toggle;
 
+        private IAudioManager audioManager;
         private void Start()
         {
-            toggle.SetOn(ServiceLocator.Get<IAudioManager>().MusicEnabled, false);
-            toggle.onChange.AddListener(isOn => ServiceLocator.Get<IAudioManager>().MusicEnabled = isOn);
+            audioManager = ServiceLocator.Get<IAudioManager>();
+            toggle.SetOn(audioManager.MusicEnabled, false);
+            toggle.onChange.AddListener(isOn => audioManager.MusicEnabled = isOn);
+
+            audioManager.MusicStateChanged += OnMusicStateChanged;
         }
+
+        private void OnDestroy() => audioManager.MusicStateChanged -= OnMusicStateChanged;
+
+        private void OnMusicStateChanged(bool isMusicEnabled) => toggle.SetOn(isMusicEnabled, false);
 
         private void OnValidate()
         {

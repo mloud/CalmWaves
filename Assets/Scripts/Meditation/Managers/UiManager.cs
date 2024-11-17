@@ -10,19 +10,23 @@ namespace Meditation
     public interface IUiManager
     {
         UniTask ShowInfoPopup(IBreathingSettings breathingSettings, bool hideView, bool hasCloseButton);
+        UniTask ShowSettingsPopup(bool hideViews);
         UniTask HideInfoPopup();
+        UniTask HideSettingsPopup();
     }
     
     public class UiManager: MonoBehaviour, IService, IUiManager
     {
         [SerializeField] private CanvasGroup sharedViewCg;
         [SerializeField] private Popup infoPopup;
+        [SerializeField] private SettingsPopup settingsPopup;
         [SerializeField] private BreathingView breathingView;
         [SerializeField] private MenuView menuView;
 
         public UniTask Initialize()
         {
             infoPopup.gameObject.SetActive(false);
+            settingsPopup.gameObject.SetActive(false);
             return UniTask.CompletedTask;
         }
         
@@ -36,6 +40,17 @@ namespace Meditation
             tasks.Add( infoPopup.Show(breathingSettings, hasCloseButton));
             await UniTask.WhenAll(tasks);
         }
+        
+        public async UniTask ShowSettingsPopup(bool hideViews)
+        {
+            var tasks = new List<UniTask>();
+            if (hideViews)
+            {
+                tasks.Add(HideAllViews());
+            }
+            tasks.Add( settingsPopup.Show());
+            await UniTask.WhenAll(tasks);
+        }
 
         public async UniTask HideInfoPopup()
         {
@@ -44,15 +59,24 @@ namespace Meditation
                 ShowAllViews());
         }
 
+        public async UniTask HideSettingsPopup()
+        {
+            await UniTask.WhenAll(
+                settingsPopup.Hide(),
+                ShowAllViews());
+        }
+
         private async UniTask HideAllViews()
         {
             await sharedViewCg.DOFade(0, 0.5f)
                 .SetEase(Ease.Linear)
                 .AsyncWaitForCompletion();
+            sharedViewCg.gameObject.SetActive(false);
         }
         
         private async UniTask ShowAllViews()
         {
+            sharedViewCg.gameObject.SetActive(true);
             await sharedViewCg.DOFade(1, 0.5f)
                 .SetEase(Ease.Linear)
                 .AsyncWaitForCompletion();

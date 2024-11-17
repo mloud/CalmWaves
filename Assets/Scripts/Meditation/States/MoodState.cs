@@ -30,7 +30,7 @@ namespace Meditation.States
                 .BindAction(moodView.BackButton, OnBackButtonClicked)
                 .BindAsyncAction(moodView.GenerateButton.Button, OnStartClick);
       
-           // await moodView.InitializeStartButton(()=>OnStartClick().Forget());
+            //await moodView.InitializeStartButton(()=>OnStartClick().Forget());
         }
 
         public override async UniTask EnterAsync(StateData stateData = null)

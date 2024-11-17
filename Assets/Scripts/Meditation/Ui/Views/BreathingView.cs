@@ -20,6 +20,7 @@ namespace Meditation.Ui.Views
         public TextFader TextFader => textFader;
         public TextMeshProUGUI NameLabel => nameLabel;
         public Button PauseButton => pauseButton;
+        public Button SettingsButton => settingsButton;
         
         [SerializeField] private ATotalTimeVisualizer totalTimeVisualizer;
         [SerializeField] private ACountDownVisualizer countDownVisualizer;
@@ -29,7 +30,7 @@ namespace Meditation.Ui.Views
         [SerializeField] private TextFader pauseText;
         [SerializeField] private TextMeshProUGUI nameLabel;
         [SerializeField] private Button pauseButton;
-
+        [SerializeField] private Button settingsButton;
         protected override void OnInit()
         {
             base.OnInit();

@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e1ee0d9e194fdf8b577b8d23a8632b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pulsateTween: {fileID: 1622679595223826327}
   button: {fileID: 4828422664671060534}
   label: {fileID: 4888618222648437308}
   originalContainer: {fileID: 0}
@@ -412,6 +413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 995955557d9543d58fa3e9e260e62dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpeedMultiplier: 1
   endValue: {x: 1.1, y: 1.1, z: 1}
-  duration: 2
+  duration: 0.04
   delay: 2

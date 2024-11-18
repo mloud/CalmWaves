@@ -46,9 +46,10 @@ namespace Meditation.Ui.Views
             return UniTask.CompletedTask;
         }
 
-        public UniTask InitializeWeekCalendar(IReadOnlyList<(DayOfWeek dayOfWeek, IReadOnlyList<FinishedBreathing>)> finisedBreathings)
+        public UniTask InitializeWeekCalendar(
+            IReadOnlyList<(DayOfWeek dayOfWeek, TimeSpan breathingDuration)> breathingTimesInWeek, TimeSpan requiredBreathingTime)
         {
-            weekProgress.Set(finisedBreathings);
+            weekProgress.Set(breathingTimesInWeek,requiredBreathingTime);
             return UniTask.CompletedTask;
         }
 
@@ -58,9 +59,9 @@ namespace Meditation.Ui.Views
             return UniTask.CompletedTask;
         }
         
-        public async UniTask ActualizeWeekCalendar(DayOfWeek dayOfWeek, IReadOnlyList<FinishedBreathing> finishedBreathings)
+        public async UniTask ActualizeWeekCalendar(DayOfWeek dayOfWeek, TimeSpan breathingTimeToday, TimeSpan breathingTimeRequired)
         {
-            await weekProgress.Actualize(dayOfWeek, finishedBreathings);
+            await weekProgress.Actualize(dayOfWeek, breathingTimeToday, breathingTimeRequired);
         }
         
         protected override void OnDeInit()

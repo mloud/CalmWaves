@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
@@ -13,12 +14,27 @@ namespace Meditation.States
         private BreathingView breathingView;
         private CancellationTokenSource cancellationTokenSource;
         private ISoundSettingsModule settings;
+        private IAudioManager audioManager;
+        private IUpdateManager updateManager;
+        private IUiManager uiManager;
+        private IBreathingApi breathingApi;
+        private IBreathingSettings breathingSettings;
 
+        
         private AddressableAsset<AudioClip> winClip;
-
         private bool breathingFinished;
+        private bool running;
+        private bool paused;
+        private float breathingTime;
+        
+        
         public override async UniTask Initialize()
         {
+            audioManager = ServiceLocator.Get<IAudioManager>();
+            updateManager = ServiceLocator.Get<IUpdateManager>();
+            uiManager = ServiceLocator.Get<IUiManager>();
+            breathingApi = ServiceLocator.Get<IBreathingApi>();
+
             settings = ServiceLocator.Get<ISettingsApi>().GetModule<ISoundSettingsModule>();
             breathingView = LookUp.Get<BreathingView>().GetFirst();
             breathingView
@@ -31,23 +47,64 @@ namespace Meditation.States
 
         public override async UniTask EnterAsync(StateData stateData = null)
         {
+            breathingTime = 0;
             breathingFinished = false;
             Debug.Assert(stateData != null, "State data is required when entering BreathingState");
-            var settings = stateData.GetValue<IBreathingSettings>("Settings");
+            breathingSettings = stateData.GetValue<IBreathingSettings>("Settings");
          
             cancellationTokenSource?.Dispose();
             cancellationTokenSource = new CancellationTokenSource();
             
+            // initialize
             breathingView.TotalTimeVisualizer.Initialize();
             breathingView.BreathingVisualizer.Initialize();
             breathingView.TextFader.Clear();
             breathingView.PauseText.Clear();
-            breathingView.NameLabel.text = settings.GetName();
-            breathingView.BreathStatisticVisualizer.Init(settings.Rounds());
-            
-            await breathingView.Show(false);
-            await breathingView.HideElements();
-            await StartBreathing(settings, cancellationTokenSource.Token);
+            breathingView.NameLabel.text = breathingSettings.GetName();
+            breathingView.BreathStatisticVisualizer.Init(breathingSettings.Rounds);
+
+            try
+            {
+                // intro
+                await breathingView.Show(false);
+                if (!cancellationTokenSource.IsCancellationRequested) 
+                    await breathingView.HideElements();
+                
+                if (!cancellationTokenSource.IsCancellationRequested) 
+                    await uiManager.ShowInfoPopup(breathingSettings, false, false);
+                
+                await breathingView.CountDownVisualizer.Run(
+                    cancellationTokenSource.Token, () => uiManager.HideInfoPopup());
+
+                if (!cancellationTokenSource.IsCancellationRequested) 
+                    await breathingView.FadeInElements();
+                
+                audioManager.PlayMusic(breathingSettings.GetMusic()).Forget();
+
+                // breathing
+                if (!cancellationTokenSource.IsCancellationRequested)
+                    await CountBreathing(cancellationTokenSource.Token);
+
+                if (!cancellationTokenSource.IsCancellationRequested) 
+                    audioManager.PlaySfx(winClip.GetReference());
+                
+                if (!cancellationTokenSource.IsCancellationRequested)
+                    await breathingApi.RegisterFinishedBreathing(breathingSettings, breathingSettings.GetTotalTime());
+                
+                if (!cancellationTokenSource.IsCancellationRequested) 
+                    await breathingView.FadeOutElements();
+                
+                if (!cancellationTokenSource.IsCancellationRequested) 
+                    await breathingView.TextFader.Show();
+            }
+            catch (OperationCanceledException ex)
+            {
+                Debug.Log("Breathing was cancelled");
+            }
+            finally
+            {
+                Debug.Log("Finally");
+            }
         }
 
         public override UniTask ExecuteAsync()
@@ -57,30 +114,24 @@ namespace Meditation.States
 
         public override async UniTask ExitAsync()
         {
-            cancellationTokenSource.Cancel();
             cancellationTokenSource.Dispose();
+            cancellationTokenSource = null;
             ServiceLocator.Get<IAudioManager>().StopMusic();
             await breathingView.Hide(true);
         }
         
-        private async UniTask<bool> StartBreathing(IBreathingSettings breathingSettings, CancellationToken cancellationToken)
+        private async UniTask<bool> CountBreathing(CancellationToken cancellationToken)
         {
-            var audioManager = ServiceLocator.Get<IAudioManager>();
-            ServiceLocator.Get<IUiManager>().ShowInfoPopup(breathingSettings, false, false);
-            await breathingView.CountDownVisualizer.Run( 
-                cancellationToken, 
-                ()=> ServiceLocator.Get<IUiManager>().HideInfoPopup());
-          
-            if (cancellationToken.IsCancellationRequested) return false;
-            await breathingView.FadeInElements();
-            audioManager.PlayMusic(breathingSettings.GetMusic()).Forget();
-           
             breathingView.TotalTimeVisualizer.Run( breathingSettings.GetTotalTime(), cancellationToken);
-            for (int i = 0; i < breathingSettings.Rounds(); i++)
+
+            running = true;
+            updateManager.RegisterUpdate(OnUpdate);
+            breathingApi.RegisterStartedBreathing(breathingSettings);
+            
+            for (int i = 0; i < breathingSettings.Rounds; i++)
             {
                 audioManager.PlaySfx(settings.GetInhaleClip());
                 await breathingView.BreathingVisualizer.Inhale(breathingSettings.GetInhaleDuration(), cancellationToken);
-                if (cancellationToken.IsCancellationRequested) return false;
                 if (breathingSettings.GetAfterInhaleDuration() > 0)
                 {
                     audioManager.PlaySfx(settings.GetHoldClip());
@@ -89,9 +140,7 @@ namespace Meditation.States
                 }
 
                 audioManager.PlaySfx(settings.GetExhaleClip());
-                if (cancellationToken.IsCancellationRequested) return false;  
                 await breathingView.BreathingVisualizer.Exhale(breathingSettings.GetExhaleDuration(), cancellationToken);
-                if (cancellationToken.IsCancellationRequested) return false;
                 if (breathingSettings.GetAfterExhaleDuration() > 0)
                 {
                     audioManager.PlaySfx(settings.GetHoldClip());
@@ -101,20 +150,19 @@ namespace Meditation.States
 
                 breathingView.BreathStatisticVisualizer.SetActual(i+1);
             }
+            updateManager.UnregisterUpdate(OnUpdate);
 
-            await ServiceLocator.Get<IBreathingApi>().RegisterFinishedBreathing(breathingSettings);
-            audioManager.PlaySfx(winClip.GetReference());
-            await breathingView.FadeOutElements();
-            await breathingView.TextFader.Show();
-
+            running = false;
             breathingFinished = true;
-            
             return true;
         }
 
         private void OnBack()
         {
-            ServiceLocator.Get<IUiManager>().HideInfoPopup();
+            cancellationTokenSource.Cancel();
+            breathingApi.RegisterFinishedBreathing(breathingSettings, breathingTime);
+            updateManager.UnregisterUpdate(OnUpdate);
+            uiManager.HideInfoPopup();
             StateMachine.SetStateAsync<MenuState>(
                 StateData.Create((StateDataKeys.BreathingFinished,true)),
                 false).Forget();
@@ -126,14 +174,11 @@ namespace Meditation.States
             SetPaused(true);
         }
 
-        private void OnPause()
-        {
-            bool isPaused = breathingView.BreathingVisualizer.IsPaused;
-            SetPaused(!isPaused);
-        }
+        private void OnPause() => SetPaused(!paused);
 
         private void SetPaused(bool paused)
         {
+            this.paused = paused;
             if (paused)
             {
                 breathingView.PauseText.Show().Forget();
@@ -144,6 +189,14 @@ namespace Meditation.States
             }
             breathingView.BreathingVisualizer.IsPaused = paused;
             breathingView.TotalTimeVisualizer.IsPaused = paused;
+        }
+
+        private void OnUpdate(float dt)
+        {
+            if (running && !paused)
+            {
+                breathingTime += dt;
+            }
         }
     }
 }

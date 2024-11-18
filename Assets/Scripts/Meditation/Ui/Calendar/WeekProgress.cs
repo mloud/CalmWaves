@@ -11,8 +11,6 @@ namespace Meditation.Ui.Calendar
     {
         [SerializeField] private List<DayProgress> dayProgress;
 
-        private const int breathingsPerDay = 3;
-        
         private void Awake()
         {
             LookUp.Get<WeekProgress>().Register(this);
@@ -23,24 +21,25 @@ namespace Meditation.Ui.Calendar
             LookUp.Get<WeekProgress>().Unregister(this);
         }
         
-        public void Set(IReadOnlyList<(DayOfWeek dayOfWeek, IReadOnlyList<FinishedBreathing>)> currentWeek)
+        public void Set(IReadOnlyList<(DayOfWeek dayOfWeek, TimeSpan breathingDuration)> currentWeek, TimeSpan requiredDuration)
         {
             foreach (var day in dayProgress)
             {
-                var finishedBreathings =
+                var dayTotalBreathing =
                     currentWeek.FirstOrDefault(x => x.dayOfWeek == day.DayOfWeek);
                 day.Set(
-                    finishedBreathings.Item2?.Count ?? 0, 
-                    breathingsPerDay, 
+                    (float)dayTotalBreathing.breathingDuration.TotalSeconds,
+                    (float)requiredDuration.TotalSeconds, 
                     DateTime.Today.DayOfWeek == day.DayOfWeek);
             }
         }
 
-        public async UniTask Actualize(DayOfWeek dayOfWeek, IReadOnlyList<FinishedBreathing> finishedBreathings)
+        public async UniTask Actualize(DayOfWeek dayOfWeek, TimeSpan totalBreathingTimeToday, TimeSpan requiredBreathingTimes)
         {
             await GetDayProgress(dayOfWeek).Actualize(
-                finishedBreathings?.Count ?? 0, 
-                breathingsPerDay,DateTime.Today.DayOfWeek == dayOfWeek);
+                (float)totalBreathingTimeToday.TotalSeconds,
+                (float)requiredBreathingTimes.TotalSeconds,
+                DateTime.Today.DayOfWeek == dayOfWeek);
         }
 
         private DayProgress GetDayProgress(DayOfWeek dayOfWeek) => 

@@ -15,11 +15,10 @@ namespace Meditation.States
         {
             breathingApi = ServiceLocator.Get<IBreathingApi>();
             breathingDbAsset = await ServiceLocator.Get<IDataManager>().GetBreathingSettings();
-            var finishedBreathings = ServiceLocator.Get<IBreathingApi>().GetFinishedBreathingsThisWeek();
-        
+          
             menuView = LookUp.Get<MenuView>().GetFirst();
             await menuView.InitializeBreathingButtons(breathingDbAsset.GetReference().GetAll() , OnMenuButtonClicked);
-            await menuView.InitializeWeekCalendar(finishedBreathings);
+            await menuView.InitializeWeekCalendar(breathingApi.History.GetBreathingTimesThisWeek(), breathingApi.GetRequiredBreathingDuration());
             await menuView.InitializeTimer();
 
             menuView
@@ -29,15 +28,17 @@ namespace Meditation.States
 
         public override async UniTask EnterAsync(StateData stateData = null)
         { 
-          
-            
             await menuView.Show(true);
             if (stateData != null)
             {
                 var finishedBreathing = stateData.GetValue<bool>(StateDataKeys.BreathingFinished);
                 if (finishedBreathing)
                 {
-                    await menuView.ActualizeWeekCalendar(DateTime.Today.DayOfWeek, breathingApi.GetFinishedBreathingsToday());
+                    await menuView.ActualizeWeekCalendar(
+                        DateTime.Today.DayOfWeek, 
+                        breathingApi.History.GetBreathingTimeToday(),
+                        breathingApi.GetRequiredBreathingDuration()
+                        );
                 }
             }
         }

@@ -13,8 +13,9 @@ namespace Meditation
         float GetExhaleDuration();
         float GetAfterExhaleDuration();
         float GetTotalTime();
+        float GetOneBreatheTime();
         BreathingTiming GetBreathingTiming();
         BreathingTargetTime GetBreathingTargetTime();
-        int Rounds();
+        int Rounds { get; set; }
     }
 }

@@ -15,6 +15,8 @@ namespace Meditation
         [SerializeField] private DataManager dataManager;
         [SerializeField] private SmartBreathGeneratorApi smartBreathGenerator;
         [SerializeField] private SettingsApi settingsApi;
+        [SerializeField] private UpdateManager updateManager;
+
         private void Awake()
         {
             Boot().Forget();
@@ -28,6 +30,7 @@ namespace Meditation
             ServiceLocator.Register<IDataManager>(dataManager);
             ServiceLocator.Register<IBreathGeneratorApi>(smartBreathGenerator);
             ServiceLocator.Register<ISettingsApi>(settingsApi);
+            ServiceLocator.Register<IUpdateManager>(updateManager);
           
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
             

@@ -23,7 +23,7 @@ namespace Meditation.Ui
         public void Initialize()
         {
             settings = ServiceLocator.Get<ISettingsApi>().GetModule<ISoundSettingsModule>();
-            if (ServiceLocator.Get<IAudioManager>().MusicEnabled)
+            if (ServiceLocator.Get<IAudioManager>().SfxEnabled)
             {
                 soundOffToggle.SetOn(false, false);
                 soundBeepToggle.SetOn(settings.BreathingSoundMode == Mode.Beep, false);
@@ -32,7 +32,7 @@ namespace Meditation.Ui
             }
             else
             {
-                soundOffToggle.SetOn(false, false);
+                soundVoiceMaleToggle.SetOn(false, false);
                 soundBeepToggle.SetOn(false, false);
                 soundVoiceFemaleToggle.SetOn(false, false);
                 soundOffToggle.SetOn(true, false);
@@ -43,10 +43,15 @@ namespace Meditation.Ui
         {
             if (isOn)
             {
+                ServiceLocator.Get<IAudioManager>().SfxEnabled = true;
                 settings.BreathingSoundMode = Mode.Beep;
                 soundOffToggle.SetOn(false, false);
                 soundVoiceFemaleToggle.SetOn(false, false);
                 soundVoiceMaleToggle.SetOn(false, false);
+                soundBeepToggle.SetOn(true, false);
+            }
+            else
+            {
                 soundBeepToggle.SetOn(true, false);
             }
         }
@@ -56,6 +61,7 @@ namespace Meditation.Ui
         {
             if (isOn)
             {
+                ServiceLocator.Get<IAudioManager>().SfxEnabled = false;
                 soundOffToggle.SetOn(true, false);
                 soundVoiceFemaleToggle.SetOn(false, false);
                 soundVoiceMaleToggle.SetOn(false, false);
@@ -71,6 +77,7 @@ namespace Meditation.Ui
         {
             if (isOn)
             {
+                ServiceLocator.Get<IAudioManager>().SfxEnabled = true;
                 settings.BreathingSoundMode = Mode.Voice_Male; 
                 soundOffToggle.SetOn(false, false);
                 soundVoiceFemaleToggle.SetOn(false, false);
@@ -87,6 +94,7 @@ namespace Meditation.Ui
         {
             if (isOn)
             {
+                ServiceLocator.Get<IAudioManager>().SfxEnabled = true;
                 settings.BreathingSoundMode = Mode.Voice_Female; 
                 soundOffToggle.SetOn(false, false);
                 soundVoiceFemaleToggle.SetOn(true, false);

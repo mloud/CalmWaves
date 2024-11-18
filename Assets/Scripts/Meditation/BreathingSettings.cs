@@ -22,13 +22,20 @@ namespace Meditation
         public float GetAfterInhaleDuration() => breathingTiming.AfterInhaleDuration;
         public float GetExhaleDuration() => breathingTiming.ExhaleDuration;
         public float GetAfterExhaleDuration() => breathingTiming.AfterExhaleDuration;
+
+        public float GetOneBreatheTime() =>
+            breathingTiming.InhaleDuration +
+            breathingTiming.AfterInhaleDuration +
+            breathingTiming.ExhaleDuration +
+            breathingTiming.AfterExhaleDuration;
+
         public BreathingTiming GetBreathingTiming()  => breathingTiming;
         public BreathingTargetTime GetBreathingTargetTime() => breathingTargetTime;
-        public float GetTotalTime() =>
-            (breathingTiming.InhaleDuration + 
-             breathingTiming.AfterInhaleDuration + 
-             breathingTiming.ExhaleDuration + 
-             breathingTiming.AfterExhaleDuration) * rounds;
-        public int Rounds() => rounds;
- }
+        public float GetTotalTime() => GetOneBreatheTime() * rounds;
+        public int Rounds
+        {
+            get => rounds;
+            set => rounds = value;
+        }
+    }
 }

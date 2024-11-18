@@ -22,15 +22,15 @@ namespace Meditation.Ui.Calendar
             dayLabel.text = CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(dayOfWeek)[..2];
         }
 
-        public void Set(int currentDone, int total, bool isToday)
+        public void Set(float currentDone, float total, bool isToday)
         {
             progressImage.fillAmount = (float)currentDone / total;
             todayFlag.SetActive(isToday);
         }
         
-        public async UniTask Actualize(int currentDone, int total, bool isToday)
+        public async UniTask Actualize(float currentDone, float total, bool isToday)
         {
-            await progressImage.DOFillAmount((float)currentDone / total, actualizeDuration).AsyncWaitForCompletion();
+            await progressImage.DOFillAmount(currentDone / total, actualizeDuration).AsyncWaitForCompletion();
             todayFlag.SetActive(isToday);
         }
     }

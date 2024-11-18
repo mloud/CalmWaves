@@ -5,7 +5,7 @@ namespace Meditation.Apis.Data
 {
     public static class CalendarExtensions
     {
-        public static IReadOnlyList<(DayOfWeek, IReadOnlyList<TData>)> GetDataForThisWorkingWeek<TData>(this Calendar<TData> calendar)
+        public static IReadOnlyList<(DayOfWeek dayInWeek, IReadOnlyList<TData> data)> GetDataForThisWorkingWeek<TData>(this Calendar<TData> calendar)
         {
             int daysAfterMonday = (int)DateTime.Today.DayOfWeek - (int)DayOfWeek.Monday;
             if (daysAfterMonday < 0) daysAfterMonday += 7;  // Adjust if we're already in the week

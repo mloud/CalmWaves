@@ -49,7 +49,12 @@ namespace Meditation.Apis
                     return null;
                 }
 
-                return new SmartBreathingSettings(smartBreathResult);
+                var breathSettings = new SmartBreathingSettings(smartBreathResult);
+                breathSettings.Rounds = Mathf.CeilToInt(
+                    (float)ServiceLocator.Get<IBreathingApi>().GetBreathingTime().TotalSeconds /
+                    breathSettings.GetOneBreatheTime());
+                return breathSettings;
+
             }
             return null;
         }
@@ -86,14 +91,19 @@ namespace Meditation.Apis
             public float GetAfterInhaleDuration() => breathingTiming.AfterInhaleDuration;
             public float GetExhaleDuration() => breathingTiming.ExhaleDuration;
             public float GetAfterExhaleDuration() => breathingTiming.AfterExhaleDuration;
+
+            public float GetOneBreatheTime() =>
+                breathingTiming.InhaleDuration +
+                breathingTiming.AfterInhaleDuration +
+                breathingTiming.ExhaleDuration +
+                breathingTiming.AfterExhaleDuration;
+            
             public BreathingTiming GetBreathingTiming()  => breathingTiming;
             public BreathingTargetTime GetBreathingTargetTime() => breathingTargetTime;
-            public float GetTotalTime() =>
-                (breathingTiming.InhaleDuration + 
-                 breathingTiming.AfterInhaleDuration + 
-                 breathingTiming.ExhaleDuration + 
-                 breathingTiming.AfterExhaleDuration) * rounds;
-            public int Rounds() => rounds;
+
+            public int Rounds { get; set; }
+
+            public float GetTotalTime() => GetOneBreatheTime() * rounds;
         }
         
         private class SmartBreathResult

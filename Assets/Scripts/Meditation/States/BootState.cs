@@ -14,23 +14,10 @@ namespace Meditation.States
 
         public override async UniTask EnterAsync(StateData stateData = null)
         {
-            var camera = Camera.main;
-            camera.enabled = false;
-            await LookUp.Get<SplashView>().GetFirst().Hide(false);
             await LookUp.Get<MenuView>().GetFirst().Hide(false);
             await LookUp.Get<BreathingView>().GetFirst().Hide(false);
             await LookUp.Get<MoodView>().GetFirst().Hide(false);
-            
-            await LookUp.Get<SplashView>().GetFirst().Show(false);
-            await LookUp.Get<SplashView>().GetFirst().Animate(Transit);
-            
-            return;
-
-            void Transit()
-            {
-                camera.enabled = true;
-                StateMachine.SetStateAsync<MenuState>(waitForCurrentStateExit: false).Forget();
-            }
+            StateMachine.SetStateAsync<MenuState>(StateData.Create(("FadeSkybox", true)),false).Forget();   
         }
 
         public override async UniTask ExecuteAsync()

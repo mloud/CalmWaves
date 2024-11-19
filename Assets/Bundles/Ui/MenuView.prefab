@@ -272,8 +272,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c79308c385f438cbe32acdece0d95f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  registerByName: 0
   Cg: {fileID: 4586653260739574256}
   backButton: {fileID: 0}
+  transitionInDuration: 1
+  transitionOutDuration: 0.5
+  skyBoxMaterial: {fileID: 2100000, guid: 89fff474ba0a95e49ae5cf261d4f8fcc, type: 2}
   container: {fileID: 2467934106172340784}
   menuButton:
     m_AssetGUID: 30e7ab9fa681d426d83e6263aded83e3

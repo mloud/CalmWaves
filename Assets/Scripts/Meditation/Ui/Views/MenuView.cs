@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using Meditation.Apis.Data;
 using Meditation.Ui.Calendar;
 using UnityEngine;
@@ -13,7 +14,8 @@ namespace Meditation.Ui.Views
     {
         public Button StartButton => startButton;
         public Button AiButton => aiButton;
-        
+
+        [SerializeField] private Material skyBoxMaterial;
         [SerializeField] private Transform container;
         [SerializeField] private AssetReferenceGameObject menuButton;
         [SerializeField] private Button startButton;
@@ -39,7 +41,22 @@ namespace Meditation.Ui.Views
                 button.GetComponent<BreathingButton>().Set(setting, setting.GetName(), menuButtonClicked);
             }
         }
-   
+
+
+        public async UniTask FadeInSkybox()
+        {
+            await skyBoxMaterial
+                .DOFloat(1.0f, "_Exposure", 2.0f)
+                .SetEase(Ease.Linear)
+                .From(0)
+                .AsyncWaitForCompletion();
+        }
+
+        private void OnValidate()
+        {
+            skyBoxMaterial.SetFloat("_Exposure",0);
+        }
+
         public UniTask InitializeStartButton(Action menuButtonClicked)
         {
             startButton.onClick.AddListener(()=>menuButtonClicked());

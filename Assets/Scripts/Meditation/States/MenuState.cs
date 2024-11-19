@@ -27,7 +27,11 @@ namespace Meditation.States
         }
 
         public override async UniTask EnterAsync(StateData stateData = null)
-        { 
+        {
+            if (stateData != null && stateData.GetValue<bool>("FadeSkybox"))
+            {
+                menuView.FadeInSkybox().Forget();
+            }
             await menuView.Show(true);
             if (stateData != null)
             {

@@ -24,6 +24,7 @@ namespace Meditation
 
         private async UniTask Boot()
         {
+            Application.targetFrameRate = 60;
             ServiceLocator.Register<IAudioManager>(audioManager);
             ServiceLocator.Register<IAssetManager>(assetManager);
             ServiceLocator.Register<IUiManager>(uiManager);

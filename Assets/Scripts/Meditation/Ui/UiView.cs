@@ -12,6 +12,8 @@ namespace Meditation.Ui
         
         [SerializeField] protected CanvasGroup Cg;
         [SerializeField] protected Button backButton;
+        [SerializeField] private float transitionInDuration = 0.5f;
+        [SerializeField] private float transitionOutDuration = 0.5f;
 
         protected override void OnInit()
         {
@@ -23,15 +25,14 @@ namespace Meditation.Ui
         {
             Cg.interactable = true;
             gameObject.SetActive(true);
-            await Cg.DOFade(1, useSmooth ? 0.5f * speedMultiplier : 0)
+            await Cg.DOFade(1, useSmooth ? transitionInDuration * speedMultiplier : 0)
                 .SetEase(Ease.Linear)
                 .AsyncWaitForCompletion();
         }
-        
         public override async UniTask Hide(bool useSmooth, float speedMultiplier = 1.0f)
         {
             Cg.interactable = false;
-            await Cg.DOFade(0, useSmooth ? 0.5f * speedMultiplier :0)
+            await Cg.DOFade(0, useSmooth ? transitionOutDuration * speedMultiplier :0)
                 .SetEase(Ease.Linear)
                 .AsyncWaitForCompletion();
             gameObject.SetActive(false);   

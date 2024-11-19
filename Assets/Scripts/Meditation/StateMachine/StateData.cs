@@ -26,8 +26,12 @@ namespace Meditation.States
             if (CustomData == null)
                 return default;
 
-            CustomData.TryGetValue(key, out var data);
-            return (T)data;
+            if (CustomData.TryGetValue(key, out var data))
+            {
+                return (T)data;
+            }
+
+            return default;
         }
     }
 }

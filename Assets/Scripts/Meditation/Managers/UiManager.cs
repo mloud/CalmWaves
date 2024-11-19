@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Meditation.Ui;
+using Meditation.Ui.Components;
 using Meditation.Ui.Views;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Meditation
         UniTask ShowSettingsPopup(bool hideViews);
         UniTask HideInfoPopup();
         UniTask HideSettingsPopup();
+        UniTask PostInitialize();
     }
     
     public class UiManager: MonoBehaviour, IService, IUiManager
@@ -22,11 +24,17 @@ namespace Meditation
         [SerializeField] private SettingsPopup settingsPopup;
         [SerializeField] private BreathingView breathingView;
         [SerializeField] private MenuView menuView;
-
+        [SerializeField] private TotalBreathCounter totalBreathCounter;
         public UniTask Initialize()
         {
             infoPopup.gameObject.SetActive(false);
             settingsPopup.gameObject.SetActive(false);
+            return UniTask.CompletedTask;
+        }
+
+        public UniTask PostInitialize()
+        {
+            totalBreathCounter.Initialize();
             return UniTask.CompletedTask;
         }
         

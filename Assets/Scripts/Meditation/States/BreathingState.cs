@@ -89,7 +89,7 @@ namespace Meditation.States
                     audioManager.PlaySfx(winClip.GetReference());
                 
                 if (!cancellationTokenSource.IsCancellationRequested)
-                    await breathingApi.RegisterFinishedBreathing(breathingSettings, breathingSettings.GetTotalTime());
+                    await breathingApi.FinishBreathingSession(breathingSettings, breathingSettings.GetTotalTime());
                 
                 if (!cancellationTokenSource.IsCancellationRequested) 
                     await breathingView.FadeOutElements();
@@ -126,7 +126,7 @@ namespace Meditation.States
 
             running = true;
             updateManager.RegisterUpdate(OnUpdate);
-            breathingApi.RegisterStartedBreathing(breathingSettings);
+            breathingApi.StartBreathingSession(breathingSettings);
             
             for (int i = 0; i < breathingSettings.Rounds; i++)
             {
@@ -149,6 +149,7 @@ namespace Meditation.States
                 }
 
                 breathingView.BreathStatisticVisualizer.SetActual(i+1);
+                breathingApi.IncreaseBreathingCountInSession();
             }
             updateManager.UnregisterUpdate(OnUpdate);
 
@@ -160,7 +161,7 @@ namespace Meditation.States
         private void OnBack()
         {
             cancellationTokenSource.Cancel();
-            breathingApi.RegisterFinishedBreathing(breathingSettings, breathingTime);
+            breathingApi.FinishBreathingSession(breathingSettings, breathingTime);
             updateManager.UnregisterUpdate(OnUpdate);
             uiManager.HideInfoPopup();
             StateMachine.SetStateAsync<MenuState>(

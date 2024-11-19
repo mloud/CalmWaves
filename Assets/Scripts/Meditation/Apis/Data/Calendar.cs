@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Meditation.Apis.Data
 {
@@ -31,6 +32,9 @@ namespace Meditation.Apis.Data
             var key = GetKeyYYYYMMDDKeyForDate(dateTime);
             return Events.TryGetValue(key, out var eventList) ? eventList : Array.Empty<TEvent>();
         }
+
+        public IReadOnlyList<TEvent> GetAllEvents() =>
+            Events.SelectMany(x => x.Value).ToList();
         
         private static int GetKeyYYYYMMDDKeyForDate(DateTime dateTime) => dateTime.Year * 10000 + dateTime.Month * 100 + dateTime.Day;
     }

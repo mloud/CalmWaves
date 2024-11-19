@@ -10,15 +10,19 @@ namespace Meditation.Apis
 {
     public interface IBreathingApi
     {
+        Action<int> TotalBreathCountChanged { get; set; }
+        
         IHistory History {get;}
         UniTask<IBreathingSettings> GetBreathingSettingsForCurrentPartOfTheDay();
-        UniTask RegisterStartedBreathing(IBreathingSettings breathingSettings);
-        UniTask RegisterFinishedBreathing(IBreathingSettings breathingSettings, float time);
+        UniTask StartBreathingSession(IBreathingSettings breathingSettings);
+        UniTask FinishBreathingSession(IBreathingSettings breathingSettings, float time);
        
         TimeSpan GetBreathingTime();
         TimeSpan IncreaseBreathingTime();
         TimeSpan DecreaseBreathingTime();
         TimeSpan GetRequiredBreathingDuration();
+        void IncreaseBreathingCountInSession();
+
     }
 
     public interface IHistory
@@ -27,6 +31,7 @@ namespace Meditation.Apis
         TimeSpan GetBreathingTimeToday();
         IReadOnlyList<FinishedBreathing> GetFinishedBreathingsToday();
         IReadOnlyList<(DayOfWeek, IReadOnlyList<FinishedBreathing>)> GetFinishedBreathingsThisWeek();
+        int GetTotalBreathCyclesCount();
     }
 
     public class History : IHistory
@@ -54,35 +59,50 @@ namespace Meditation.Apis
             calendar.GetDataForToday();
         public IReadOnlyList<(DayOfWeek, IReadOnlyList<FinishedBreathing>)> GetFinishedBreathingsThisWeek() =>
            calendar.GetDataForThisWorkingWeek();
+
+        public int GetTotalBreathCyclesCount() =>
+            calendar.GetAllEvents().Sum(x => x.Breaths);
     }
     
     public class BreathingApi : IBreathingApi, IService
     {
+        public Action<int> TotalBreathCountChanged { get; set; }
+        public IHistory History { get; private set; }
+    
         private Calendar<FinishedBreathing> Calendar { get; set; }
         private TimeSpan breathingDuration;
         private IDataManager dataManager;
         private IBreathingSettings actualBreathingSettings;
-
-        public IHistory History { get; private set; }
+        private int breathsCountInSession;
         
         public async UniTask Initialize()
         {
+            breathsCountInSession = 0;
             dataManager = ServiceLocator.Get<IDataManager>();
             Calendar = new Calendar<FinishedBreathing>();
             breathingDuration = TimeSpan.FromMinutes(3);
             History = new History(Calendar);
+            
 
             var finishedBreathings = await ServiceLocator.Get<IDataManager>().GetAll<FinishedBreathing>();
             finishedBreathings.ToList().ForEach(x => Calendar.AddEvent(x, x.DateTime));
         }
 
-        public UniTask RegisterStartedBreathing(IBreathingSettings breathingSettings)
+        public UniTask StartBreathingSession(IBreathingSettings breathingSettings)
         {
+            Debug.Assert(actualBreathingSettings==null, "There is still opened breathign session");
             actualBreathingSettings = breathingSettings;
+            breathsCountInSession = 0;
             return UniTask.CompletedTask;
         }
 
-        public async UniTask RegisterFinishedBreathing(IBreathingSettings breathingSettings, float time)
+        public void IncreaseBreathingCountInSession()
+        {
+            breathsCountInSession++;
+            TotalBreathCountChanged?.Invoke(History.GetTotalBreathCyclesCount() + breathsCountInSession);
+        }
+        
+        public async UniTask FinishBreathingSession(IBreathingSettings breathingSettings, float time)
         {
             Debug.Assert(breathingSettings != null);
             Debug.Log($"RegisterFinishedBreathing duration {time}");
@@ -99,7 +119,7 @@ namespace Meditation.Apis
             }
 
             Debug.Assert(breathingSettings == actualBreathingSettings);
-            var finishedBreathing = new FinishedBreathing(breathingSettings, TimeSpan.FromSeconds(time));
+            var finishedBreathing = new FinishedBreathing(breathingSettings, TimeSpan.FromSeconds(time), breathsCountInSession);
 
             // save to data
             await ServiceLocator.Get<IDataManager>().Add(finishedBreathing);

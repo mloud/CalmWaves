@@ -41,6 +41,7 @@ namespace Meditation
             ServiceLocator.Get<ISettingsApi>().RegisterModule<IVolumeModule>(new VolumeModule());
             ServiceLocator.Get<ISettingsApi>().RegisterModule<ISoundSettingsModule>(new SettingsModule());
 
+            await ServiceLocator.Get<IUiManager>().PostInitialize();
             
             StateMachineEnvironment.UnregisterAll();
             StateMachineEnvironment.RegisterStateMachine("Application", new StateMachine(), true);

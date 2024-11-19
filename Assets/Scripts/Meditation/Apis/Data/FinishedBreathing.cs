@@ -7,20 +7,20 @@ namespace Meditation.Apis.Data
     {
         public DateTime DateTime { get; set; }
         public string Name { get; set; }
-        public int Rounds { get; set; }
         public TimeSpan BreatheDuration { get; set; }
         public BreathingTiming BreathingTiming { get; set; }
+        public int Breaths { get; set; }
 
         // Parameterless constructor for Newtonsoft
         [JsonConstructor]
         public FinishedBreathing() { }
-        public FinishedBreathing(IBreathingSettings breathingSettings, TimeSpan breatheDuration)
+        public FinishedBreathing(IBreathingSettings breathingSettings, TimeSpan breatheDuration, int breaths)
         {
             Name = breathingSettings.GetName();
-            Rounds = breathingSettings.Rounds;
             BreathingTiming = breathingSettings.GetBreathingTiming();
             DateTime = DateTime.Now;
             BreatheDuration = breatheDuration;
+            Breaths = breaths;
         }
     }
 }

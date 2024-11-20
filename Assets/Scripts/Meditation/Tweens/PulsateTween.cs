@@ -11,10 +11,10 @@ namespace Meditation.Tweens
         [SerializeField] private float duration;
         [SerializeField] private float delay;
 
-        private void OnValidate()
-        {
-            duration = 0.04f;
-        }
+        // private void OnValidate()
+        // {
+        //     duration = 0.04f;
+        // }
 
         private void OnEnable()
         {

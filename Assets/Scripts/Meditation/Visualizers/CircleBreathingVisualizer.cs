@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Meditation.Ui;
+using Meditation.Ui.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

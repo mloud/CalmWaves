@@ -1,4 +1,5 @@
 using Meditation.Ui;
+using Meditation.Ui.Text;
 using TMPro;
 using UnityEngine;
 

@@ -1,11 +1,10 @@
-using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-namespace Meditation.Ui
+namespace Meditation.Ui.Text
 {
-    public class SmoothText : MonoBehaviour
+    public class SmoothText : AExtendedText
     {
         public Mode TransitionMode;
         public float EffectDuration = 0.2f;
@@ -31,7 +30,7 @@ namespace Meditation.Ui
             originalAlpha = text1.alpha;
         }
 
-        public void Set(string text)
+        public override void Set(string text)
         {
             switch (TransitionMode)
             {
@@ -57,7 +56,10 @@ namespace Meditation.Ui
         {
             sequence?.Kill(true);
             sequence = DOTween.Sequence();
-            text2.enabled = false;
+            if (text2 != null)
+            {
+                text2.enabled = false;
+            }
 
             if (!string.IsNullOrEmpty(text1.text))
             {

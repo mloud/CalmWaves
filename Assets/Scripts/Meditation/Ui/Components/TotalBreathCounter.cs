@@ -1,22 +1,22 @@
 using Meditation.Apis;
-using TMPro;
+using Meditation.Ui.Text;
 using UnityEngine;
 
 namespace Meditation.Ui.Components
 {
     public class TotalBreathCounter : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI counterLabel;
+        [SerializeField] private AExtendedText counterLabel;
         
         public void Initialize()
         {
             var breathingApi = ServiceLocator.Get<IBreathingApi>();
-            counterLabel.text = breathingApi.History.GetTotalBreathCyclesCount().ToString();
+            counterLabel.Set(breathingApi.History.GetTotalBreathCyclesCount().ToString());
             breathingApi.TotalBreathCountChanged += OnTotalBreathsCountChanged;
         }
 
-        private void OnTotalBreathsCountChanged(int count) => 
-            counterLabel.text = count.ToString();
+        private void OnTotalBreathsCountChanged(int count) =>
+            counterLabel.Set(count.ToString());
 
         private void OnDestroy() =>
             ServiceLocator.Get<IBreathingApi>().TotalBreathCountChanged -= OnTotalBreathsCountChanged;

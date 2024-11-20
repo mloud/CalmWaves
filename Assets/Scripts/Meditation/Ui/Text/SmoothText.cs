@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -32,6 +33,12 @@ namespace Meditation.Ui.Text
 
         public override void Set(string text)
         {
+            if (!gameObject.activeInHierarchy)
+            {
+                SetTextWithoutTransition(text);
+                return;
+            }
+            
             switch (TransitionMode)
             {
                 case Mode.None:
@@ -49,7 +56,10 @@ namespace Meditation.Ui.Text
         private void SetTextWithoutTransition(string text)
         {
             text1.text = text;
-            text2.enabled = false;
+            if (text2 != null)
+            {
+                text2.enabled = false;
+            }
         }
         
         private void SetTextWithFade(string text)
@@ -80,6 +90,18 @@ namespace Meditation.Ui.Text
             sequence.Append(text1.DOFade(0, EffectDuration).SetEase(Ease.Linear));
             sequence.Join(text2.DOFade(originalAlpha, EffectDuration).SetEase(Ease.Linear));
             sequence.AppendCallback(() => (text1, text2) = (text2, text1));
+        }
+
+        private void OnDisable()
+        {
+            if (sequence == null) return;
+            
+            if (sequence.IsActive())
+            {
+                sequence.Complete(true);
+            }
+            sequence.Kill();
+            sequence = null;
         }
     }
 }

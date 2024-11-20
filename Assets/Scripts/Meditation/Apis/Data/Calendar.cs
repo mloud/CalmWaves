@@ -15,6 +15,14 @@ namespace Meditation.Apis.Data
                 AddEvent(evt, dateTime);
             }
         }
+
+        public void AddEvents( IEnumerable<(TEvent evt, DateTime dateTime)> eventPairs)
+        {
+            foreach (var (evt, date) in eventPairs)
+            {
+                AddEvent(evt, date);
+            }
+        }
         
         public void AddEvent(TEvent evt, DateTime dateTime)
         {

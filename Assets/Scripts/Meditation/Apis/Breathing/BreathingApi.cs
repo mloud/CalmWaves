@@ -10,45 +10,63 @@ namespace Meditation.Apis
     public interface IBreathingApi
     {
         Action<int> TotalBreathCountChanged { get; set; }
-        
+        Action<int> StreakCountChanged { get; set; }
+
         IHistory History {get;}
-        ISession Session { get; }
         UniTask<IBreathingSettings> GetBreathingSettingsForCurrentPartOfTheDay();
-       
-       
+
+
+        int GetStreak();
         TimeSpan GetBreathingTime();
         TimeSpan IncreaseBreathingTime();
         TimeSpan DecreaseBreathingTime();
         TimeSpan GetRequiredBreathingDuration();
+        
+        
+        // session 
+        UniTask StartSession(IBreathingSettings breathingSettings);
+        UniTask FinishSession(float time);
+        void IncreaseBreathingCountInSession();
     }
 
     
     public class BreathingApi : IBreathingApi, IService
     {
         public Action<int> TotalBreathCountChanged { get; set; }
+        public Action<int> StreakCountChanged { get; set; }
         public IHistory History { get; private set; }
-        public ISession Session { get; private set; }
-    
-        private Calendar<FinishedBreathing> Calendar { get; set; }
+
+        private Calendar<FinishedBreathing> calendar;
+        private User user;
         private TimeSpan breathingDuration;
         private IDataManager dataManager;
         private IBreathingSettings actualBreathingSettings;
-   
-       
+        private ISession session;
+    
         public async UniTask Initialize()
         {
             dataManager = ServiceLocator.Get<IDataManager>();
-            Calendar = new Calendar<FinishedBreathing>();
+            calendar = new Calendar<FinishedBreathing>();
             breathingDuration = TimeSpan.FromMinutes(3);
-            History = new History(Calendar);
-            Session = new BreathingSession(Calendar);
-            Session.BreathCountChanged += OnBreathingCountInSessionChanged;
+            History = new History(calendar);
+            session = new BreathingSession(this);
+            session.BreathCountChanged += OnBreathingCountInSessionChanged;
 
-            var finishedBreathings = await ServiceLocator.Get<IDataManager>().GetAll<FinishedBreathing>();
-            Calendar.AddEvents(finishedBreathings.Select(x=>(x, x.DateTime)));
-            //finishedBreathings.ToList().ForEach(x => Calendar.AddEvent(x, x.DateTime));
+            var finishedBreathings = await dataManager.GetAll<FinishedBreathing>();
+            calendar.AddEvents(finishedBreathings.Select(x=>(x, x.DateTime)));
+            
+            user = (await dataManager.GetAll<User>()).FirstOrDefault();
+            if ((DateTime.Today - user.LastFinishedDay).Days > 1)
+            {
+                user.Streak = 0;
+                user.LastFinishedDay = DateTime.MinValue;
+                StreakCountChanged?.Invoke(user.Streak);
+                await dataManager.Actualize(user);
+            }
         }
- 
+
+        public int GetStreak() => user.Streak;
+        
         public TimeSpan GetBreathingTime() => breathingDuration;
 
         public TimeSpan IncreaseBreathingTime()
@@ -99,10 +117,40 @@ namespace Meditation.Apis
         }
       
         public TimeSpan GetRequiredBreathingDuration() => TimeSpan.FromMinutes(5);
-
-        private void OnBreathingCountInSessionChanged(int count)
+        public UniTask StartSession(IBreathingSettings breathingSettings)
         {
-            TotalBreathCountChanged?.Invoke(History.GetTotalBreathCyclesCount() + count);
+            session.Start(breathingSettings);
+            return UniTask.CompletedTask;
         }
+
+        public async UniTask FinishSession(float time)
+        {
+            var finishedBreathing = session.Finish(time);
+            if (finishedBreathing == null)
+                return;
+            
+            // save to data
+            await dataManager.Add(finishedBreathing);
+            // update calendar
+            calendar.AddEvent(finishedBreathing, finishedBreathing.DateTime);
+           
+            if ( History.GetBreathingTimeToday().TotalSeconds >=
+                 GetRequiredBreathingDuration().TotalSeconds)
+            {
+                if (user.LastFinishedDay == DateTime.MinValue || (DateTime.Today - user.LastFinishedDay).Days == 1)
+                {
+                    user.Streak++;
+                    user.LastFinishedDay = DateTime.Today;
+                    StreakCountChanged.Invoke(user.Streak);
+                    dataManager.Actualize(user);
+                }
+            }
+        }
+
+        public void IncreaseBreathingCountInSession() => 
+            session.IncreaseBreathingCountInSession();
+
+        private void OnBreathingCountInSessionChanged(int count) => 
+            TotalBreathCountChanged?.Invoke(History.GetTotalBreathCyclesCount() + count);
     }
 }

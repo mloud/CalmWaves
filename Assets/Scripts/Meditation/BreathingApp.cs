@@ -1,7 +1,9 @@
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
 using Meditation.Apis.Data;
 using Meditation.Apis.Settings;
+using Meditation.Data;
 using Meditation.States;
 using UnityEngine;
 
@@ -34,6 +36,17 @@ namespace Meditation
             ServiceLocator.Register<IUpdateManager>(updateManager);
           
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
+            ServiceLocator.Get<IDataManager>().RegisterStorage<User>(new LocalStorage());
+            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<FinishedBreathing>(TypeToDataKeyBinding.FinishedBreathing);
+            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<User>(TypeToDataKeyBinding.User);
+
+            //  create default user
+            if (!(await ServiceLocator.Get<IDataManager>().GetAll<User>()).Any())
+            {
+                ServiceLocator.Get<IDataManager>().Add<User>(new User());
+            }
+            
+            
             
             ServiceLocator.Register<IBreathingApi>(new BreathingApi());
             ServiceLocator.ForEach(x => x.Initialize());

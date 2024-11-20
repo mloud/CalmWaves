@@ -57,7 +57,19 @@ namespace Meditation
         
         public async UniTask<AddressableAsset<MoodDb>> GetMoodSettings() =>
             await ServiceLocator.Get<IAssetManager>().GetAssetAsync<MoodDb>("MoodDb");
-        
+
+        public void RegisterTypeToKeyBinding<T>(string key)
+        {
+            if (storages.TryGetValue(typeof(T), out var storage))
+            {
+                storage.RegisterTypeToKeyBinding<T>(key);
+            }
+            else
+            {
+                Debug.LogError("No Storage fo type {typeof(T} found");
+            }
+        }
+
         public async UniTask<int> Add<T>(T data) where T:IDataObject
         {
             if (storages.TryGetValue(typeof(T), out var storage))
@@ -67,7 +79,17 @@ namespace Meditation
             LogNotExistingStorage<T>();
             return -1;
         }
-        
+
+        public async UniTask<bool> Actualize<T>(T data) where T : IDataObject
+        {
+            if (storages.TryGetValue(typeof(T), out var storage))
+            {
+                return await storage.Actualize<T>(data);
+            }
+            LogNotExistingStorage<T>();
+            return false;
+        }
+
         public async UniTask<T> Get<T>(int id) where T:IDataObject
         {
             if (storages.TryGetValue(typeof(T), out var storage))
@@ -116,10 +138,12 @@ namespace Meditation
             Log.LogError($"No storage for type {typeof(T)} exists", "DataManager");
     }
 
-  
+ 
     public interface IStorage
     {
+        void RegisterTypeToKeyBinding<T>(string key);
         UniTask<int> Add<T>(T data) where T : IDataObject;
+        UniTask<bool> Actualize<T>(T data) where T : IDataObject;
         UniTask<T> Get<T>(int id) where T : IDataObject;
         UniTask<IEnumerable<T>> GetAll<T>() where T : IDataObject;
         UniTask Remove<T>(int id) where T : IDataObject;
@@ -128,6 +152,12 @@ namespace Meditation
 
     public class LocalStorage : IStorage
     {
+        private Dictionary<Type, string> typeToKeyBindings = new();
+        public void RegisterTypeToKeyBinding<T>(string key)
+        {
+            typeToKeyBindings.Add(typeof(T), key);
+        }
+
         public UniTask<int> Add<T>(T data) where T : IDataObject
         {
             var storageName = GetStorageNameForType<T>();
@@ -142,6 +172,25 @@ namespace Meditation
             
             PlayerPrefs.SetString(storageName, JsonConvert.SerializeObject(storageContent));
             return new UniTask<int>(newId);
+        }
+
+        public async UniTask<bool> Actualize<T>(T data) where T : IDataObject
+        {
+            var storageName = GetStorageNameForType<T>();
+            var storageContentStr = PlayerPrefs.GetString(storageName, null);
+            var storageContent = string.IsNullOrEmpty(storageContentStr)
+                ? new List<T>()
+                : JsonConvert.DeserializeObject<List<T>>(storageContentStr);
+            int index = storageContent.FindIndex(x => x.Id == data.Id);
+            if (index != -1)
+            {
+                storageContent[index] = data;
+                PlayerPrefs.SetString(storageName, JsonConvert.SerializeObject(storageContent));
+                return true;
+            }
+
+            Debug.LogError($"No data with {data.Id} exists to be updated");
+            return false;
         }
 
         public UniTask<T> Get<T>(int id) where T : IDataObject
@@ -172,14 +221,14 @@ namespace Meditation
         }
 
         #if UNITY_EDITOR
-        public static void RemoveAllEditor<T>()
+        public static void RemoveAllEditor(params string[] keys)
         {
-            PlayerPrefs.DeleteKey(GetStorageNameForType<T>());
+            keys.ForEach(PlayerPrefs.DeleteKey);
         }
 
-        public static void Dump<T>()
+        public static void Dump<T>(string key)
         {
-            var content = PlayerPrefs.GetString(GetStorageNameForType<T>());
+            var content = PlayerPrefs.GetString(key);
             Debug.Log($"=== Dump of {typeof(T)} ====");
             Debug.Log(content);
             Debug.Log($"=== End of Dump of {typeof(T)} ====");
@@ -193,9 +242,9 @@ namespace Meditation
             return UniTask.CompletedTask;
         }
 
-        private static string GetStorageNameForType<T>() => $"storage_{typeof(T)}";
+        private string GetStorageNameForType<T>() => typeToKeyBindings[typeof(T)];
 
-        private static List<T> LoadStorage<T>()
+        private List<T> LoadStorage<T>()
         {
             var storageName = GetStorageNameForType<T>();
             var storageContentStr = PlayerPrefs.GetString(storageName, null);
@@ -205,7 +254,7 @@ namespace Meditation
             return storageContent;
         }
 
-        private static void SaveStorage<T>(List<T> storageContent) => 
+        private void SaveStorage<T>(List<T> storageContent) => 
             PlayerPrefs.SetString(GetStorageNameForType<T>(), JsonConvert.SerializeObject(storageContent));
     }
 }

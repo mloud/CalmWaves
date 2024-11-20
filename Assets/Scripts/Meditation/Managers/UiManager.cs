@@ -32,6 +32,8 @@ namespace Meditation
         [SerializeField] private BreathingView breathingView;
         [SerializeField] private MenuView menuView;
         [SerializeField] private TotalBreathCounter totalBreathCounter;
+        [SerializeField] private StreakCounter streakCounter;
+
         public UniTask Initialize()
         {
             infoPopup.gameObject.SetActive(false);
@@ -42,6 +44,7 @@ namespace Meditation
         public async UniTask PostInitialize()
         {
             totalBreathCounter.Initialize();
+            streakCounter.Initialize();
             await HideRootView(false);
         }
 

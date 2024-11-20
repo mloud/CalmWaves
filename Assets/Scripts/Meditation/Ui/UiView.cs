@@ -16,25 +16,41 @@ namespace Meditation.Ui
         [SerializeField] private float transitionOutDuration = 0.5f;
 
         protected override void OnInit()
-        {
-            Cg.alpha = 0;
-            Cg.interactable = false;
-        }
+        { }
 
         public override async UniTask Show(bool useSmooth, float speedMultiplier = 1.0f)
         {
+            Debug.Log($"[UI] Showing view:{gameObject} smooth:{useSmooth}");
             Cg.interactable = true;
             gameObject.SetActive(true);
-            await Cg.DOFade(1, useSmooth ? transitionInDuration * speedMultiplier : 0)
-                .SetEase(Ease.Linear)
-                .AsyncWaitForCompletion();
+
+            if (useSmooth && speedMultiplier > 0)
+            {
+                await Cg.DOFade(1, transitionInDuration * speedMultiplier)
+                    .SetEase(Ease.Linear)
+                    .AsyncWaitForCompletion();
+            }
+            else
+            {
+                Cg.alpha = 1.0f;
+            }
         }
         public override async UniTask Hide(bool useSmooth, float speedMultiplier = 1.0f)
         {
+            Debug.Log($"[UI] Hiding view:{gameObject} smooth:{useSmooth}");
             Cg.interactable = false;
-            await Cg.DOFade(0, useSmooth ? transitionOutDuration * speedMultiplier :0)
-                .SetEase(Ease.Linear)
-                .AsyncWaitForCompletion();
+
+            if (useSmooth && speedMultiplier > 0)
+            {
+                await Cg.DOFade(0, transitionOutDuration * speedMultiplier)
+                    .SetEase(Ease.Linear)
+                    .AsyncWaitForCompletion();
+            }
+            else
+            {
+                Cg.alpha = 0;
+            }
+
             gameObject.SetActive(false);   
         }
 

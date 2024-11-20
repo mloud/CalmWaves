@@ -1,6 +1,5 @@
 using Meditation.Apis.Data;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Meditation
 {

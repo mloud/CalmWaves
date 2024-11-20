@@ -14,9 +14,10 @@ namespace Meditation.States
 
         public override async UniTask EnterAsync(StateData stateData = null)
         {
-            await LookUp.Get<MenuView>().GetFirst().Hide(false);
-            await LookUp.Get<BreathingView>().GetFirst().Hide(false);
-            await LookUp.Get<MoodView>().GetFirst().Hide(false);
+            Debug.Log(Time.frameCount);
+            ServiceLocator.Get<IUiManager>().HideRootView(false);
+            ServiceLocator.Get<IUiManager>().GetAllViews().ForEach(view=>view.Hide(false));
+            ServiceLocator.Get<IUiManager>().ShowRootViews(true);
             StateMachine.SetStateAsync<MenuState>(StateData.Create(("FadeSkybox", true)),false).Forget();   
         }
 

@@ -15,8 +15,8 @@ namespace Meditation.States
         {
             breathingApi = ServiceLocator.Get<IBreathingApi>();
             breathingDbAsset = await ServiceLocator.Get<IDataManager>().GetBreathingSettings();
-          
-            menuView = LookUp.Get<MenuView>().GetFirst();
+
+            menuView = ServiceLocator.Get<IUiManager>().GetView<MenuView>();
             await menuView.InitializeBreathingButtons(breathingDbAsset.GetReference().GetAll() , OnMenuButtonClicked);
             await menuView.InitializeWeekCalendar(breathingApi.History.GetBreathingTimesThisWeek(), breathingApi.GetRequiredBreathingDuration());
             await menuView.InitializeTimer();

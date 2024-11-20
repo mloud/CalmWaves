@@ -23,12 +23,6 @@ namespace Meditation.Ui.Views
         private IMoodDb moodDb;
         private int selectedMoods;
 
-        protected override void OnInit()
-        {
-            base.OnInit();
-            LookUp.Get<MoodView>().Register(this);
-        }
-       
         public void Initialize(IMoodDb moodDb, Mood moodPrefab, Action<int, bool> moodSelectionChanged)
         {
             this.moodDb = moodDb;

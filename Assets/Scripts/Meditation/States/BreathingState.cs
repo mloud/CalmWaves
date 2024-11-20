@@ -11,7 +11,6 @@ namespace Meditation.States
 {
     public class BreathingState : AState
     {
-        private BreathingView breathingView;
         private CancellationTokenSource cancellationTokenSource;
         private ISoundSettingsModule settings;
         private IAudioManager audioManager;
@@ -19,7 +18,7 @@ namespace Meditation.States
         private IUiManager uiManager;
         private IBreathingApi breathingApi;
         private IBreathingSettings breathingSettings;
-
+        private BreathingView breathingView;
         
         private AddressableAsset<AudioClip> winClip;
         private bool breathingFinished;
@@ -36,7 +35,7 @@ namespace Meditation.States
             breathingApi = ServiceLocator.Get<IBreathingApi>();
 
             settings = ServiceLocator.Get<ISettingsApi>().GetModule<ISoundSettingsModule>();
-            breathingView = LookUp.Get<BreathingView>().GetFirst();
+            breathingView = uiManager.GetView<BreathingView>();
             breathingView
                 .BindAction(breathingView.PauseButton, OnPause)
                 .BindAction(breathingView.BackButton, OnBack)

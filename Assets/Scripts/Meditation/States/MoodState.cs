@@ -24,7 +24,7 @@ namespace Meditation.States
             generatorApi = ServiceLocator.Get<IBreathGeneratorApi>();
             moodDbAsset = await ServiceLocator.Get<IDataManager>().GetMoodSettings();
             moodPrefab = await ServiceLocator.Get<IAssetManager>().GetAssetAsync<GameObject>("MoodButton");
-            moodView = LookUp.Get<MoodView>().GetFirst();
+            moodView = ServiceLocator.Get<IUiManager>().GetView<MoodView>();
             moodView.Initialize(moodDbAsset.GetReference(), moodPrefab.GetReference().GetComponent<Mood>(), OnMoodSelectionChanged);
             moodView
                 .BindAction(moodView.BackButton, OnBackButtonClicked)

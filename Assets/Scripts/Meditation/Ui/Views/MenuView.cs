@@ -25,12 +25,6 @@ namespace Meditation.Ui.Views
         
         private List<GameObject> breathingButtons;
 
-        protected override void OnInit()
-        {
-            base.OnInit();
-            LookUp.Get<MenuView>().Register(this);
-        }
- 
         public async UniTask InitializeBreathingButtons(IEnumerable<IBreathingSettings> settings, Action<string> menuButtonClicked)
         {
             breathingButtons = new List<GameObject>();

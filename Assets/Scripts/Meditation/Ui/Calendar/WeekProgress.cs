@@ -10,17 +10,7 @@ namespace Meditation.Ui.Calendar
     public class WeekProgress : UiElement
     {
         [SerializeField] private List<DayProgress> dayProgress;
-
-        private void Awake()
-        {
-            LookUp.Get<WeekProgress>().Register(this);
-        }
-
-        private void OnDestroy()
-        {
-            LookUp.Get<WeekProgress>().Unregister(this);
-        }
-        
+ 
         public void Set(IReadOnlyList<(DayOfWeek dayOfWeek, TimeSpan breathingDuration)> currentWeek, TimeSpan requiredDuration)
         {
             foreach (var day in dayProgress)

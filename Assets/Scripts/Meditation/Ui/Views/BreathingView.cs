@@ -31,12 +31,7 @@ namespace Meditation.Ui.Views
         [SerializeField] private TextMeshProUGUI nameLabel;
         [SerializeField] private Button pauseButton;
         [SerializeField] private Button settingsButton;
-        protected override void OnInit()
-        {
-            base.OnInit();
-            LookUp.Get<BreathingView>().Register(this);
-        }
-   
+     
         public async UniTask FadeOutElements()
         {
             await elementsCg.DOFade(0, 1.0f)

@@ -21,7 +21,6 @@ namespace Meditation.Ui
         public override async UniTask Show(bool useSmooth, float speedMultiplier = 1.0f)
         {
             Debug.Log($"[UI] Showing view:{gameObject} smooth:{useSmooth}");
-            Cg.interactable = true;
             gameObject.SetActive(true);
 
             if (useSmooth && speedMultiplier > 0)
@@ -34,6 +33,7 @@ namespace Meditation.Ui
             {
                 Cg.alpha = 1.0f;
             }
+            Cg.interactable = true;
         }
         public override async UniTask Hide(bool useSmooth, float speedMultiplier = 1.0f)
         {

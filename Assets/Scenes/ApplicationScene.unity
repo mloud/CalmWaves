@@ -1239,11 +1239,9 @@ MonoBehaviour:
   popups:
   - {fileID: 924230818}
   - {fileID: 1874865146}
+  - {fileID: 1547928975}
   sharedViewCg: {fileID: 1398447724}
-  infoInfoPopup: {fileID: 1874865146}
   settingsPopup: {fileID: 1547928975}
-  breathingView: {fileID: 2061530519}
-  menuView: {fileID: 350175580}
   totalBreathCounter: {fileID: 32441219}
   streakCounter: {fileID: 1847332805}
 --- !u!1 &832575517
@@ -2232,11 +2230,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SettingsPopup
-      objectReference: {fileID: 0}
-    - target: {fileID: 5297006797818937792, guid: b327ef43e9344475f94db09f7a457d89,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6371731121395809963, guid: b327ef43e9344475f94db09f7a457d89,
         type: 3}

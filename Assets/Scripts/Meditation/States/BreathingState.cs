@@ -40,7 +40,7 @@ namespace Meditation.States
             breathingView
                 .BindAction(breathingView.PauseButton, OnPause)
                 .BindAction(breathingView.BackButton, OnBack)
-                .BindAction(breathingView.SettingsButton, OnSettings);
+                .BindAction(breathingView.SettingsButton, OnSettingsClicked);
            
             winClip = await ServiceLocator.Get<IAssetManager>().GetAssetAsync<AudioClip>("win");
         }
@@ -114,6 +114,7 @@ namespace Meditation.States
             }
             finally
             {
+                SetPaused(false, false);
                 Debug.Log("Finally");
             }
         }
@@ -191,25 +192,33 @@ namespace Meditation.States
                 false).Forget();
         }
 
-        private void OnSettings()
+        private async UniTask OnSettingsClicked()
         {
-            ServiceLocator.Get<IUiManager>().ShowSettingsPopup(true);
-            SetPaused(true);
+            var request = ServiceLocator.Get<IUiManager>().OpenPopup<SettingsPopup>(null);
+            request.Popup.BindAction(request.Popup.CloseButton, () => request.Popup.Close(), true);
+            request.OpenTask.Forget();
+            SetPaused(true, false);
+            await request.WaitForClose();
+            SetPaused(false, false);
         }
 
-        private void OnPause() => SetPaused(!paused);
+        private void OnPause() => SetPaused(!paused,true);
 
-        private void SetPaused(bool paused)
+        private void SetPaused(bool paused, bool showLabel)
         {
             this.paused = paused;
-            if (paused)
+            if (showLabel)
             {
-                breathingView.PauseText.Show().Forget();
+                if (paused)
+                {
+                    breathingView.PauseText.Show().Forget();
+                }
+                else
+                {
+                    breathingView.PauseText.Hide().Forget();
+                }
             }
-            else
-            {
-                breathingView.PauseText.Hide().Forget();
-            }
+
             breathingView.BreathingVisualizer.IsPaused = paused;
             breathingView.TotalTimeVisualizer.IsPaused = paused;
         }

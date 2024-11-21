@@ -10,9 +10,6 @@ namespace Meditation
 {
     public interface IUiManager
     {
-        UniTask ShowSettingsPopup(bool hideViews);
-        //UniTask HideInfoPopup();
-        UniTask HideSettingsPopup();
         UniTask PostInitialize();
         UniTask HideRootView(bool smooth = true);
         UniTask ShowRootViews(bool smooth = true);
@@ -79,25 +76,7 @@ namespace Meditation
         public T GetPopup<T>() where T : UiPopup => (T)popups.FirstOrDefault(x => x.GetType() == typeof(T));
         public IEnumerable<UiPopup> GetAllPopups() => popups;
         #endregion
-        
-        public async UniTask ShowSettingsPopup(bool hideViews)
-        {
-            var tasks = new List<UniTask>();
-            if (hideViews)
-            {
-                tasks.Add(HideRootView());
-            }
-            tasks.Add( settingsPopup.Show());
-            await UniTask.WhenAll(tasks);
-        }
-
-        public async UniTask HideSettingsPopup()
-        {
-            await UniTask.WhenAll(
-                settingsPopup.Hide(),
-                ShowRootViews());
-        }
-
+      
         public async UniTask HideRootView(bool smooth = true)
         {
             if (smooth)

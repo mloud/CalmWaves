@@ -22,6 +22,7 @@ namespace Meditation.Ui
 
         public async UniTask Show()
         {
+            DOTween.Kill(label);
             label.enabled = true;
             for (int i = 0; i < texts.Count; i++)
             {

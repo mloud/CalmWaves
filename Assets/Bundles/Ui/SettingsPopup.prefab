@@ -2000,9 +2000,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f717b31c1c4a4986ae4a4f0152a29741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  registerByName: 0
   cg: {fileID: 5676980873917211148}
-  backButton: {fileID: 9159727300362447289}
+  closeButton: {fileID: 9159727300362447289}
+  transitionDuration: 0.5
   musicSection: {fileID: 8820290567919219278}
   soundSection: {fileID: 1449062731910211455}
 --- !u!1 &6720748795592869560

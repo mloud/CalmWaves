@@ -48,6 +48,7 @@ namespace Meditation.States
         public override async UniTask EnterAsync(StateData stateData = null)
         {
             breathingTime = 0;
+            paused = false;
             breathingFinished = false;
             Debug.Assert(stateData != null, "State data is required when entering BreathingState");
             breathingSettings = stateData.GetValue<IBreathingSettings>("Settings");

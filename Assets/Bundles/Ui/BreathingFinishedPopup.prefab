@@ -550,10 +550,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cg: {fileID: 967240693385610500}
   closeButton: {fileID: 0}
-  hasBackButton: 0
   transitionDuration: 0.5
   breathsCount: {fileID: 6110409095325587174}
   continueButton: {fileID: 4199850815380678834}
+  shareButton: {fileID: 1140505308111291167}
   textFader: {fileID: 5903619640128060977}
 --- !u!225 &967240693385610500
 CanvasGroup:

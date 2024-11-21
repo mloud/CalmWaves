@@ -18,7 +18,7 @@ namespace Meditation
         [SerializeField] private SmartBreathGeneratorApi smartBreathGenerator;
         [SerializeField] private SettingsApi settingsApi;
         [SerializeField] private UpdateManager updateManager;
-
+        [SerializeField] private ShareApi shareApi;
         private void Awake()
         {
             Boot().Forget();
@@ -34,6 +34,7 @@ namespace Meditation
             ServiceLocator.Register<IBreathGeneratorApi>(smartBreathGenerator);
             ServiceLocator.Register<ISettingsApi>(settingsApi);
             ServiceLocator.Register<IUpdateManager>(updateManager);
+            ServiceLocator.Register<IShare>(shareApi);
           
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<User>(new LocalStorage());
@@ -45,8 +46,6 @@ namespace Meditation
             {
                 ServiceLocator.Get<IDataManager>().Add<User>(new User());
             }
-            
-            
             
             ServiceLocator.Register<IBreathingApi>(new BreathingApi());
             ServiceLocator.ForEach(x => x.Initialize());

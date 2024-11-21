@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Meditation.Apis;
 using Meditation.Apis.Data;
 using Meditation.Ui.Text;
 using UnityEngine;
@@ -10,10 +11,12 @@ namespace Meditation.Ui
     {
         [SerializeField] private AExtendedText breathsCount;
         [SerializeField] private Button continueButton;
+        [SerializeField] private Button shareButton;
         [SerializeField] private TextFader textFader;
         protected override void OnInit()
         {
             continueButton.onClick.AddListener(OnContinue);
+            shareButton.onClick.AddListener(OnShare);
         }
 
         protected override UniTask OnOpenStarted(IUiParameter parameter)
@@ -31,6 +34,11 @@ namespace Meditation.Ui
         private void OnContinue()
         {
             Close().Forget();
+        }
+        
+        private void OnShare()
+        {
+            ServiceLocator.Get<IShare>().TakeScreenshotAndShare();
         }
     }
 }

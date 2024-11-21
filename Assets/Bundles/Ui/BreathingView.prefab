@@ -1636,7 +1636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Cg: {fileID: 5987960430406546701}
   backButton: {fileID: 5662396327985016863}
-  transitionInDuration: 0.5
+  transitionInDuration: 1
   transitionOutDuration: 0.5
   elementsCg: {fileID: 8991282012404490619}
   basicElementsCg: {fileID: 4231960541265855440}

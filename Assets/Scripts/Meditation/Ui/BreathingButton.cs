@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,8 +52,10 @@ namespace Meditation.Ui
         
         private void OnInfoClick()
         {
-            ServiceLocator.Get<IUiManager>()
-                .ShowInfoPopup(BreathingSetting, true, true);
+            var request = ServiceLocator.Get<IUiManager>().OpenPopup<InfoPopup>(UiParameter.Create(BreathingSetting));
+            request.Popup.BindAction(request.Popup.CloseButton, () => request.Popup.Close(), true);
+            request.Popup.ContinueButton.gameObject.SetActive(false);
+            request.OpenTask.Forget();
         }
     }
 }

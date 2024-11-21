@@ -52,6 +52,6 @@ namespace Meditation.Ui
             return default;
         }
 
-        public T GetFirst<T>() => (T)keyData.Values.FirstOrDefault(x => x.GetType() == typeof(T));
+        public T GetFirst<T>() => (T)keyData.Values.FirstOrDefault(x => x is T);
     }
 }

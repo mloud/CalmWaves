@@ -13,6 +13,7 @@ namespace Meditation.Ui
 
         public void Set(IBreathingSettings breathingSettings)
         {
+            Debug.Assert(breathingSettings != null);
             durationLabel.text = $"{TimeUtils.GetTime(breathingSettings.GetTotalTime())}";
             inhaleDurationLabel.text = $"{breathingSettings.GetInhaleDuration()} sec";
             if (breathingSettings.GetAfterInhaleDuration() > 0)

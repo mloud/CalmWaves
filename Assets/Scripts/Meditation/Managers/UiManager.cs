@@ -4,16 +4,14 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Meditation.Ui;
 using Meditation.Ui.Components;
-using Meditation.Ui.Views;
 using UnityEngine;
 
 namespace Meditation
 {
     public interface IUiManager
     {
-        UniTask ShowInfoPopup(IBreathingSettings breathingSettings, bool hideView, bool hasCloseButton);
         UniTask ShowSettingsPopup(bool hideViews);
-        UniTask HideInfoPopup();
+        //UniTask HideInfoPopup();
         UniTask HideSettingsPopup();
         UniTask PostInitialize();
         UniTask HideRootView(bool smooth = true);
@@ -22,14 +20,14 @@ namespace Meditation
         IEnumerable<UiView> GetAllViews();
         T GetPopup<T>() where T : UiPopup;
         IEnumerable<UiPopup> GetAllPopups();
-        PopupRequest OpenPopup<T>(IUiParameter parameter) where T : UiPopup;
+        PopupRequest<T> OpenPopup<T>(IUiParameter parameter) where T : UiPopup;
     }
    
     
-    public class PopupRequest
+    public class PopupRequest<T> where T: UiPopup
     {
         public UniTask OpenTask { get; set; }
-        public UiPopup Popup { get; set; }
+        public T Popup { get; set; }
 
         public async UniTask WaitForClose() =>
             await UniTask.WaitUntil(()=>Popup.State == UiPopup.PopupState.Closed);
@@ -41,16 +39,12 @@ namespace Meditation
         [SerializeField] private List<UiPopup> popups;
         
         [SerializeField] private CanvasGroup sharedViewCg;
-        [SerializeField] private Popup infoPopup;
         [SerializeField] private SettingsPopup settingsPopup;
-        [SerializeField] private BreathingView breathingView;
-        [SerializeField] private MenuView menuView;
         [SerializeField] private TotalBreathCounter totalBreathCounter;
         [SerializeField] private StreakCounter streakCounter;
 
         public UniTask Initialize()
         {
-            infoPopup.gameObject.SetActive(false);
             settingsPopup.gameObject.SetActive(false);
             GetAllPopups().ForEach(x=>x.Hide(false));
             return UniTask.CompletedTask;
@@ -70,11 +64,11 @@ namespace Meditation
         #endregion
 
         #region Popups
-        public PopupRequest OpenPopup<T>(IUiParameter parameter) where T: UiPopup
+        public PopupRequest<T> OpenPopup<T>(IUiParameter parameter) where T: UiPopup
         {
             var popup = GetPopup<T>();
             
-            var request = new PopupRequest
+            var request = new PopupRequest<T>
             {
                 Popup = GetPopup<T>(),
                 OpenTask = popup.Open(parameter)
@@ -86,17 +80,6 @@ namespace Meditation
         public IEnumerable<UiPopup> GetAllPopups() => popups;
         #endregion
         
-        public async UniTask ShowInfoPopup(IBreathingSettings breathingSettings, bool hideView, bool hasCloseButton)
-        {
-            var tasks = new List<UniTask>();
-            if (hideView)
-            {
-                tasks.Add(HideRootView());
-            }
-            tasks.Add( infoPopup.Show(breathingSettings, hasCloseButton));
-            await UniTask.WhenAll(tasks);
-        }
-        
         public async UniTask ShowSettingsPopup(bool hideViews)
         {
             var tasks = new List<UniTask>();
@@ -106,13 +89,6 @@ namespace Meditation
             }
             tasks.Add( settingsPopup.Show());
             await UniTask.WhenAll(tasks);
-        }
-
-        public async UniTask HideInfoPopup()
-        {
-            await UniTask.WhenAll(
-                infoPopup.Hide(),
-                ShowRootViews());
         }
 
         public async UniTask HideSettingsPopup()

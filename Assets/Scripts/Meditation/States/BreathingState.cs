@@ -64,34 +64,37 @@ namespace Meditation.States
 
             try
             {
-                // intro
-                await breathingView.Show(false);
-                if (!cancellationTokenSource.IsCancellationRequested) 
-                    await breathingView.HideElements();
-                
-                if (!cancellationTokenSource.IsCancellationRequested) 
-                    await uiManager.ShowInfoPopup(breathingSettings, false, false);
-                
-                await breathingView.CountDownVisualizer.Run(
-                    cancellationTokenSource.Token, () => uiManager.HideInfoPopup());
+                bool canceled = false;
+                var request = uiManager.OpenPopup<InfoPopup>(UiParameter.Create(breathingSettings));
+                request.Popup.CloseButton.gameObject.SetActive(true);
+                request.Popup.ContinueButton.gameObject.SetActive(true);
+                request.Popup.BindAction(request.Popup.CloseButton,
+                    () =>
+                    {
+                        canceled = true;
+                        StateMachine.SetStateAsync<MenuState>().Forget();
+                        request.Popup.Close().Forget();
+                    });
 
-                if (!cancellationTokenSource.IsCancellationRequested) 
-                    await breathingView.FadeInElements();
-                
+                request.Popup.BindAction(request.Popup.ContinueButton, () => request.Popup.Close().Forget());
+
+                await request.OpenTask;
+                await request.WaitForClose();
+                if (canceled) return;
+
+                await breathingView.Show(true);
+                await breathingView.FadeInElements();
                 audioManager.PlayMusic(breathingSettings.GetMusic()).Forget();
 
                 // breathing
-                if (!cancellationTokenSource.IsCancellationRequested)
-                    await CountBreathing(cancellationTokenSource.Token);
-
-                if (!cancellationTokenSource.IsCancellationRequested) 
-                    audioManager.PlaySfx(winClip.GetReference());
+                await CountBreathing(cancellationTokenSource.Token);
+                audioManager.PlaySfx(winClip.GetReference());
 
                 FinishedBreathing finishedBreathing = null;
                 if (!cancellationTokenSource.IsCancellationRequested)
                     finishedBreathing = await breathingApi.FinishSession(breathingSettings.GetTotalTime());
-                
-                if (!cancellationTokenSource.IsCancellationRequested) 
+
+                if (!cancellationTokenSource.IsCancellationRequested)
                     await breathingView.FadeOutElements(true);
 
                 var popupRequest = ServiceLocator.Get<IUiManager>()
@@ -99,9 +102,9 @@ namespace Meditation.States
 
                 await popupRequest.OpenTask;
                 await popupRequest.WaitForClose();
-                
+
                 StateMachine.SetStateAsync<MenuState>(
-                    StateData.Create((StateDataKeys.BreathingFinished,true)),
+                    StateData.Create((StateDataKeys.BreathingFinished, true)),
                     false).Forget();
             }
             catch (OperationCanceledException ex)
@@ -170,11 +173,10 @@ namespace Meditation.States
             cancellationTokenSource.Cancel();
             var finishedBreathing = await breathingApi.FinishSession(breathingTime);
             updateManager.UnregisterUpdate(OnUpdate);
-            uiManager.HideInfoPopup();
             
             await breathingView.FadeOutElements(true);
 
-            if (finishedBreathing.Breaths > 0)
+            if (finishedBreathing != null && finishedBreathing.Breaths > 0)
             {
                 var popupRequest = ServiceLocator.Get<IUiManager>()
                     .OpenPopup<BreathingFinishedPopup>(UiParameter.Create(finishedBreathing));

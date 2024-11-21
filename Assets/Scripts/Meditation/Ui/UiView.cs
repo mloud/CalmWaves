@@ -59,7 +59,7 @@ namespace Meditation.Ui
             button.onClick.AddListener(()=>action());
             return this;
         }
-        public UiView BindAsyncAction(Button button, Func<UniTask> asyncAction)
+        public UiView BindAction(Button button, Func<UniTask> asyncAction)
         {
             button.onClick.AddListener(()=>asyncAction().Forget());
             return this;

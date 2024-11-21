@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Meditation.States;
 using Meditation.Visualizers;
 using TMPro;
 using UnityEngine;
@@ -11,13 +11,12 @@ namespace Meditation.Ui.Views
     public class BreathingView : UiView
     {
         [SerializeField] private CanvasGroup elementsCg;
-        
+        [SerializeField] private CanvasGroup basicElementsCg;
         public ATotalTimeVisualizer TotalTimeVisualizer=> totalTimeVisualizer;
         public ACountDownVisualizer CountDownVisualizer=> countDownVisualizer;
         public ABreathingVisualizer BreathingVisualizer=> breathingVisualizer;
         public ABreathStatisticVisualizer BreathStatisticVisualizer=> breathStatisticVisualizer;
         public TextFader PauseText => pauseText;
-        public TextFader TextFader => textFader;
         public TextMeshProUGUI NameLabel => nameLabel;
         public Button PauseButton => pauseButton;
         public Button SettingsButton => settingsButton;
@@ -26,25 +25,41 @@ namespace Meditation.Ui.Views
         [SerializeField] private ACountDownVisualizer countDownVisualizer;
         [SerializeField] private ABreathingVisualizer breathingVisualizer;
         [SerializeField] private ABreathStatisticVisualizer breathStatisticVisualizer;
-        [SerializeField] private TextFader textFader;
         [SerializeField] private TextFader pauseText;
         [SerializeField] private TextMeshProUGUI nameLabel;
         [SerializeField] private Button pauseButton;
         [SerializeField] private Button settingsButton;
      
-        public async UniTask FadeOutElements()
+        public async UniTask FadeOutElements(bool includeBasicElements = false)
         {
-            await elementsCg.DOFade(0, 1.0f)
+            var tasks = new List<UniTask>();
+            if (includeBasicElements)
+            {
+                tasks.Add(basicElementsCg.DOFade(0, 1.0f)
+                    .SetEase(Ease.Linear)
+                    .ToUniTask());
+            }
+
+            tasks.Add(elementsCg.DOFade(0, 1.0f)
                 .SetEase(Ease.Linear)
-                .AsyncWaitForCompletion();
+                .ToUniTask());
+
+            await UniTask.WhenAll(tasks);
         }
-        
+
         public async UniTask FadeInElements()
         {
-            await elementsCg.DOFade(1, 1.0f)
-                .From(0)
-                .SetEase(Ease.Linear)
-                .AsyncWaitForCompletion();
+            var tasks = new List<UniTask>
+            {
+                basicElementsCg.DOFade(1, 1.0f)
+                    .SetEase(Ease.Linear)
+                    .ToUniTask(),
+                elementsCg.DOFade(1, 1.0f)
+                    .SetEase(Ease.Linear)
+                    .ToUniTask()
+            };
+
+            await UniTask.WhenAll(tasks);
         }
 
         public UniTask HideElements()

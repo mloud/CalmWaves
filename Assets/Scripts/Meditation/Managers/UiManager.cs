@@ -20,11 +20,25 @@ namespace Meditation
         UniTask ShowRootViews(bool smooth = true);
         T GetView<T>() where T : UiView;
         IEnumerable<UiView> GetAllViews();
+        T GetPopup<T>() where T : UiPopup;
+        IEnumerable<UiPopup> GetAllPopups();
+        PopupRequest OpenPopup<T>(IUiParameter parameter) where T : UiPopup;
+    }
+   
+    
+    public class PopupRequest
+    {
+        public UniTask OpenTask { get; set; }
+        public UiPopup Popup { get; set; }
+
+        public async UniTask WaitForClose() =>
+            await UniTask.WaitUntil(()=>Popup.State == UiPopup.PopupState.Closed);
     }
     
     public class UiManager: MonoBehaviour, IService, IUiManager
     {
         [SerializeField] private List<UiView> views;
+        [SerializeField] private List<UiPopup> popups;
         
         [SerializeField] private CanvasGroup sharedViewCg;
         [SerializeField] private Popup infoPopup;
@@ -38,6 +52,7 @@ namespace Meditation
         {
             infoPopup.gameObject.SetActive(false);
             settingsPopup.gameObject.SetActive(false);
+            GetAllPopups().ForEach(x=>x.Hide(false));
             return UniTask.CompletedTask;
         }
 
@@ -48,8 +63,29 @@ namespace Meditation
             await HideRootView(false);
         }
 
+
+        #region Views
         public T GetView<T>() where T : UiView => (T)views.FirstOrDefault(x => x.GetType() == typeof(T));
         public IEnumerable<UiView> GetAllViews() => views;
+        #endregion
+
+        #region Popups
+        public PopupRequest OpenPopup<T>(IUiParameter parameter) where T: UiPopup
+        {
+            var popup = GetPopup<T>();
+            
+            var request = new PopupRequest
+            {
+                Popup = GetPopup<T>(),
+                OpenTask = popup.Open(parameter)
+            };
+            return request;
+        }
+        
+        public T GetPopup<T>() where T : UiPopup => (T)popups.FirstOrDefault(x => x.GetType() == typeof(T));
+        public IEnumerable<UiPopup> GetAllPopups() => popups;
+        #endregion
+        
         public async UniTask ShowInfoPopup(IBreathingSettings breathingSettings, bool hideView, bool hasCloseButton)
         {
             var tasks = new List<UniTask>();

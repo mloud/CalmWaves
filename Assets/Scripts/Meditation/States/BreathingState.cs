@@ -2,7 +2,9 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
+using Meditation.Apis.Data;
 using Meditation.Apis.Settings;
+using Meditation.Ui;
 using Meditation.Ui.Views;
 using UnityEngine;
 
@@ -56,7 +58,6 @@ namespace Meditation.States
             // initialize
             breathingView.TotalTimeVisualizer.Initialize();
             breathingView.BreathingVisualizer.Initialize();
-            breathingView.TextFader.Clear();
             breathingView.PauseText.Clear();
             breathingView.NameLabel.text = breathingSettings.GetName();
             breathingView.BreathStatisticVisualizer.Init(breathingSettings.Rounds);
@@ -85,15 +86,23 @@ namespace Meditation.States
 
                 if (!cancellationTokenSource.IsCancellationRequested) 
                     audioManager.PlaySfx(winClip.GetReference());
-                
+
+                FinishedBreathing finishedBreathing = null;
                 if (!cancellationTokenSource.IsCancellationRequested)
-                    await breathingApi.FinishSession(breathingSettings.GetTotalTime());
+                    finishedBreathing = await breathingApi.FinishSession(breathingSettings.GetTotalTime());
                 
                 if (!cancellationTokenSource.IsCancellationRequested) 
-                    await breathingView.FadeOutElements();
+                    await breathingView.FadeOutElements(true);
+
+                var popupRequest = ServiceLocator.Get<IUiManager>()
+                    .OpenPopup<BreathingFinishedPopup>(UiParameter.Create(finishedBreathing));
+
+                await popupRequest.OpenTask;
+                await popupRequest.WaitForClose();
                 
-                if (!cancellationTokenSource.IsCancellationRequested) 
-                    await breathingView.TextFader.Show();
+                StateMachine.SetStateAsync<MenuState>(
+                    StateData.Create((StateDataKeys.BreathingFinished,true)),
+                    false).Forget();
             }
             catch (OperationCanceledException ex)
             {
@@ -156,12 +165,24 @@ namespace Meditation.States
             return true;
         }
 
-        private void OnBack()
+        private async UniTask OnBack()
         {
             cancellationTokenSource.Cancel();
-            breathingApi.FinishSession(breathingTime);
+            var finishedBreathing = await breathingApi.FinishSession(breathingTime);
             updateManager.UnregisterUpdate(OnUpdate);
             uiManager.HideInfoPopup();
+            
+            await breathingView.FadeOutElements(true);
+
+            if (finishedBreathing.Breaths > 0)
+            {
+                var popupRequest = ServiceLocator.Get<IUiManager>()
+                    .OpenPopup<BreathingFinishedPopup>(UiParameter.Create(finishedBreathing));
+
+                await popupRequest.OpenTask;
+                await popupRequest.WaitForClose();
+            }
+
             StateMachine.SetStateAsync<MenuState>(
                 StateData.Create((StateDataKeys.BreathingFinished,true)),
                 false).Forget();

@@ -28,7 +28,7 @@ namespace Meditation.States
             moodView.Initialize(moodDbAsset.GetReference(), moodPrefab.GetReference().GetComponent<Mood>(), OnMoodSelectionChanged);
             moodView
                 .BindAction(moodView.BackButton, OnBackButtonClicked)
-                .BindAsyncAction(moodView.GenerateButton.Button, OnStartClick);
+                .BindAction(moodView.GenerateButton.Button, OnStartClick);
       
             //await moodView.InitializeStartButton(()=>OnStartClick().Forget());
         }

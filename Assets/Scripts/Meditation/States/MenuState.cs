@@ -22,8 +22,8 @@ namespace Meditation.States
             await menuView.InitializeTimer();
 
             menuView
-                .BindAsyncAction(menuView.StartButton, OnStartClick)
-                .BindAsyncAction(menuView.AiButton, OnAiClicked);
+                .BindAction(menuView.StartButton, OnStartClick)
+                .BindAction(menuView.AiButton, OnAiClicked);
         }
 
         public override async UniTask EnterAsync(StateData stateData = null)

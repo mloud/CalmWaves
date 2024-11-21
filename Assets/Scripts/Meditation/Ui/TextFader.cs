@@ -26,11 +26,11 @@ namespace Meditation.Ui
             for (int i = 0; i < texts.Count; i++)
             {
                 label.text = texts[i];
-                await label.DOFade(1, fadeDuration).From(0).AsyncWaitForCompletion();
+                await label.DOFade(1, fadeDuration).From(0).SetEase(Ease.Linear).AsyncWaitForCompletion();
                 await UniTask.WaitForSeconds(textDuration);
                 if (i < texts.Count - 1 && !kepLastTextVisible)
                 {
-                    await label.DOFade(0, fadeDuration).AsyncWaitForCompletion();
+                    await label.DOFade(0, fadeDuration).From(0).SetEase(Ease.Linear).AsyncWaitForCompletion();
                 }
             }
 

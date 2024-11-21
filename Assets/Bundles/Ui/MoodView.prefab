@@ -368,7 +368,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d0faf4fdc844fb8993c2c7b2d34f4b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  registerByName: 0
   Cg: {fileID: 4893918559897841066}
   backButton: {fileID: 9142981953606103276}
   transitionInDuration: 0.5
@@ -656,7 +655,7 @@ PrefabInstance:
     - target: {fileID: 9215204427099660338, guid: c24c7fa165a814d599ce734268f8e85f,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9215204427099660338, guid: c24c7fa165a814d599ce734268f8e85f,
         type: 3}
@@ -666,7 +665,7 @@ PrefabInstance:
     - target: {fileID: 9215204427099660338, guid: c24c7fa165a814d599ce734268f8e85f,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9215204427099660338, guid: c24c7fa165a814d599ce734268f8e85f,
         type: 3}
@@ -721,7 +720,7 @@ PrefabInstance:
     - target: {fileID: 9215204427099660338, guid: c24c7fa165a814d599ce734268f8e85f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -200
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 9215204427099660338, guid: c24c7fa165a814d599ce734268f8e85f,
         type: 3}

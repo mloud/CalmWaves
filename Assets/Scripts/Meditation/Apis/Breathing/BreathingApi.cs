@@ -25,7 +25,7 @@ namespace Meditation.Apis
         
         // session 
         UniTask StartSession(IBreathingSettings breathingSettings);
-        UniTask FinishSession(float time);
+        UniTask<FinishedBreathing> FinishSession(float time);
         void IncreaseBreathingCountInSession();
     }
 
@@ -123,11 +123,11 @@ namespace Meditation.Apis
             return UniTask.CompletedTask;
         }
 
-        public async UniTask FinishSession(float time)
+        public async UniTask<FinishedBreathing> FinishSession(float time)
         {
             var finishedBreathing = session.Finish(time);
             if (finishedBreathing == null)
-                return;
+                return null;
             
             // save to data
             await dataManager.Add(finishedBreathing);
@@ -145,6 +145,8 @@ namespace Meditation.Apis
                     dataManager.Actualize(user);
                 }
             }
+
+            return finishedBreathing;
         }
 
         public void IncreaseBreathingCountInSession() => 

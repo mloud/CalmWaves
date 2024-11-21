@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -18,6 +17,7 @@ namespace Meditation.Ui.Text
 
 
         private float originalAlpha;
+        private string targetText;
         
         public enum Mode
         {
@@ -38,6 +38,8 @@ namespace Meditation.Ui.Text
                 SetTextWithoutTransition(text);
                 return;
             }
+
+            targetText = text;
             
             switch (TransitionMode)
             {
@@ -102,6 +104,12 @@ namespace Meditation.Ui.Text
             }
             sequence.Kill();
             sequence = null;
+
+            if (targetText != null)
+            {
+                SetTextWithoutTransition(targetText);
+                targetText = null;
+            }
         }
     }
 }

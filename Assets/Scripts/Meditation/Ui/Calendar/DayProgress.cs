@@ -17,21 +17,24 @@ namespace Meditation.Ui.Calendar
         [SerializeField] private Image progressImage;
         [SerializeField] private GameObject todayFlag;
         [SerializeField] private float actualizeDuration = 1.0f;
+        
         private void Awake()
         {
             dayLabel.text = CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(dayOfWeek)[..2];
         }
 
+        public void SetIsToday(bool isToday) => todayFlag.SetActive(isToday);
+        
         public void Set(float currentDone, float total, bool isToday)
         {
             progressImage.fillAmount = (float)currentDone / total;
-            todayFlag.SetActive(isToday);
+            SetIsToday(isToday);
         }
         
         public async UniTask Actualize(float currentDone, float total, bool isToday)
         {
             await progressImage.DOFillAmount(currentDone / total, actualizeDuration).AsyncWaitForCompletion();
-            todayFlag.SetActive(isToday);
+            SetIsToday(isToday);
         }
     }
 }

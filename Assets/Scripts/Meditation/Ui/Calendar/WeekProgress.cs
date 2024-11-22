@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using Meditation.Apis.Data;
 using UnityEngine;
 
 namespace Meditation.Ui.Calendar
@@ -34,5 +33,13 @@ namespace Meditation.Ui.Calendar
 
         private DayProgress GetDayProgress(DayOfWeek dayOfWeek) => 
             dayProgress.First(x => x.DayOfWeek == dayOfWeek);
+
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            if (!pauseStatus)
+            {
+                dayProgress.ForEach(x=>x.SetIsToday(DateTime.Today.DayOfWeek == x.DayOfWeek));
+            }
+        }
     }
 }

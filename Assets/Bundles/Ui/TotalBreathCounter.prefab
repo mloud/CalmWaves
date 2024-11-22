@@ -222,7 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9fc7a61bf2e49f8a5f67606a22b28d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransitionMode: 1
+  TransitionMode: 0
   EffectDuration: 0.2
   text1: {fileID: 3322525919886315866}
   text2: {fileID: 0}

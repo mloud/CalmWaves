@@ -14,12 +14,14 @@ namespace Meditation.Ui.Views
     {
         public Button StartButton => startButton;
         public Button AiButton => aiButton;
+        public Button MeasuringButton => measuringButton;
 
         [SerializeField] private Material skyBoxMaterial;
         [SerializeField] private Transform container;
         [SerializeField] private AssetReferenceGameObject menuButton;
         [SerializeField] private Button startButton;
         [SerializeField] private Button aiButton;
+        [SerializeField] private Button measuringButton;
         [SerializeField] private WeekProgress weekProgress;
         [SerializeField] private Timer.Timer timer;
         

@@ -62,6 +62,7 @@ namespace Meditation
             await StateMachineEnvironment.Default.RegisterState<MenuState>();
             await StateMachineEnvironment.Default.RegisterState<BreathingState>();
             await StateMachineEnvironment.Default.RegisterState<MoodState>();
+            await StateMachineEnvironment.Default.RegisterState<MeasuringState>();
             await StateMachineEnvironment.Default.SetStateAsync<BootState>();
         }
     }

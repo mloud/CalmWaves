@@ -23,7 +23,8 @@ namespace Meditation.States
 
             menuView
                 .BindAction(menuView.StartButton, OnStartClick)
-                .BindAction(menuView.AiButton, OnAiClicked);
+                .BindAction(menuView.AiButton, OnAiClicked)
+                .BindAction(menuView.MeasuringButton, OnMeasureClicked);
         }
 
         public override async UniTask EnterAsync(StateData stateData = null)
@@ -73,5 +74,8 @@ namespace Meditation.States
 
         private async UniTask OnAiClicked() => 
             await StateMachine.SetStateAsync<MoodState>(waitForCurrentStateExit: false);
+        
+        private async UniTask OnMeasureClicked() => 
+            await StateMachine.SetStateAsync<MeasuringState>(waitForCurrentStateExit: false);
     }
 }

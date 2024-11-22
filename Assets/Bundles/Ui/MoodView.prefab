@@ -368,10 +368,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d0faf4fdc844fb8993c2c7b2d34f4b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cg: {fileID: 4893918559897841066}
-  backButton: {fileID: 9142981953606103276}
+  cg: {fileID: 4893918559897841066}
   transitionInDuration: 0.5
   transitionOutDuration: 0.5
+  backButton: {fileID: 9142981953606103276}
   moodeCg: {fileID: 8365372223520675367}
   container: {fileID: 8540180081947732704}
   startButton: {fileID: 7839586261560346032}

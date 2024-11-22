@@ -1333,10 +1333,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a0a0aa00a942b199b58d63f40cba02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cg: {fileID: 5987960430406546701}
-  backButton: {fileID: 5662396327985016863}
+  cg: {fileID: 5987960430406546701}
   transitionInDuration: 1
   transitionOutDuration: 0.5
+  backButton: {fileID: 5662396327985016863}
   elementsCg: {fileID: 8991282012404490619}
   basicElementsCg: {fileID: 4231960541265855440}
   totalTimeVisualizer: {fileID: 3609081076663826819}
@@ -1737,6 +1737,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aadaa550922c4befa773992e884882ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cg: {fileID: 0}
+  transitionInDuration: 0.5
+  transitionOutDuration: 0.5
   button: {fileID: 2056180192599471640}
 --- !u!1 &8872063613475915829
 GameObject:

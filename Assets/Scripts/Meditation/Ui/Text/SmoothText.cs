@@ -57,6 +57,7 @@ namespace Meditation.Ui.Text
 
         private void SetTextWithoutTransition(string text)
         {
+            text1.alpha = 1.0f;
             text1.text = text;
             if (text2 != null)
             {

@@ -10,7 +10,8 @@ public class Menu
     {
         LocalStorage.RemoveAllEditor(
             TypeToDataKeyBinding.User, 
-            TypeToDataKeyBinding.FinishedBreathing); 
+            TypeToDataKeyBinding.FinishedBreathing,
+            TypeToDataKeyBinding.BreathingTestResult); 
     }
     
     [MenuItem("CalmWaves/Dump all data")]
@@ -18,5 +19,6 @@ public class Menu
     {
         LocalStorage.Dump<FinishedBreathing>(TypeToDataKeyBinding.User); 
         LocalStorage.Dump<FinishedBreathing>(TypeToDataKeyBinding.FinishedBreathing); 
+        LocalStorage.Dump<BreathingTestResult>(TypeToDataKeyBinding.BreathingTestResult); 
     }
 }

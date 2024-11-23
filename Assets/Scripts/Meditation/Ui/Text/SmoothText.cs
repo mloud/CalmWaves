@@ -8,6 +8,12 @@ namespace Meditation.Ui.Text
     {
         public Mode TransitionMode;
         public float EffectDuration = 0.2f;
+
+        public string text
+        {
+            get => text1.text;
+            set => Set(value);
+        }
         
         [SerializeField] private TextMeshProUGUI text1;
         [SerializeField] private TextMeshProUGUI text2;

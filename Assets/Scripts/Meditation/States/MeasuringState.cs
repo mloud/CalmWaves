@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Meditation.Apis;
+using Meditation.Apis.Data;
 using Meditation.Ui.Views;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -11,10 +13,10 @@ namespace Meditation.States
 {
     public class MeasuringState : AState
     {
-        private const int CountDown = 3;
         private bool isFingerOnTheScreen;
         private CancellationTokenSource ctx;
         private MeasuringView view;
+        private BreathingTestResult result;
 
         private enum MeasurementType
         {
@@ -64,8 +66,7 @@ namespace Meditation.States
                     var (duration, measurementFinished) =
                         await StartMeasuring(
                             true,
-                            MeasurementTexts.ForExhale(),
-                            false);
+                            MeasurementTexts.ForExhale());
                     exhaleFinished = measurementFinished;
                     if (measurementFinished)
                     {
@@ -90,8 +91,7 @@ namespace Meditation.States
                     var (duration, measurementFinished) =
                         await StartMeasuring(
                             false,
-                            MeasurementTexts.ForInhale(),
-                            true);
+                            MeasurementTexts.ForInhale());
                     inhaleFinished = measurementFinished;
                     if (measurementFinished)
                     {
@@ -116,6 +116,11 @@ namespace Meditation.States
                 view.ExhaleValue.text = $"{Math.Round(measurementResults[MeasurementType.Exhale].TotalSeconds)} sec";
 
 
+                result = new BreathingTestResult(
+                    DateTime.Now,
+                    ("Exhale", measurementResults[MeasurementType.Exhale]),
+                    ("Inhale", measurementResults[MeasurementType.Inhale]));
+                
                 await UniTask.WhenAll(
                     view.TimerLabel.SetVisibleWithFade(false, 1.0f, true),
                     view.TapToStartCircle.SetVisibleWithFade(false, 1.0f, true),
@@ -151,7 +156,7 @@ namespace Meditation.States
         }
 
         private async UniTask<(TimeSpan duration, bool wasFinished)> StartMeasuring(bool animateInside, 
-          MeasurementTexts measurementTexts, bool isLast)
+          MeasurementTexts measurementTexts)
         {
             view.Prompt.Set(measurementTexts.BeforeSentence);
             view.TimerLabel.text = "";
@@ -205,7 +210,10 @@ namespace Meditation.States
         
         private void OnSave()
         {
+            Debug.Assert(result != null);
             Debug.Log("OnSave");
+            ServiceLocator.Get<IBreathingApi>().SaveBreathingTestResult(result);
+            result = null;
             view.SaveButton.SetVisibleWithFade(false, 0.3f, true).Forget();
         }
     }

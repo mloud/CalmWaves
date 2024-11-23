@@ -66,7 +66,7 @@ namespace Meditation
             }
             else
             {
-                Debug.LogError("No Storage fo type {typeof(T} found");
+                Debug.LogError($"No Storage fo type {typeof(T)} found");
             }
         }
 

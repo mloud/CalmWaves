@@ -38,8 +38,11 @@ namespace Meditation
           
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<User>(new LocalStorage());
+            ServiceLocator.Get<IDataManager>().RegisterStorage<BreathingTestResult>(new LocalStorage());
+
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<FinishedBreathing>(TypeToDataKeyBinding.FinishedBreathing);
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<User>(TypeToDataKeyBinding.User);
+            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<BreathingTestResult>(TypeToDataKeyBinding.BreathingTestResult);
 
             //  create default user
             if (!(await ServiceLocator.Get<IDataManager>().GetAll<User>()).Any())

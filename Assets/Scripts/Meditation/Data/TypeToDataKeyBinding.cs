@@ -4,5 +4,6 @@ namespace Meditation.Data
     {
         public const string User = "UserData";
         public const string FinishedBreathing = "FinishedBreathingData";
+        public const string BreathingTestResult = "BreathingTestResult";
     }
 }

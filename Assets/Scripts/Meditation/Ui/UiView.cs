@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using OneDay.Core.Ui;
 using UnityEngine;
 using UnityEngine.UI;
 

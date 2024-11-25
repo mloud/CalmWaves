@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-namespace Meditation
+namespace OneDay.Core.Extensions
 {
     public static class EnumerableExtensions
     {

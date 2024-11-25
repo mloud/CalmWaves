@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Meditation
+namespace OneDay.Core.Extensions
 {
     public static class GameObjectExtensions
     {

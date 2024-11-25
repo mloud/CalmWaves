@@ -1,3 +1,5 @@
+using OneDay.Core.Ui;
+
 namespace Meditation.Visualizers
 {
     public abstract class AVisualizer : ABaseElement

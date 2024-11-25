@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace Meditation.Core
+namespace Meditation.Core.Utils
 {
     public static class DateTimeUtils
     {

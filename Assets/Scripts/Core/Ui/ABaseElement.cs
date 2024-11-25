@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Meditation
+namespace OneDay.Core.Ui
 {
     public abstract class ABaseElement : MonoBehaviour
     {

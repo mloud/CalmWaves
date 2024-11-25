@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 
-namespace Meditation.States
+namespace OneDay.Core.Sm
 {
     public class ABaseState : IState
     {

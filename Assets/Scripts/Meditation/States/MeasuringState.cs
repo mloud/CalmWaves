@@ -8,6 +8,10 @@ using Meditation.Apis.Measure;
 using Meditation.Ui;
 using Meditation.Ui.Panels;
 using Meditation.Ui.Views;
+using OneDay.Core;
+using OneDay.Core.Extensions;
+using OneDay.Core.Sm;
+using OneDay.Core.Ui;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 

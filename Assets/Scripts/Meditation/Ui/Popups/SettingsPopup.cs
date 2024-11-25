@@ -1,4 +1,6 @@
 using Cysharp.Threading.Tasks;
+using OneDay.Core;
+using OneDay.Core.Ui;
 using UnityEngine;
 
 namespace Meditation.Ui

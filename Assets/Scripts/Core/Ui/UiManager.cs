@@ -4,9 +4,10 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Meditation.Ui;
 using Meditation.Ui.Components;
+using OneDay.Core.Extensions;
 using UnityEngine;
 
-namespace Meditation
+namespace OneDay.Core.Ui
 {
     public interface IUiManager
     {

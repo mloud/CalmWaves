@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Meditation.States
+namespace OneDay.Core.Sm
 {
     public static class StateMachineEnvironment
     {

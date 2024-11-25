@@ -1,9 +1,10 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Meditation.Ui;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Meditation.Ui
+namespace OneDay.Core.Ui
 {
     public abstract class UiPopup : UiElement
     {

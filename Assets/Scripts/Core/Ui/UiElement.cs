@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-namespace Meditation.Ui
+namespace OneDay.Core.Ui
 {
     public class UiElement : ABaseElement
     {

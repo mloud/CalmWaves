@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Meditation.States
+namespace OneDay.Core.Sm
 {
     public class StateMachine
     {

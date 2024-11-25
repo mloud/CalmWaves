@@ -12,6 +12,7 @@ namespace Meditation.Ui
         [SerializeField] private Button button;
         [SerializeField] private Button infoButton;
         [SerializeField] private LabelWithImage labelWithImage;
+        [SerializeField] private Image icon;
         public string Id { get; private set; }
 
         private Action<string> ButtonAction{ get; set; }
@@ -22,12 +23,23 @@ namespace Meditation.Ui
             infoButton.onClick.AddListener(OnInfoClick);
         }
 
-        public void Set(IBreathingSettings breathingSettings, string id, Action<string> action)
+        public async UniTask Set(IBreathingSettings breathingSettings, string id, Action<string> action)
         {
             Id = id;
             nameLabel.text = breathingSettings.GetName();
             BreathingSetting = breathingSettings;
             ButtonAction = action;
+
+            if (string.IsNullOrEmpty(breathingSettings.GetIcon()))
+            {
+                icon.enabled = false;
+            }
+            else
+            {
+                var asset = await ServiceLocator.Get<IAssetManager>()
+                    .GetAssetAsync<Sprite>(breathingSettings.GetIcon());
+                icon.sprite = asset.GetReference();
+            }
 
             if (breathingSettings.GetLabel() != null)
             {

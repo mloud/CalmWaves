@@ -1,7 +1,10 @@
 using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
+using Meditation.Core;
 using Meditation.Ui;
+using Meditation.Ui.Chart;
 using Meditation.Ui.Views;
 
 namespace Meditation.States
@@ -33,7 +36,22 @@ namespace Meditation.States
             {
                 menuView.FadeInSkybox().Forget();
             }
+            
+            // set breathing chart
+            var breathingTimesThisWeek = breathingApi.BreathingHistory.GetBreathingTimesThisWeek();
+            var currentMaxInWeek = breathingTimesThisWeek.Max(x => x.Item2);
+            var chartMax = currentMaxInWeek > breathingApi.GetRequiredBreathingDuration()
+                ? currentMaxInWeek
+                : breathingApi.GetRequiredBreathingDuration();
+            
+            menuView.BreathingChart.Name = "Week breathing";
+            menuView.BreathingChart.Units = "";
+            menuView.BreathingChart.ValueToStringConversion = DateTimeUtils.GetTime;
+            menuView.BreathingChart.Set(new DayTimeSpanChartData(breathingTimesThisWeek, chartMax));
+            menuView.BreathingChart.Select(DateTime.Now.DayOfWeek);
+            
             await menuView.Show(true);
+            ServiceLocator.Get<IAudioManager>().PlayMusic("Menu");
             if (stateData != null)
             {
                 var finishedBreathing = stateData.GetValue<bool>(StateDataKeys.BreathingFinished);

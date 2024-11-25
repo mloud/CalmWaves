@@ -10,20 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd4ad0bdfe1043ec923297c67218a4e8, type: 3}
-  m_Name: StressBreathing
+  m_Name: FocusBreathing
   m_EditorClassIdentifier: 
-  name: Against Stress
-  description: This calming exercise helps reduce stress and anxiety by slowing the
-    heart rate and focusing the mind
-  music: DeepMusic
-  inhaleDuration: 4
-  afterInhaleDuration: 7
-  exhaleDuration: 8
-  afterExhaleDuration: 0
+  name: Focuse
+  description: Calm your mind, reduce stress, and improve focus with the 4-6-8 breathing
+    exercise.
+  icon: FocusIcon
+  music: SleepMusic
   breathingTiming:
     InhaleDuration: 4
-    AfterInhaleDuration: 7
-    ExhaleDuration: 8
+    AfterInhaleDuration: 4
+    ExhaleDuration: 6
     AfterExhaleDuration: 0
-  rounds: 12
+  breathingTargetTime:
+    FromHour: 0
+    ToHour: 0
+    AnyTime: 0
+  rounds: 10
   label: 

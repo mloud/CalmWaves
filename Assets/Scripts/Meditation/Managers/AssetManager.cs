@@ -44,7 +44,13 @@ namespace Meditation
     {
         private AsyncOperationHandle Handle { get; }
         public AddressableAsset(AsyncOperationHandle handle) => Handle = handle;
-        public void Release() => Addressables.Release(Handle);
+        public void Release()
+        {
+            if (Handle.IsValid())
+            {
+                Addressables.Release(Handle);       
+            }
+        }
         public T GetReference() => (T)Handle.Result;
     }
 }

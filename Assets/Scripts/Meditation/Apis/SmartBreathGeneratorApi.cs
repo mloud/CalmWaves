@@ -84,6 +84,8 @@ namespace Meditation.Apis
                 label = "ai";
             }
             public string GetName() => name;
+            public string GetIcon() => null;
+           
             public string GetDescription() => description;
             public string GetMusic() => music;
             public string GetLabel() => string.IsNullOrEmpty(label) ? null : label;

@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Meditation.Apis.Data;
 using Meditation.Ui.Calendar;
+using Meditation.Ui.Chart;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ namespace Meditation.Ui.Views
         public Button StartButton => startButton;
         public Button AiButton => aiButton;
         public Button MeasuringButton => measuringButton;
+        public DayTimeSpanChart BreathingChart => breathingChart;
 
         [SerializeField] private Material skyBoxMaterial;
         [SerializeField] private Transform container;
@@ -23,6 +25,7 @@ namespace Meditation.Ui.Views
         [SerializeField] private Button aiButton;
         [SerializeField] private Button measuringButton;
         [SerializeField] private WeekProgress weekProgress;
+        [SerializeField] private DayTimeSpanChart breathingChart;
         [SerializeField] private Timer.Timer timer;
         
         private List<GameObject> breathingButtons;
@@ -34,7 +37,7 @@ namespace Meditation.Ui.Views
             {
                 var button = await menuButton.InstantiateAsync(container);
                 breathingButtons.Add(button);
-                button.GetComponent<BreathingButton>().Set(setting, setting.GetName(), menuButtonClicked);
+                button.GetComponent<BreathingButton>().Set(setting, setting.GetName(), menuButtonClicked).Forget();
             }
         }
 

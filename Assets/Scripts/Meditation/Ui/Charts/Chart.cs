@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Meditation.Ui.Chart
@@ -10,6 +11,7 @@ namespace Meditation.Ui.Chart
   
     public interface IChart<TX, TY>
     {
+        Func<TY, string> ValueToStringConversion { get; set; }
         string Name { get; set; }
         string Units { get; set; }
         void Select(TX column);

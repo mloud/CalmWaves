@@ -13,9 +13,7 @@ MonoBehaviour:
   m_Name: LibraryBreathingExerciseDb
   m_EditorClassIdentifier: 
   builtInSettings:
-  - {fileID: 11400000, guid: b1e55435240b842fd9106830fd2ef406, type: 2}
-  - {fileID: 11400000, guid: 3bb8af0f6719445b7bf832c1cc026515, type: 2}
-  - {fileID: 11400000, guid: 8a2a351d7e63e489fb5a25b1d6608bb2, type: 2}
   - {fileID: 11400000, guid: 59996f93ecbe64b80b46ac223bce1be9, type: 2}
-  - {fileID: 11400000, guid: 1bb7f644ccf044186aa7a7183c85e83c, type: 2}
-  - {fileID: 11400000, guid: 5f923983cb9dc4aadb9713adadb5ce63, type: 2}
+  - {fileID: 11400000, guid: 8a2a351d7e63e489fb5a25b1d6608bb2, type: 2}
+  - {fileID: 11400000, guid: 60bccad96ccf5497a8693e6fc253668f, type: 2}
+  - {fileID: 11400000, guid: 1c7cc7735995649d3bca7126edacb55b, type: 2}

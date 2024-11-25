@@ -38,6 +38,8 @@ namespace Meditation
         
         private ISettingsApi settingsApi;
 
+        private string currentMusic;
+
         public float SfxVolume
         {
             get => settingsApi.GetModule<IVolumeModule>().SfxVolume;
@@ -72,11 +74,22 @@ namespace Meditation
             {
                 musicName = musicNames[Random.Range(0, musicNames.Count)];
             }
+
+            if (musicName == currentMusic)
+                return;
+
+            if (currentMusic != null)
+            {
+                await StopMusic();
+            }
+
+            currentMusic = musicName;
+            
             musicAsset?.Release();
             musicAsset = await ServiceLocator.Get<IAssetManager>().GetAssetAsync<AudioClip>(musicName);
             GetAudioSource().clip = musicAsset.GetReference();
             GetAudioSource().Play();
-            await DOTween.To(() => GetAudioSource().volume, (t) => GetAudioSource().volume = t, 1, 1.5f)
+            await DOTween.To(() => GetAudioSource().volume, (t) => GetAudioSource().volume = t, 1, 1f)
                 .From(0)
                 .SetEase(Ease.Linear)
                 .AsyncWaitForCompletion();
@@ -100,10 +113,11 @@ namespace Meditation
             await DOTween.To(() => GetAudioSource().volume, (t) =>
                 {
                     GetAudioSource().volume = t;
-                }, 0.0f, 1.5f)
+                }, 0.0f, 1.0f)
                 .SetEase(Ease.Linear)
                 .AsyncWaitForCompletion();
             GetAudioSource().Stop();
+            currentMusic = null;
         }
 
         public static void Release()

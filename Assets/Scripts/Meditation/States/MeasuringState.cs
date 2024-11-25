@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Meditation.Apis;
 using Meditation.Apis.Data;
 using Meditation.Apis.Measure;
 using Meditation.Ui;
@@ -143,6 +142,8 @@ namespace Meditation.States
                     view.Result.SetVisibleWithFade(true, 1.0f, true),
                     view.SaveButton.SetVisibleWithFade(true, 1.0f, true));
             }
+
+            view.MeasuringButton.SetVisibleWithFade(true, 0.5f, false).Forget();
             Debug.Log("[State]  ExecuteAsync finished");
         }
 
@@ -173,15 +174,16 @@ namespace Meditation.States
         {
             view.Prompt.Set(measurementTexts.BeforeSentence);
             view.TimerLabel.text = "";
-
             await UniTask.WhenAll(
                 view.TapToStartCircle.SetVisibleWithFade(true, 2.0f, true),
                 view.Prompt.SetVisibleWithFade(true, 2.0f, false));
 
             await UniTask.WaitUntil(() => isFingerOnTheScreen, cancellationToken: ctx.Token, cancelImmediately:true);
+            view.MeasuringButton.SetVisibleWithFade(false, 0.5f, false).Forget();
             view.MeasureCircle.SetVisibleWithFade(true, 0.5f, true).Forget();
             view.TitleLabel.SetVisibleWithFade(true, 0.5f, false).Forget();
-           
+            view.TimerLabel.SetVisibleWithFade(true, 0.5f, true).Forget();
+            
             var stopWatch = new Stopwatch();
             stopWatch.Start();
             view.TitleLabel.Set(measurementTexts.Title);

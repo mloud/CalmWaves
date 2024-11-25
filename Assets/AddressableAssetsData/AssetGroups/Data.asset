@@ -17,11 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 2176cd01de7c54d7c9699f325c7aa9c2
   m_SerializeEntries:
-  - m_GUID: 681a1fb60c9bc4b3a9a7d20344ae9b6d
-    m_Address: LibraryBreathingExerciseDb
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7fd9bf71e66a742709125678e213ea33
     m_Address: DailyBreathingExerciseDb
     m_ReadOnly: 0

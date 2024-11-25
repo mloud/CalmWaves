@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Meditation.Core;
 using TMPro;
 using UnityEngine;
@@ -10,11 +11,21 @@ namespace Meditation.Ui.Chart
     {
         public TimeSpan MaxValue { get; set; }
 
-        public List<(DayOfWeek xValue, TimeSpan yValue)> Values { get; set; } = new();
+        public List<(DayOfWeek xValue, TimeSpan yValue)> Values { get; set; }
+        public DayTimeSpanChartData(IReadOnlyList<(DayOfWeek, TimeSpan)> days, TimeSpan maxValue)
+        {
+            Values = days.ToList();
+            MaxValue = maxValue;
+        }
+        public DayTimeSpanChartData()
+        {
+            Values = new List<(DayOfWeek xValue, TimeSpan yValue)>();
+        }  
     }
     
     public class DayTimeSpanChart : MonoBehaviour, IChart<DayOfWeek, TimeSpan>
     {
+        public Func<TimeSpan, string> ValueToStringConversion { get; set; }
         
         [SerializeField] private TextMeshProUGUI nameLabel;
         [SerializeField] private TextMeshProUGUI selectionName;
@@ -36,7 +47,7 @@ namespace Meditation.Ui.Chart
 
 
         private IChartData<DayOfWeek, TimeSpan> data;
-   
+
         public string Name
         {
             get => nameLabel.text;
@@ -53,8 +64,8 @@ namespace Meditation.Ui.Chart
         {
             columns.ForEach(x=>x.SetSelected(x.ColumnName == selectedDay));
             selectionName.text = DateTimeUtils.GetLocalizedDayName(selectedDay);
-            selectionValue.text = ((int)data.Values.Find(x => x.xValue == selectedDay)
-                .yValue.TotalSeconds).ToString();
+            selectionValue.text = ValueToStringConversion(
+                data.Values.Find(x => x.xValue == selectedDay).yValue);
         }
 
         public void Set(IChartData<DayOfWeek, TimeSpan> data)
@@ -67,7 +78,7 @@ namespace Meditation.Ui.Chart
                 column.ColumnName = columnData.xValue;
                 column.ColumnValue = columnData.yValue;
                 column.NormalizedValue = data.MaxValue.TotalMilliseconds > 0
-                    ? columnData.yValue.Milliseconds / (float)data.MaxValue.TotalMilliseconds
+                    ? (float)columnData.yValue.TotalMilliseconds / (float)data.MaxValue.TotalMilliseconds
                     : 0;
             }
         }

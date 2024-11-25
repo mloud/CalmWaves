@@ -1,3 +1,5 @@
+using System;
+using Meditation.Core;
 using TMPro;
 using UnityEngine;
 
@@ -14,7 +16,7 @@ namespace Meditation.Ui
         public void Set(IBreathingSettings breathingSettings)
         {
             Debug.Assert(breathingSettings != null);
-            durationLabel.text = $"{TimeUtils.GetTime(breathingSettings.GetTotalTime())}";
+            durationLabel.text = $"{DateTimeUtils.GetTime(TimeSpan.FromSeconds(breathingSettings.GetTotalTime()))}";
             inhaleDurationLabel.text = $"{breathingSettings.GetInhaleDuration()} sec";
             if (breathingSettings.GetAfterInhaleDuration() > 0)
             {

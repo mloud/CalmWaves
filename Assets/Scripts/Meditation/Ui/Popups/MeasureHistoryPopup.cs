@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis.Measure;
@@ -25,6 +26,8 @@ namespace Meditation.Ui
             chartInhaleData.MaxValue = bestInhalesThisWeek.Max(x => x.Item2);
             chartInhale.Name = "Inhale duration";
             chartInhale.Units = "secs";
+            chartInhale.ValueToStringConversion =
+                ts => Math.Round(ts.TotalSeconds, 1).ToString(CultureInfo.InvariantCulture);
             chartInhale.Set(chartInhaleData);  
             chartInhale.Select(DateTime.Now.DayOfWeek);
             
@@ -37,6 +40,8 @@ namespace Meditation.Ui
             chartExhaleData.MaxValue = bestExhalesThisWeek.Max(x => x.Item2);
             chartExhale.Name = "Exhale duration";
             chartExhale.Units = "secs";
+            chartExhale.ValueToStringConversion =
+                ts => Math.Round(ts.TotalSeconds, 1).ToString(CultureInfo.InvariantCulture);
             chartExhale.Set(chartExhaleData);  
             chartExhale.Select(DateTime.Now.DayOfWeek);
             

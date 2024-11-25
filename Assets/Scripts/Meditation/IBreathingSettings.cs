@@ -5,6 +5,7 @@ namespace Meditation
     public interface IBreathingSettings
     {
         string GetName();
+        string GetIcon();
         string GetDescription();
         string GetMusic();
         string GetLabel();

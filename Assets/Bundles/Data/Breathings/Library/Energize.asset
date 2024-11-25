@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd4ad0bdfe1043ec923297c67218a4e8, type: 3}
-  m_Name: SleepBreathing
+  m_Name: Energize
   m_EditorClassIdentifier: 
-  name: Sleep
-  description: This calming exercise helps reduce stress and anxiety by slowing the
-    heart rate and focusing the mind
-  icon: SleepIcon
-  music: SleepMusic
+  name: Energize
+  description: Boost energy, enhance focus, and recharge your mind and body with
+    this energizing breathing exercise
+  icon: EnergizeIcon
+  music: MentalMusic
   breathingTiming:
-    InhaleDuration: 4
-    AfterInhaleDuration: 7
-    ExhaleDuration: 8
-    AfterExhaleDuration: 2
+    InhaleDuration: 2
+    AfterInhaleDuration: 1
+    ExhaleDuration: 2
+    AfterExhaleDuration: 0
   breathingTargetTime:
     FromHour: 0
     ToHour: 0
     AnyTime: 0
-  rounds: 10
+  rounds: 40
   label: 

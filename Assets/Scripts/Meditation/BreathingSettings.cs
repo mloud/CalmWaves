@@ -8,6 +8,7 @@ namespace Meditation
     {
         [SerializeField] private string name;
         [SerializeField] private string description;
+        [SerializeField] private string icon;
         [SerializeField] private string music;
         [SerializeField] private BreathingTiming breathingTiming;
         [SerializeField] private BreathingTargetTime breathingTargetTime;
@@ -21,7 +22,7 @@ namespace Meditation
         public float GetAfterInhaleDuration() => breathingTiming.AfterInhaleDuration;
         public float GetExhaleDuration() => breathingTiming.ExhaleDuration;
         public float GetAfterExhaleDuration() => breathingTiming.AfterExhaleDuration;
-
+        public string GetIcon() => icon;
         public float GetOneBreatheTime() =>
             breathingTiming.InhaleDuration +
             breathingTiming.AfterInhaleDuration +

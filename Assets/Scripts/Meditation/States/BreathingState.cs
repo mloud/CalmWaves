@@ -76,7 +76,7 @@ namespace Meditation.States
                         StateMachine.SetStateAsync<MenuState>().Forget();
                         request.Popup.Close().Forget();
                     });
-
+                audioManager.PlayMusic(breathingSettings.GetMusic()).Forget();
                 request.Popup.BindAction(request.Popup.ContinueButton, () => request.Popup.Close().Forget());
 
                 await request.OpenTask;
@@ -85,7 +85,7 @@ namespace Meditation.States
 
                 await breathingView.Show(true);
                 await breathingView.FadeInElements();
-                audioManager.PlayMusic(breathingSettings.GetMusic()).Forget();
+             
 
                 // breathing
                 await CountBreathing(cancellationTokenSource.Token);
@@ -128,7 +128,6 @@ namespace Meditation.States
         {
             cancellationTokenSource.Dispose();
             cancellationTokenSource = null;
-            ServiceLocator.Get<IAudioManager>().StopMusic();
             await breathingView.Hide(true);
         }
         

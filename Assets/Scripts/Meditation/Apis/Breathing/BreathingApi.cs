@@ -12,7 +12,7 @@ namespace Meditation.Apis
         Action<int> TotalBreathCountChanged { get; set; }
         Action<int> StreakCountChanged { get; set; }
 
-        IHistory History {get;}
+        IBreathingHistory BreathingHistory {get;}
         UniTask<IBreathingSettings> GetBreathingSettingsForCurrentPartOfTheDay();
 
 
@@ -26,10 +26,7 @@ namespace Meditation.Apis
         // session 
         UniTask StartSession(IBreathingSettings breathingSettings);
         UniTask<FinishedBreathing> FinishSession(float time);
-
-        UniTask SaveBreathingTestResult(BreathingTestResult breathingTestResult);
-        
-        
+  
         void IncreaseBreathingCountInSession();
         
         
@@ -41,10 +38,10 @@ namespace Meditation.Apis
     {
         public Action<int> TotalBreathCountChanged { get; set; }
         public Action<int> StreakCountChanged { get; set; }
-        public IHistory History { get; private set; }
+        public IBreathingHistory BreathingHistory { get; private set; }
 
         private Calendar<FinishedBreathing> finishedBreathingCalendar;
-        private Calendar<BreathingTestResult> breathingTestCalendar;
+    
 
         private User user;
         private TimeSpan breathingDuration;
@@ -56,17 +53,13 @@ namespace Meditation.Apis
         {
             dataManager = ServiceLocator.Get<IDataManager>();
             finishedBreathingCalendar = new Calendar<FinishedBreathing>();
-            breathingTestCalendar = new Calendar<BreathingTestResult>();
             breathingDuration = TimeSpan.FromMinutes(3);
-            History = new History(finishedBreathingCalendar);
+            BreathingHistory = new BreathingHistory(finishedBreathingCalendar);
             session = new BreathingSession(this);
             session.BreathCountChanged += OnBreathingCountInSessionChanged;
 
             var finishedBreathings = await dataManager.GetAll<FinishedBreathing>();
             finishedBreathingCalendar.AddEvents(finishedBreathings.Select(x=>(x, x.DateTime)));
-
-            var breathingTests = await dataManager.GetAll<BreathingTestResult>();
-            breathingTestCalendar.AddEvents(breathingTests.Select(x=>(x, x.Date)));
 
             user = (await dataManager.GetAll<User>()).FirstOrDefault();
             if ((DateTime.Today - user.LastFinishedDay).Days > 1)
@@ -147,7 +140,7 @@ namespace Meditation.Apis
             // update calendar
             finishedBreathingCalendar.AddEvent(finishedBreathing, finishedBreathing.DateTime);
            
-            if ( History.GetBreathingTimeToday().TotalSeconds >=
+            if ( BreathingHistory.GetBreathingTimeToday().TotalSeconds >=
                  GetRequiredBreathingDuration().TotalSeconds)
             {
                 if (user.LastFinishedDay == DateTime.MinValue || (DateTime.Today - user.LastFinishedDay).Days == 1)
@@ -162,16 +155,10 @@ namespace Meditation.Apis
             return finishedBreathing;
         }
 
-        public async UniTask SaveBreathingTestResult(BreathingTestResult breathingTestResult)
-        {
-            await dataManager.Add(breathingTestResult);
-            breathingTestCalendar.AddEvent(breathingTestResult, breathingTestResult.Date);
-        }
-
         public void IncreaseBreathingCountInSession() => 
             session.IncreaseBreathingCountInSession();
 
         private void OnBreathingCountInSessionChanged(int count) => 
-            TotalBreathCountChanged?.Invoke(History.GetTotalBreathCyclesCount() + count);
+            TotalBreathCountChanged?.Invoke(BreathingHistory.GetTotalBreathCyclesCount() + count);
     }
 }

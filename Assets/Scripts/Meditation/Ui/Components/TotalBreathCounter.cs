@@ -11,7 +11,7 @@ namespace Meditation.Ui.Components
         public void Initialize()
         {
             var breathingApi = ServiceLocator.Get<IBreathingApi>();
-            counterLabel.Set(breathingApi.History.GetTotalBreathCyclesCount().ToString());
+            counterLabel.Set(breathingApi.BreathingHistory.GetTotalBreathCyclesCount().ToString());
             breathingApi.TotalBreathCountChanged += OnTotalBreathsCountChanged;
         }
 

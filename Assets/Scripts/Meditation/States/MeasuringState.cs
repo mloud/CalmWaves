@@ -5,6 +5,9 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
 using Meditation.Apis.Data;
+using Meditation.Apis.Measure;
+using Meditation.Ui;
+using Meditation.Ui.Panels;
 using Meditation.Ui.Views;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -31,6 +34,7 @@ namespace Meditation.States
             view.MouseHandler.onPointerUp.AddListener(OnFingerUp);
             view.BindAction(view.BackButton, OnBack);
             view.BindAction(view.SaveButton, OnSave);
+            view.BindAction(view.MeasuringButton, History);
             return UniTask.CompletedTask;
         }
 
@@ -41,11 +45,17 @@ namespace Meditation.States
             Debug.Log("[State]  EnterAsync started");
             isFingerOnTheScreen = false;
             view.TitleLabel.text = "Track Your Breathing";
+            view.SubtitleLabel.text = "Measure Inhale and Exhale Durations for Better Awareness";
+
+            await view.SubtitleLabel.SetVisibleWithFade(false, 0, false);
             await view.Result.SetVisibleWithFade(false, 0, true);
-            await view.TapToStartCircle.SetVisibleWithFade(true, 0, true);
+            await view.TapToStartCircle.SetVisibleWithFade(false, 0, true);
             await view.SaveButton.SetVisibleWithFade(false, 0, true);
             await view.MeasureCircle.SetVisibleWithFade(false, 0, true);
             await view.Prompt.SetVisibleWithFade(false, 0, false);
+
+            ServiceLocator.Get<IUiManager>().GetPanel<TopHudPanel>().Hide(true).Forget();
+            
             await view.Show(true);
             Debug.Log("[State]  EnterAsync finished");
         }
@@ -55,6 +65,9 @@ namespace Meditation.States
             Debug.Log("[State]  ExecuteAsync started");
             var measurementResults = new Dictionary<MeasurementType, TimeSpan>();
         
+            await view.SubtitleLabel.SetVisibleWithFade(true, 1.0f, false);
+            await UniTask.WaitForSeconds(1);
+            await view.SubtitleLabel.SetVisibleWithFade(false, 1.0f, false);
             bool measuringCancelled = false;
 
             try
@@ -160,7 +173,11 @@ namespace Meditation.States
         {
             view.Prompt.Set(measurementTexts.BeforeSentence);
             view.TimerLabel.text = "";
-            await view.Prompt.SetVisibleWithFade(true, 0.3f, false);
+
+            await UniTask.WhenAll(
+                view.TapToStartCircle.SetVisibleWithFade(true, 2.0f, true),
+                view.Prompt.SetVisibleWithFade(true, 2.0f, false));
+
             await UniTask.WaitUntil(() => isFingerOnTheScreen, cancellationToken: ctx.Token, cancelImmediately:true);
             view.MeasureCircle.SetVisibleWithFade(true, 0.5f, true).Forget();
             view.TitleLabel.SetVisibleWithFade(true, 0.5f, false).Forget();
@@ -190,7 +207,7 @@ namespace Meditation.States
         public override async UniTask ExitAsync()
         {
             ctx.Cancel();
-               
+            ServiceLocator.Get<IUiManager>().GetPanel<TopHudPanel>().Show(true).Forget();   
             await view.Hide(true);
             Debug.Log("[State] ExitAsync finished");
         }
@@ -212,9 +229,16 @@ namespace Meditation.States
         {
             Debug.Assert(result != null);
             Debug.Log("OnSave");
-            ServiceLocator.Get<IBreathingApi>().SaveBreathingTestResult(result);
+            ServiceLocator.Get<IMeasureApi>().SaveBreathingTestResult(result);
             result = null;
             view.SaveButton.SetVisibleWithFade(false, 0.3f, true).Forget();
+        }
+
+        private async UniTask History()
+        {
+            var request = ServiceLocator.Get<IUiManager>().OpenPopup<MeasureHistoryPopup>(null);
+            request.Popup.BindAction(request.Popup.CloseButton, () => request.Popup.Close(), true);
+            await request.OpenTask;
         }
     }
 }

@@ -14,15 +14,19 @@ namespace Meditation.Ui.Views
         public MousePressReleaseHandler MouseHandler => mouseHandler;
         public SmoothText Prompt => promptLabel;
         public TextMeshProUGUI TimerLabel => timerLabel;
+        public TextMeshProUGUI SubtitleLabel => subtitleLabel;
+        
         public SmoothText TitleLabel => titleLabel;
 
         public Button SaveButton => saveButton;
+        public Button MeasuringButton => measuringButton;
         
         public TextMeshProUGUI ExhaleValue => exhaleValue;
         public TextMeshProUGUI InhaleValue => inValue;
     
         [SerializeField] private SmoothText promptLabel;
         [SerializeField] private TextMeshProUGUI timerLabel;
+        [SerializeField] private TextMeshProUGUI subtitleLabel;
         [SerializeField] private TextMeshProUGUI exhaleValue;
         [SerializeField] private TextMeshProUGUI inValue;
         [SerializeField] private SmoothText titleLabel;
@@ -31,5 +35,6 @@ namespace Meditation.Ui.Views
         [SerializeField] private GameObject result;
         [SerializeField] private MousePressReleaseHandler mouseHandler;
         [SerializeField] private Button saveButton;
+        [SerializeField] private Button measuringButton;
     }
 }

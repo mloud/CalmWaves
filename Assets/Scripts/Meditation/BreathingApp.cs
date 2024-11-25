@@ -2,6 +2,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
 using Meditation.Apis.Data;
+using Meditation.Apis.Measure;
 using Meditation.Apis.Settings;
 using Meditation.Data;
 using Meditation.States;
@@ -19,6 +20,7 @@ namespace Meditation
         [SerializeField] private SettingsApi settingsApi;
         [SerializeField] private UpdateManager updateManager;
         [SerializeField] private ShareApi shareApi;
+        [SerializeField] private MeasureApi measureApi;
         private void Awake()
         {
             Boot().Forget();
@@ -35,6 +37,7 @@ namespace Meditation
             ServiceLocator.Register<ISettingsApi>(settingsApi);
             ServiceLocator.Register<IUpdateManager>(updateManager);
             ServiceLocator.Register<IShare>(shareApi);
+            ServiceLocator.Register<IMeasureApi>(measureApi);
           
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<User>(new LocalStorage());

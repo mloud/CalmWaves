@@ -17,6 +17,9 @@ namespace Meditation
         IEnumerable<UiView> GetAllViews();
         T GetPopup<T>() where T : UiPopup;
         IEnumerable<UiPopup> GetAllPopups();
+        
+        T GetPanel<T>() where T : UiPanel;
+        IEnumerable<UiPanel> GetAllPanels();
         PopupRequest<T> OpenPopup<T>(IUiParameter parameter) where T : UiPopup;
     }
    
@@ -34,6 +37,8 @@ namespace Meditation
     {
         [SerializeField] private List<UiView> views;
         [SerializeField] private List<UiPopup> popups;
+        [SerializeField] private List<UiPanel> panels;
+
         
         [SerializeField] private CanvasGroup sharedViewCg;
         [SerializeField] private SettingsPopup settingsPopup;
@@ -76,6 +81,9 @@ namespace Meditation
         public T GetPopup<T>() where T : UiPopup => (T)popups.FirstOrDefault(x => x.GetType() == typeof(T));
         public IEnumerable<UiPopup> GetAllPopups() => popups;
         #endregion
+        
+        public T GetPanel<T>() where T : UiPanel => (T)panels.FirstOrDefault(x => x.GetType() == typeof(T));
+        public IEnumerable<UiPanel> GetAllPanels() => panels;
       
         public async UniTask HideRootView(bool smooth = true)
         {

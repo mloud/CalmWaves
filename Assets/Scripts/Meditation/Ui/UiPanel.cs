@@ -1,5 +1,5 @@
 namespace Meditation.Ui
 {
-    public class UiPanel : UiElement
+    public abstract class UiPanel : UiElement
     { }
 }

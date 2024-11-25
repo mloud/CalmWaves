@@ -5,7 +5,7 @@ using Meditation.Apis.Data;
 
 namespace Meditation.Apis
 {
-    public interface IHistory
+    public interface IBreathingHistory
     {
         IReadOnlyList<(DayOfWeek, TimeSpan)> GetBreathingTimesThisWeek();
         TimeSpan GetBreathingTimeToday();
@@ -14,10 +14,10 @@ namespace Meditation.Apis
         int GetTotalBreathCyclesCount();
     }
 
-    public class History : IHistory
+    public class BreathingHistory : IBreathingHistory
     {
         private Calendar<FinishedBreathing> calendar;
-        public History(Calendar<FinishedBreathing> calendar) => this.calendar = calendar;
+        public BreathingHistory(Calendar<FinishedBreathing> calendar) => this.calendar = calendar;
      
         public IReadOnlyList<(DayOfWeek, TimeSpan)> GetBreathingTimesThisWeek()
         {

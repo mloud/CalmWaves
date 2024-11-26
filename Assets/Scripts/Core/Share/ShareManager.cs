@@ -1,16 +1,15 @@
 using System.IO;
 using Cysharp.Threading.Tasks;
-using OneDay.Core;
 using UnityEngine;
 
-namespace Meditation.Apis
+namespace OneDay.Core.Share
 {
     public interface IShare
     {
         UniTask TakeScreenshotAndShare();
     }
     
-    public class ShareApi : MonoBehaviour, IShare, IService
+    public class ShareManager : MonoBehaviour, IShare, IService
     {
         [SerializeField] private string subject;
         [SerializeField] private string text;

@@ -7,9 +7,11 @@ using Meditation.Apis.Settings;
 using Meditation.Data;
 using Meditation.States;
 using OneDay.Core;
+using OneDay.Core.Share;
 using OneDay.Core.Sm;
 using OneDay.Core.Ui;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Meditation
 {
@@ -22,7 +24,7 @@ namespace Meditation
         [SerializeField] private SmartBreathGeneratorApi smartBreathGenerator;
         [SerializeField] private SettingsApi settingsApi;
         [SerializeField] private UpdateManager updateManager;
-        [SerializeField] private ShareApi shareApi;
+        [FormerlySerializedAs("shareApi")] [SerializeField] private ShareManager shareManager;
         [SerializeField] private MeasureApi measureApi;
         private void Awake()
         {
@@ -39,7 +41,7 @@ namespace Meditation
             ServiceLocator.Register<IBreathGeneratorApi>(smartBreathGenerator);
             ServiceLocator.Register<ISettingsApi>(settingsApi);
             ServiceLocator.Register<IUpdateManager>(updateManager);
-            ServiceLocator.Register<IShare>(shareApi);
+            ServiceLocator.Register<IShare>(shareManager);
             ServiceLocator.Register<IMeasureApi>(measureApi);
           
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());

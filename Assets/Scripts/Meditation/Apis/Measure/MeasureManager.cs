@@ -1,22 +1,22 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis.Data;
 using OneDay.Core;
+using OneDay.Core.Modules.Data;
 using UnityEngine;
 
 namespace Meditation.Apis.Measure
 {
-    public interface IMeasureApi
+    public interface IMeasure
     {
         UniTask SaveBreathingTestResult(BreathingTestResult breathingTestResult);
         IReadOnlyList<(DayOfWeek, TimeSpan)> GetBestResultsThisWeek(string type);
     }
     
     
-    public class MeasureApi : MonoBehaviour, IMeasureApi, IService
+    public class MeasureManager : MonoBehaviour, IMeasure, IService
     {
         private IDataManager dataManager;
         private Calendar<BreathingTestResult> breathingTestCalendar;

@@ -1,5 +1,4 @@
-using Meditation.Ui;
-using OneDay.Core.Ui;
+using OneDay.Core.Modules.Ui;
 using UnityEngine;
 using UnityEngine.UI;
 

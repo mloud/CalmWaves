@@ -7,8 +7,11 @@ using Meditation.Apis.Settings;
 using Meditation.Ui;
 using Meditation.Ui.Views;
 using OneDay.Core;
-using OneDay.Core.Sm;
-using OneDay.Core.Ui;
+using OneDay.Core.Modules.Assets;
+using OneDay.Core.Modules.Audio;
+using OneDay.Core.Modules.Sm;
+using OneDay.Core.Modules.Ui;
+using OneDay.Core.Modules.Update;
 using UnityEngine;
 
 namespace Meditation.States
@@ -88,10 +91,12 @@ namespace Meditation.States
 
                 await breathingView.Show(true);
                 await breathingView.FadeInElements();
-             
-
-                // breathing
+  
+                if (cancellationTokenSource.IsCancellationRequested)
+                    return;
                 await CountBreathing(cancellationTokenSource.Token);
+                if (cancellationTokenSource.IsCancellationRequested)
+                    return;
                 audioManager.PlaySfx(winClip.GetReference());
 
                 FinishedBreathing finishedBreathing = null;
@@ -101,15 +106,18 @@ namespace Meditation.States
                 if (!cancellationTokenSource.IsCancellationRequested)
                     await breathingView.FadeOutElements(true);
 
-                var popupRequest = ServiceLocator.Get<IUiManager>()
-                    .OpenPopup<BreathingFinishedPopup>(UiParameter.Create(finishedBreathing));
+                if (!cancellationTokenSource.IsCancellationRequested)
+                {
+                    var popupRequest = ServiceLocator.Get<IUiManager>()
+                        .OpenPopup<BreathingFinishedPopup>(UiParameter.Create(finishedBreathing));
 
-                await popupRequest.OpenTask;
-                await popupRequest.WaitForClose();
+                    await popupRequest.OpenTask;
+                    await popupRequest.WaitForClose();
 
-                StateMachine.SetStateAsync<MenuState>(
-                    StateData.Create((StateDataKeys.BreathingFinished, true)),
-                    false).Forget();
+                    StateMachine.SetStateAsync<MenuState>(
+                        finishedBreathing != null ? StateData.Create((StateDataKeys.BreathingFinished, true)) : null,
+                        false).Forget();
+                }
             }
             catch (OperationCanceledException ex)
             {

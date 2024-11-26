@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using OneDay.Core;
 using UnityEngine;
 
-namespace Meditation
+namespace OneDay.Core.Modules.Update
 {
     public interface IUpdateManager
     {

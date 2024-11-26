@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace OneDay.Core.Sm
+namespace OneDay.Core.Modules.Sm
 {
     public class StateMachine
     {

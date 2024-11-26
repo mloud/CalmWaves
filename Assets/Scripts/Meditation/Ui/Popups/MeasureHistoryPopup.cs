@@ -6,7 +6,7 @@ using Meditation.Apis.Measure;
 using Meditation.Ui.Chart;
 using OneDay.Core;
 using OneDay.Core.Extensions;
-using OneDay.Core.Ui;
+using OneDay.Core.Modules.Ui;
 using UnityEngine;
 
 namespace Meditation.Ui
@@ -24,7 +24,7 @@ namespace Meditation.Ui
             IChartData<DayOfWeek, TimeSpan> chartInhaleData = new DayTimeSpanChartData();
             
             // Inhale
-            var bestInhalesThisWeek = ServiceLocator.Get<IMeasureApi>().GetBestResultsThisWeek("Inhale");
+            var bestInhalesThisWeek = ServiceLocator.Get<IMeasure>().GetBestResultsThisWeek("Inhale");
             bestInhalesThisWeek.ForEach(x=>chartInhaleData.Values.Add((x.Item1, x.Item2)));
             chartInhaleData.MaxValue = bestInhalesThisWeek.Max(x => x.Item2);
             chartInhale.Name = "Inhale duration";
@@ -38,7 +38,7 @@ namespace Meditation.Ui
             
             IChartData<DayOfWeek, TimeSpan> chartExhaleData = new DayTimeSpanChartData();
             // Inhale
-            var bestExhalesThisWeek = ServiceLocator.Get<IMeasureApi>().GetBestResultsThisWeek("Exhale");
+            var bestExhalesThisWeek = ServiceLocator.Get<IMeasure>().GetBestResultsThisWeek("Exhale");
             bestExhalesThisWeek.ForEach(x=>chartExhaleData.Values.Add((x.Item1, x.Item2)));
             chartExhaleData.MaxValue = bestExhalesThisWeek.Max(x => x.Item2);
             chartExhale.Name = "Exhale duration";

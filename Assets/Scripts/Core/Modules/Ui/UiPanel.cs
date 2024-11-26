@@ -1,4 +1,4 @@
-namespace OneDay.Core.Ui
+namespace OneDay.Core.Modules.Ui
 {
     public abstract class UiPanel : UiElement
     { }

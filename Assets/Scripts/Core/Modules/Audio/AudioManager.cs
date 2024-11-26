@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Meditation.Apis;
 using Meditation.Apis.Settings;
-using OneDay.Core;
+using OneDay.Core.Modules.Assets;
 using UnityEngine;
 using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
-namespace Meditation
+namespace OneDay.Core.Modules.Audio
 {
     public interface IAudioManager
     {

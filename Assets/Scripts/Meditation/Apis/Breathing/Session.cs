@@ -33,7 +33,7 @@ namespace Meditation.Apis
 
         public void Start(IBreathingSettings breathingSettings)
         {
-            Debug.Assert(state == State.Prepared, $"Session must be in {state == State.Prepared} state but it is in {state}");
+            Debug.Assert(state == State.Prepared, $"Session must be in {State.Prepared} state but it is in {state}");
             state = State.Running;
             breathsCountInSession = 0;
             actualBreathingSettings = breathingSettings;
@@ -44,6 +44,7 @@ namespace Meditation.Apis
             if (actualBreathingSettings == null)
             {
                 Debug.Log("[Breathing] actual session was closed");
+                state = State.Prepared;
                 return null;
             }
                 

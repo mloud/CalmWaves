@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace OneDay.Core.Sm
+namespace OneDay.Core.Modules.Sm
 {
     public class StateData
     {

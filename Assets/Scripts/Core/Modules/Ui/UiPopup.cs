@@ -4,7 +4,7 @@ using Meditation.Ui;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace OneDay.Core.Ui
+namespace OneDay.Core.Modules.Ui
 {
     public abstract class UiPopup : UiElement
     {

@@ -1,5 +1,5 @@
 using Cysharp.Threading.Tasks;
-using OneDay.Core.Sm;
+using OneDay.Core.Modules.Sm;
 
 namespace Meditation.States
 {

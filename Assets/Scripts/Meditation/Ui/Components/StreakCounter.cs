@@ -1,6 +1,7 @@
 using Meditation.Apis;
 using Meditation.Ui.Text;
 using OneDay.Core;
+using OneDay.Core.Modules.Ui;
 using UnityEngine;
 
 namespace Meditation.Ui.Components

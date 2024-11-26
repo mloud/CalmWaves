@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 
-namespace OneDay.Core.Sm
+namespace OneDay.Core.Modules.Sm
 {
     public class ABaseState : IState
     {

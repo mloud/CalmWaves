@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using OneDay.Core.Ui;
+using OneDay.Core.Modules.Ui;
 using UnityEngine;
 
 namespace Meditation.Ui.Calendar

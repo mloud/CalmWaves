@@ -7,9 +7,13 @@ using Meditation.Apis.Settings;
 using Meditation.Data;
 using Meditation.States;
 using OneDay.Core;
-using OneDay.Core.Share;
-using OneDay.Core.Sm;
-using OneDay.Core.Ui;
+using OneDay.Core.Modules.Assets;
+using OneDay.Core.Modules.Audio;
+using OneDay.Core.Modules.Data;
+using OneDay.Core.Modules.Share;
+using OneDay.Core.Modules.Sm;
+using OneDay.Core.Modules.Ui;
+using OneDay.Core.Modules.Update;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -24,8 +28,8 @@ namespace Meditation
         [SerializeField] private SmartBreathGeneratorApi smartBreathGenerator;
         [SerializeField] private SettingsApi settingsApi;
         [SerializeField] private UpdateManager updateManager;
-        [FormerlySerializedAs("shareApi")] [SerializeField] private ShareManager shareManager;
-        [SerializeField] private MeasureApi measureApi;
+        [SerializeField] private ShareManager shareManager;
+        [SerializeField] private MeasureManager measureManager;
         private void Awake()
         {
             Boot().Forget();
@@ -42,7 +46,7 @@ namespace Meditation
             ServiceLocator.Register<ISettingsApi>(settingsApi);
             ServiceLocator.Register<IUpdateManager>(updateManager);
             ServiceLocator.Register<IShare>(shareManager);
-            ServiceLocator.Register<IMeasureApi>(measureApi);
+            ServiceLocator.Register<IMeasure>(measureManager);
           
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<User>(new LocalStorage());

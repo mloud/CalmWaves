@@ -6,8 +6,11 @@ using Meditation.Core.Utils;
 using Meditation.Ui.Chart;
 using Meditation.Ui.Views;
 using OneDay.Core;
-using OneDay.Core.Sm;
-using OneDay.Core.Ui;
+using OneDay.Core.Modules.Assets;
+using OneDay.Core.Modules.Audio;
+using OneDay.Core.Modules.Data;
+using OneDay.Core.Modules.Sm;
+using OneDay.Core.Modules.Ui;
 
 namespace Meditation.States
 {

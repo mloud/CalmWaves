@@ -2,8 +2,8 @@ using Cysharp.Threading.Tasks;
 using Meditation.Apis.Data;
 using Meditation.Ui.Text;
 using OneDay.Core;
-using OneDay.Core.Share;
-using OneDay.Core.Ui;
+using OneDay.Core.Modules.Share;
+using OneDay.Core.Modules.Ui;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +23,7 @@ namespace Meditation.Ui
 
         protected override UniTask OnOpenStarted(IUiParameter parameter)
         {
+            Debug.Assert(parameter != null);
             breathsCount.Set(parameter.GetFirst<FinishedBreathing>().Breaths.ToString());
             textFader.Clear();
             return UniTask.CompletedTask;

@@ -7,7 +7,7 @@ using Meditation.Ui.Components;
 using OneDay.Core.Extensions;
 using UnityEngine;
 
-namespace OneDay.Core.Ui
+namespace OneDay.Core.Modules.Ui
 {
     public interface IUiManager
     {
@@ -50,6 +50,8 @@ namespace OneDay.Core.Ui
         {
             settingsPopup.gameObject.SetActive(false);
             GetAllPopups().ForEach(x=>x.Hide(false));
+            GetAllViews().ForEach(x=>x.Hide(false));
+
             return UniTask.CompletedTask;
         }
 

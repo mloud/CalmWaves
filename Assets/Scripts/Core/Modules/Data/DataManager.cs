@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Meditation;
 using Meditation.Data;
 using Newtonsoft.Json;
-using OneDay.Core;
 using OneDay.Core.Extensions;
+using OneDay.Core.Modules.Assets;
 using UnityEngine;
 
 
-namespace Meditation
+namespace OneDay.Core.Modules.Data
 {
     public interface IDataObject
     {

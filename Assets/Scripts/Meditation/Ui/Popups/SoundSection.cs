@@ -1,5 +1,7 @@
 using Meditation.Apis.Settings;
 using OneDay.Core;
+using OneDay.Core.Modules.Audio;
+using OneDay.Core.Modules.Ui;
 using UnityEngine;
 
 namespace Meditation.Ui

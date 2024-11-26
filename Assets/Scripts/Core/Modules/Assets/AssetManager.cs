@@ -1,10 +1,9 @@
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Cysharp.Threading.Tasks;
-using OneDay.Core;
 using UnityEngine;
 
-namespace Meditation
+namespace OneDay.Core.Modules.Assets
 {
     public interface IAssetManager
     {

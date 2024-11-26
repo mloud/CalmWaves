@@ -10,8 +10,8 @@ using Meditation.Ui.Panels;
 using Meditation.Ui.Views;
 using OneDay.Core;
 using OneDay.Core.Extensions;
-using OneDay.Core.Sm;
-using OneDay.Core.Ui;
+using OneDay.Core.Modules.Sm;
+using OneDay.Core.Modules.Ui;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -235,7 +235,7 @@ namespace Meditation.States
         {
             Debug.Assert(result != null);
             Debug.Log("OnSave");
-            ServiceLocator.Get<IMeasureApi>().SaveBreathingTestResult(result);
+            ServiceLocator.Get<IMeasure>().SaveBreathingTestResult(result);
             result = null;
             view.SaveButton.SetVisibleWithFade(false, 0.3f, true).Forget();
         }

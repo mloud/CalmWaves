@@ -1,4 +1,4 @@
-using OneDay.Core.Ui;
+using OneDay.Core.Modules.Ui;
 
 namespace Meditation.Ui.Panels
 {

@@ -2,7 +2,7 @@ using System.IO;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace OneDay.Core.Share
+namespace OneDay.Core.Modules.Share
 {
     public interface IShare
     {

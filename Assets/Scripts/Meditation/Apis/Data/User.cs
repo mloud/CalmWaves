@@ -1,4 +1,5 @@
 using System;
+using OneDay.Core.Modules.Data;
 
 namespace Meditation.Apis.Data
 {

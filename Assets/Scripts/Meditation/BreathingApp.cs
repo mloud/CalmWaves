@@ -6,6 +6,7 @@ using Meditation.Apis.Measure;
 using Meditation.Apis.Settings;
 using Meditation.Data;
 using Meditation.States;
+using Meditation.Ui.Panels;
 using OneDay.Core;
 using OneDay.Core.Modules.Assets;
 using OneDay.Core.Modules.Audio;
@@ -67,8 +68,10 @@ namespace Meditation
            
             ServiceLocator.Get<ISettingsApi>().RegisterModule<IVolumeModule>(new VolumeModule());
             ServiceLocator.Get<ISettingsApi>().RegisterModule<ISoundSettingsModule>(new SettingsModule());
-
-            await ServiceLocator.Get<IUiManager>().PostInitialize();
+            await ServiceLocator.Get<IUiManager>().HideRootView(false);
+            await ServiceLocator.Get<IUiManager>().GetPanel<TopHudPanel>().Initialize();
+          
+            
             
             StateMachineEnvironment.UnregisterAll();
             StateMachineEnvironment.RegisterStateMachine("Application", new StateMachine(), true);

@@ -3,7 +3,6 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Meditation.Ui;
-using Meditation.Ui.Components;
 using OneDay.Core.Extensions;
 using UnityEngine;
 
@@ -11,7 +10,6 @@ namespace OneDay.Core.Modules.Ui
 {
     public interface IUiManager
     {
-        UniTask PostInitialize();
         UniTask HideRootView(bool smooth = true);
         UniTask ShowRootViews(bool smooth = true);
         T GetView<T>() where T : UiView;
@@ -39,29 +37,14 @@ namespace OneDay.Core.Modules.Ui
         [SerializeField] private List<UiView> views;
         [SerializeField] private List<UiPopup> popups;
         [SerializeField] private List<UiPanel> panels;
-
-        
         [SerializeField] private CanvasGroup sharedViewCg;
-        [SerializeField] private SettingsPopup settingsPopup;
-        [SerializeField] private TotalBreathCounter totalBreathCounter;
-        [SerializeField] private StreakCounter streakCounter;
-
+  
         public UniTask Initialize()
         {
-            settingsPopup.gameObject.SetActive(false);
             GetAllPopups().ForEach(x=>x.Hide(false));
             GetAllViews().ForEach(x=>x.Hide(false));
-
             return UniTask.CompletedTask;
         }
-
-        public async UniTask PostInitialize()
-        {
-            totalBreathCounter.Initialize();
-            streakCounter.Initialize();
-            await HideRootView(false);
-        }
-
 
         #region Views
         public T GetView<T>() where T : UiView => (T)views.FirstOrDefault(x => x.GetType() == typeof(T));

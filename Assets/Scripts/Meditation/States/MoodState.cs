@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
 using Meditation.Data;
@@ -21,6 +22,8 @@ namespace Meditation.States
         private AddressableAsset<MoodDb> moodDbAsset;
         private IBreathGeneratorApi generatorApi;
         private HashSet<int> selectedMoods;
+
+        private CancellationTokenSource cancellationTokenSource;
         
         public override async UniTask Initialize()
         {
@@ -38,9 +41,12 @@ namespace Meditation.States
         }
 
         public override async UniTask EnterAsync(StateData stateData = null)
-        { 
+        {
+            cancellationTokenSource?.Dispose();
+            cancellationTokenSource = new CancellationTokenSource();
             moodView.Reset();
             await moodView.Show(true);
+            await moodView.Animate(true, cancellationTokenSource.Token);
         }
 
         public override async UniTask ExecuteAsync()
@@ -48,6 +54,8 @@ namespace Meditation.States
 
         public override async UniTask ExitAsync()
         {
+            cancellationTokenSource?.Cancel();
+            cancellationTokenSource?.Dispose();
             await moodView.Hide(true);
         }
         
@@ -58,16 +66,6 @@ namespace Meditation.States
                 .Select(i => moodDbAsset.GetReference().Moods.ElementAt(i));
 
             var settings = await generatorApi.Generate(moods);
-            
-            // var settings = await breathingApi.GetBreathingSettingsForCurrentPartOfTheDay();
-            //
-            // StateMachine.SetStateAsync<BreathingState>(
-            //         StateData.Create(("Settings", settings)), false)
-            //     .Forget();
-            
-            // ask api to generate breathing settings
-            //var settings = await breathingApi.GetBreathingSettingsForCurrentPartOfTheDay();
-            
             StateMachine.SetStateAsync<BreathingState>(
                     StateData.Create(("Settings", settings)), false)
                 .Forget();

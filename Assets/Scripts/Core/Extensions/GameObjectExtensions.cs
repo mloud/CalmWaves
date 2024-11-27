@@ -1,3 +1,4 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
@@ -40,14 +41,15 @@ namespace OneDay.Core.Extensions
         }
         
         public static async UniTask SetVisibleWithFade(this Component component, bool isVisible, float duration,
-            bool includeChildren)
+            bool includeChildren,  CancellationToken token = default)
         {
-            await SetVisibleWithFade(component.gameObject, isVisible, duration, includeChildren);
+            await SetVisibleWithFade(component.gameObject, isVisible, duration, includeChildren, token);
         }
         
         public static async UniTask SetVisibleWithFade(this GameObject go, bool isVisible, float duration,
-            bool includeChildren)
+            bool includeChildren, CancellationToken token = default)
         {
+            const Ease ease = Ease.Linear;
             CanvasGroup canvasGroup = null;
             if (isVisible)
                 go.SetActive(true);
@@ -68,30 +70,37 @@ namespace OneDay.Core.Extensions
 
             float targetAlpha = isVisible ? 1 : 0;
                 if (canvasGroup != null)
-                    await canvasGroup.DOFade(targetAlpha, duration).SetEase(Ease.Linear).AsyncWaitForCompletion();
+                    await canvasGroup.DOFade(targetAlpha, duration)
+                        .SetEase(ease)
+                        .ToUniTask(cancellationToken:token);
                 else
                 {
                     var image = go.GetComponent<Image>();
                     if (image != null)
-                        await image.DOFade(targetAlpha, duration).SetEase(Ease.Linear).AsyncWaitForCompletion();
+                        await image.DOFade(targetAlpha, duration)
+                            .SetEase(ease)
+                            .ToUniTask(cancellationToken:token);
                     else
                     {
                         var spriteRenderer = go.GetComponent<SpriteRenderer>();
                         if (spriteRenderer != null)
-                            await spriteRenderer.DOFade(targetAlpha, duration).SetEase(Ease.Linear)
-                                .AsyncWaitForCompletion();
+                            await spriteRenderer.DOFade(targetAlpha, duration)
+                                .SetEase(ease)
+                                .ToUniTask(cancellationToken:token);
                         else
                         {
                             var textUi = go.GetComponent<TextMeshProUGUI>();
                             if (textUi != null)
-                                await textUi.DOFade(targetAlpha, duration).SetEase(Ease.Linear)
-                                    .AsyncWaitForCompletion();
+                                await textUi.DOFade(targetAlpha, duration)
+                                    .SetEase(ease)
+                                    .ToUniTask(cancellationToken:token);
                             else
                             {
                                 var text = go.GetComponent<TextMeshPro>();
                                 if (text != null)
-                                    await text.DOFade(targetAlpha, duration).SetEase(Ease.Linear)
-                                        .AsyncWaitForCompletion();
+                                    await text.DOFade(targetAlpha, duration)
+                                        .SetEase(ease)
+                                        .ToUniTask(cancellationToken:token);
                             }
                         }
                     }

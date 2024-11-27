@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Meditation.Data;
 using Meditation.Ui.Components;
+using OneDay.Core.Extensions;
+using OneDay.Core.Modules.Ui.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,12 +45,22 @@ namespace Meditation.Ui.Views
                 index++;
             }
         }
-
+     
+        public async UniTask Animate(bool animateToVisible, CancellationToken token)
+        {
+            for (int i = 0; i < moods.Count; i++)
+            {
+                moods[i].gameObject.SetVisibleWithFade(animateToVisible, 2.0f, true, token).Forget();
+                await UniTask.WaitForSeconds(0.05f, cancellationToken: token);
+            }
+        }
+     
         public void Reset()
         {
             selectedMoods = 0;
             moodeCg.alpha = 1;
             moods.ForEach(x=>x.GetComponent<CToggle>().SetOn(false, false));
+            moods.ForEach(x=>x.gameObject.SetVisibleWithFade(false, 0, true).Forget());
             generateButton.Reset();
         }
 
@@ -55,28 +68,18 @@ namespace Meditation.Ui.Views
         {
             await UniTask.WhenAll(
                 moodeCg.DOFade(0, 1.0f).SetEase(Ease.Linear).ToUniTask(),
-                generateButton.AnimateToGenerating(1.0f));
+                generateButton.AnimateToGenerating());
         }
         
         private void OnSelected(int index, bool isSelected)
         {
-            if (isSelected)
-            {
-                if (selectedMoods >= moodDb.MaxMoodsSelected)
-                {
-                    moods[index].GetComponent<CToggle>().SetOn(false, false);
-                }
-                else
-                {
-                    selectedMoods++;
-                    moodSelectionChanged(index, true);
-                }
-            }
-            else
-            {
-                selectedMoods--;
-                moodSelectionChanged(index, false);
-            }
+            selectedMoods += isSelected ? 1 : -1;
+            moodSelectionChanged(index, isSelected);
+
+            if (selectedMoods == 0) 
+                generateButton.SetButtonActive(false).Forget();
+            else 
+                generateButton.SetButtonActive(true).Forget();
         }
     }
 }

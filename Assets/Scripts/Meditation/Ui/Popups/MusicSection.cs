@@ -1,6 +1,7 @@
 using OneDay.Core;
 using OneDay.Core.Modules.Audio;
 using OneDay.Core.Modules.Ui;
+using OneDay.Core.Modules.Ui.Components;
 using UnityEngine;
 
 namespace Meditation.Ui

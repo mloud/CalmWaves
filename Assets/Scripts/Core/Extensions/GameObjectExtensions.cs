@@ -49,7 +49,7 @@ namespace OneDay.Core.Extensions
         public static async UniTask SetVisibleWithFade(this GameObject go, bool isVisible, float duration,
             bool includeChildren, CancellationToken token = default)
         {
-            const Ease ease = Ease.Linear;
+            const Ease ease = Ease.InSine;
             CanvasGroup canvasGroup = null;
             if (isVisible)
                 go.SetActive(true);

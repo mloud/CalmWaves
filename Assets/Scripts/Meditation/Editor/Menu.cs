@@ -1,5 +1,6 @@
 using Meditation.Apis.Data;
 using Meditation.Data;
+using Meditation.Localization;
 using OneDay.Core.Modules.Data;
 using UnityEditor;
 
@@ -11,7 +12,8 @@ public class Menu
         LocalStorage.RemoveAllEditor(
             TypeToDataKeyBinding.User, 
             TypeToDataKeyBinding.FinishedBreathing,
-            TypeToDataKeyBinding.BreathingTestResult); 
+            TypeToDataKeyBinding.BreathingTestResult,
+            TypeToDataKeyBinding.CustomBreathingSettings); 
     }
     
     [MenuItem("CalmWaves/Dump all data")]
@@ -20,5 +22,13 @@ public class Menu
         LocalStorage.Dump<FinishedBreathing>(TypeToDataKeyBinding.User); 
         LocalStorage.Dump<FinishedBreathing>(TypeToDataKeyBinding.FinishedBreathing); 
         LocalStorage.Dump<BreathingTestResult>(TypeToDataKeyBinding.BreathingTestResult); 
+        LocalStorage.Dump<BreathingTestResult>(TypeToDataKeyBinding.CustomBreathingSettings); 
+    }
+    
+    [MenuItem("CalmWaves/Generate TextIds")]
+    private static void SaveTextIds()
+    {
+        var db = LocalizationFactory.Create();
+        LocalizationFactory.GenerateClassWithConstants(db);
     }
 }

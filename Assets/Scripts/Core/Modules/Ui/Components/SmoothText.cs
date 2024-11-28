@@ -2,14 +2,14 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-namespace Meditation.Ui.Text
+namespace OneDay.Core.Modules.Ui.Components
 {
     public class SmoothText : AExtendedText
     {
         public Mode TransitionMode;
         public float EffectDuration = 0.2f;
 
-        public string text
+        public override string text
         {
             get => text1.text;
             set => Set(value);

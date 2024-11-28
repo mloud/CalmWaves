@@ -1,9 +1,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Meditation.Ui;
-using Meditation.Ui.Text;
-using TMPro;
+using OneDay.Core.Modules.Ui.Components;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -1,5 +1,4 @@
-using Meditation.Ui;
-using Meditation.Ui.Text;
+using OneDay.Core.Modules.Ui.Components;
 using TMPro;
 using UnityEngine;
 

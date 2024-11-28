@@ -138,7 +138,7 @@ namespace OneDay.Core.Modules.Data
         }
 
         private static void LogNotExistingStorage<T>() => 
-            Log.LogError($"No storage for type {typeof(T)} exists", "DataManager");
+            Debug.LogError($"No storage for type {typeof(T)} exists");
     }
 
  

@@ -19,7 +19,11 @@ namespace Meditation.Ui
             audioManager.MusicStateChanged += OnMusicStateChanged;
         }
 
-        private void OnDestroy() => audioManager.MusicStateChanged -= OnMusicStateChanged;
+        private void OnDestroy()
+        {
+            if (audioManager != null)
+                audioManager.MusicStateChanged -= OnMusicStateChanged;
+        }
 
         private void OnMusicStateChanged(bool isMusicEnabled) => toggle.SetOn(isMusicEnabled, false);
 

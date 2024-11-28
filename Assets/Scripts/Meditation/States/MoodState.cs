@@ -45,6 +45,7 @@ namespace Meditation.States
             cancellationTokenSource?.Dispose();
             cancellationTokenSource = new CancellationTokenSource();
             moodView.Reset();
+           
             await moodView.Show(true);
             await moodView.Animate(true, cancellationTokenSource.Token);
         }

@@ -1,9 +1,9 @@
 using Cysharp.Threading.Tasks;
 using Meditation.Apis.Data;
-using Meditation.Ui.Text;
 using OneDay.Core;
 using OneDay.Core.Modules.Share;
 using OneDay.Core.Modules.Ui;
+using OneDay.Core.Modules.Ui.Components;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -3,14 +3,18 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
 using Meditation.Core.Utils;
+using Meditation.Data;
+using Meditation.Ui;
 using Meditation.Ui.Chart;
 using Meditation.Ui.Views;
+using Newtonsoft.Json;
 using OneDay.Core;
 using OneDay.Core.Modules.Assets;
 using OneDay.Core.Modules.Audio;
 using OneDay.Core.Modules.Data;
 using OneDay.Core.Modules.Sm;
 using OneDay.Core.Modules.Ui;
+using UnityEngine;
 
 namespace Meditation.States
 {
@@ -19,11 +23,14 @@ namespace Meditation.States
         private MenuView menuView;
         private AddressableAsset<BreathingSettingsDb> breathingDbAsset;
         private IBreathingApi breathingApi;
+        private IUiManager uiManager;
+        
         public override async UniTask Initialize()
         {
             breathingApi = ServiceLocator.Get<IBreathingApi>();
             breathingDbAsset = await ServiceLocator.Get<IDataManager>().GetBreathingSettings();
-
+            uiManager = ServiceLocator.Get<IUiManager>();
+            
             menuView = ServiceLocator.Get<IUiManager>().GetView<MenuView>();
             await menuView.InitializeBreathingButtons(breathingDbAsset.GetReference().GetAll() , OnMenuButtonClicked);
             await menuView.InitializeWeekCalendar(breathingApi.BreathingHistory.GetBreathingTimesThisWeek(), breathingApi.GetRequiredBreathingDuration());
@@ -32,7 +39,8 @@ namespace Meditation.States
             menuView
                 .BindAction(menuView.StartButton, OnStartClick)
                 .BindAction(menuView.AiButton, OnAiClicked)
-                .BindAction(menuView.MeasuringButton, OnMeasureClicked);
+                .BindAction(menuView.MeasuringButton, OnMeasureClicked)
+                .BindAction(menuView.CustomExerciseContainer.CreateNewButton, OnCreateNewExercise);
         }
 
         public override async UniTask EnterAsync(StateData stateData = null)
@@ -100,5 +108,19 @@ namespace Meditation.States
         
         private async UniTask OnMeasureClicked() => 
             await StateMachine.SetStateAsync<MeasuringState>(waitForCurrentStateExit: false);
+
+        private async UniTask OnCreateNewExercise()
+        {
+            var request = uiManager.OpenPopup<CustomExercisePopup>(null);
+            request.Popup.BindAction(request.Popup.SaveButton, () =>
+            {
+                var settings = request.Popup.BreathingSettings;
+                Debug.Log("Saving " + JsonConvert.SerializeObject(settings));
+                ServiceLocator.Get<IDataManager>().Add(settings);
+                request.Popup.Close().Forget();
+            }, true);
+
+            await request.OpenTask;
+        }
     }
 }

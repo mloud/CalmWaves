@@ -1,3 +1,4 @@
+using System;
 using Meditation.Apis.Data;
 using OneDay.Core.Modules.Data;
 
@@ -15,9 +16,11 @@ namespace Meditation.Data
             ExhaleDuration = 4,
             InhaleDuration = 4,
          },
-         Rounds = 12
+         Rounds = 12,
+         CreateTime = DateTime.Now
       };
       public string Name { get; set; }
+      public DateTime CreateTime { get; set; }
       public BreathingTiming BreathingTiming { get; set; }
       public BreathingTargetTime BreathingTargetTime { get; set; }
 

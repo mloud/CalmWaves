@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Core.Modules.Ui.Effects;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Meditation.Data;
@@ -37,6 +38,7 @@ namespace Meditation.Ui.Views
             {
                 var moodButton = Instantiate(moodPrefab, container);
                 moodButton.Set(mood);
+            
                 int currentIndex = index;
                 moodButton.GetComponent<CToggle>()
                     .onChange
@@ -52,7 +54,10 @@ namespace Meditation.Ui.Views
             {
                 moods[i].gameObject.SetVisibleWithFade(animateToVisible, 2.0f, true, token).Forget();
                 await UniTask.WaitForSeconds(0.05f, cancellationToken: token);
+                moods[i].GetComponent<SpringMoveTween>().Target = container;
+                moods[i].GetComponent<SpringMoveTween>().Run();
             }
+         
         }
      
         public void Reset()

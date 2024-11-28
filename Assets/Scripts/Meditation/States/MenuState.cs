@@ -7,14 +7,12 @@ using Meditation.Data;
 using Meditation.Ui;
 using Meditation.Ui.Chart;
 using Meditation.Ui.Views;
-using Newtonsoft.Json;
 using OneDay.Core;
 using OneDay.Core.Modules.Assets;
 using OneDay.Core.Modules.Audio;
 using OneDay.Core.Modules.Data;
 using OneDay.Core.Modules.Sm;
 using OneDay.Core.Modules.Ui;
-using UnityEngine;
 
 namespace Meditation.States
 {
@@ -22,6 +20,7 @@ namespace Meditation.States
     {
         private MenuView menuView;
         private AddressableAsset<BreathingSettingsDb> breathingDbAsset;
+        private IDataManager dataManager;
         private IBreathingApi breathingApi;
         private IUiManager uiManager;
         
@@ -30,6 +29,7 @@ namespace Meditation.States
             breathingApi = ServiceLocator.Get<IBreathingApi>();
             breathingDbAsset = await ServiceLocator.Get<IDataManager>().GetBreathingSettings();
             uiManager = ServiceLocator.Get<IUiManager>();
+            dataManager = ServiceLocator.Get<IDataManager>();
             
             menuView = ServiceLocator.Get<IUiManager>().GetView<MenuView>();
             await menuView.InitializeBreathingButtons(breathingDbAsset.GetReference().GetAll() , OnMenuButtonClicked);
@@ -41,6 +41,9 @@ namespace Meditation.States
                 .BindAction(menuView.AiButton, OnAiClicked)
                 .BindAction(menuView.MeasuringButton, OnMeasureClicked)
                 .BindAction(menuView.CustomExerciseContainer.CreateNewButton, OnCreateNewExercise);
+    
+            await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<CustomBreathingSettings>());
+            menuView.CustomExerciseContainer.BreathingSettingsSelected += OnCustomBreathingClicked;
         }
 
         public override async UniTask EnterAsync(StateData stateData = null)
@@ -62,6 +65,7 @@ namespace Meditation.States
             menuView.BreathingChart.ValueToStringConversion = DateTimeUtils.GetTime;
             menuView.BreathingChart.Set(new DayTimeSpanChartData(breathingTimesThisWeek, chartMax));
             menuView.BreathingChart.Select(DateTime.Now.DayOfWeek);
+            menuView.CustomExerciseContainer.ScrollTobBeginning();
             
             await menuView.Show(true);
             ServiceLocator.Get<IAudioManager>().PlayMusic("Menu");
@@ -112,15 +116,23 @@ namespace Meditation.States
         private async UniTask OnCreateNewExercise()
         {
             var request = uiManager.OpenPopup<CustomExercisePopup>(null);
-            request.Popup.BindAction(request.Popup.SaveButton, () =>
+            request.Popup.BindAction(request.Popup.SaveButton, async () =>
             {
                 var settings = request.Popup.BreathingSettings;
-                Debug.Log("Saving " + JsonConvert.SerializeObject(settings));
-                ServiceLocator.Get<IDataManager>().Add(settings);
+                await dataManager.Add(settings);
+                await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<CustomBreathingSettings>());
                 request.Popup.Close().Forget();
+                
             }, true);
 
             await request.OpenTask;
+        }
+        
+        private void OnCustomBreathingClicked(IBreathingSettings settings)
+        {
+            StateMachine.SetStateAsync<BreathingState>(
+                    StateData.Create(("Settings", settings)), false)
+                .Forget();
         }
     }
 }

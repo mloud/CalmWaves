@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Meditation.Ui
+namespace Meditation.Ui.Components
 {
     public class BreathingButton :MonoBehaviour
     {

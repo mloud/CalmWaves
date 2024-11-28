@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Meditation.Tweens;
 using OneDay.Core.Extensions;
+using OneDay.Core.Modules.Ui.Effects;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

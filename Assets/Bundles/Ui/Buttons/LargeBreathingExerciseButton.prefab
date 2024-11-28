@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6296383152927465429}
   - component: {fileID: 7740762323157769978}
   - component: {fileID: 6309310247605022501}
+  - component: {fileID: 1888276260856405018}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -75,6 +76,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1888276260856405018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389918718503706507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41dca906236c411c8420a69d947761ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpeedMultiplier: 1
+  endValue: 0.5
+  delay: 1
+  duration: 3
+  image: {fileID: 6309310247605022501}
 --- !u!1 &1909442246518608322
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,7 +105,7 @@ GameObject:
   - component: {fileID: 1112031434452199708}
   - component: {fileID: 3313317046566159979}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: NameLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,7 +241,7 @@ GameObject:
   - component: {fileID: 9047664638223496277}
   - component: {fileID: 6976465973843678747}
   m_Layer: 5
-  m_Name: BreathingMenuButton
+  m_Name: LargeBreathingExerciseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -59,6 +59,17 @@ namespace OneDay.Core.Modules.Ui
             return this;
         }
         
+        public UiPopup BindAction(Button button, Func<UniTask> action, bool removeAllListeners = true)
+        {
+            if (removeAllListeners)
+            {
+                button.onClick.RemoveAllListeners();
+            }
+            button.onClick.AddListener(()=>action().Forget());
+            button.gameObject.SetActive(true);
+            return this;
+        }
+        
         protected virtual UniTask OnOpenStarted(IUiParameter parameter) => UniTask.CompletedTask;
         protected virtual UniTask OnOpenFinished(IUiParameter parameter) => UniTask.CompletedTask;
         protected virtual UniTask OnCloseStarted() => UniTask.CompletedTask;

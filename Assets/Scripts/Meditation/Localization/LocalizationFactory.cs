@@ -16,7 +16,8 @@ namespace Meditation.Localization
                 .AddText("STR_INHALE", "en", "Inhale")
                 .AddText("STR_EXHALE", "en", "Exhale")
                 .AddText("STR_HOLD", "en", "Hold")
-                .AddText("STR_ROUNDS", "en", "Rounds");
+                .AddText("STR_ROUNDS", "en", "Rounds")
+                .AddText("STR_RECENT_EXERCISE", "en", "Recent Exercise");
 
             return db;
         }

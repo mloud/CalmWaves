@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3967519923205218716}
   - component: {fileID: 5063756368566538767}
   - component: {fileID: 5885156669031440574}
+  - component: {fileID: 2276026092846999162}
   m_Layer: 0
   m_Name: MoodButton
   m_TagString: Untagged
@@ -160,6 +161,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moodLabel: {fileID: 243655784914561023}
+--- !u!114 &2276026092846999162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 492826217878973651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65877991438c4b688b23079935db79e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  normalizedDistance: 0.05
+  delay: 2
+  duration: 4
+  startOnEnable: 0
 --- !u!1 &1298521691421516897
 GameObject:
   m_ObjectHideFlags: 0

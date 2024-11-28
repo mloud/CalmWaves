@@ -35,7 +35,7 @@ namespace Meditation.Ui
             roundsChanger.Initialize(12, 1,100);
 
             inputField.onValueChanged.AddListener(OnNameChanged);
-
+            inputField.text = "";
             inhaleValueChanger.OnValueChanged += (v) => breathingSettings.BreathingTiming.InhaleDuration = v;
             exhaleValueChanger.OnValueChanged += (v) => breathingSettings.BreathingTiming.ExhaleDuration = v;
             afterInhaleHoldChanger.OnValueChanged += (v) => breathingSettings.BreathingTiming.AfterInhaleDuration = v;

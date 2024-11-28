@@ -2,19 +2,15 @@ using System;
 using DG.Tweening;
 using UnityEngine;
 
-namespace Meditation.Tweens
+namespace OneDay.Core.Modules.Ui.Effects
 {
     public class PulsateTween : MonoBehaviour
     {
         public float SpeedMultiplier = 1.0f;
+      
         [SerializeField] private Vector3 endValue;
         [SerializeField] private float duration;
         [SerializeField] private float delay;
-
-        // private void OnValidate()
-        // {
-        //     duration = 0.04f;
-        // }
 
         private void OnEnable()
         {

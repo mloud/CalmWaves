@@ -30,6 +30,7 @@ namespace Meditation.Ui.Views
         [SerializeField] private DayTimeSpanChart breathingChart;
         [SerializeField] private Timer.Timer timer;
         [SerializeField] private CustomExerciseContainer customExerciseContainer;
+        [SerializeField] private ScrollRect mainScrollRect;
         
         private List<GameObject> breathingButtons;
 
@@ -44,6 +45,11 @@ namespace Meditation.Ui.Views
             }
         }
 
+        public override async UniTask Show(bool useSmooth, float speedMultiplier = 1.0f)
+        {
+            mainScrollRect.verticalNormalizedPosition = 1;
+            await base.Show(useSmooth, speedMultiplier);
+        }
 
         public async UniTask FadeInSkybox()
         {

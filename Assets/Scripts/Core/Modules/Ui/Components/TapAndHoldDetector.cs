@@ -1,3 +1,4 @@
+using OneDay.Core.Modules.Vibrations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -9,8 +10,8 @@ namespace OneDay.Core.Modules.Ui.Components
         public UnityEvent onLongPress;
         public UnityEvent onClick;
         
-        [SerializeField] float holdTimeThreshold = 2.0f;
-
+        [SerializeField] private float holdTimeThreshold = 2.0f;
+        [SerializeField] private bool useVibration = true;
         private bool isHolding;
         private bool longPressTriggered;
         private float holdTime;
@@ -26,6 +27,7 @@ namespace OneDay.Core.Modules.Ui.Components
                     longPressTriggered = true; // Mark that a long press occurred
                     isHolding = false;
                     onLongPress?.Invoke();
+                    ServiceLocator.Get<IVibrationManager>().VibrateTiny();
                     Debug.Log("Long Press Detected");
                 }
             }

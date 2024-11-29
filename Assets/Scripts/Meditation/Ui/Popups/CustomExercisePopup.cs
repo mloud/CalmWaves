@@ -48,7 +48,7 @@ namespace Meditation.Ui
         protected override async UniTask OnOpenStarted(IUiParameter parameter)
         {
             breathingSettings = CustomBreathingSettings.Default();
-            
+            inputField.text = "";
             inhaleValueChanger.Set((int)breathingSettings.GetInhaleDuration());
             exhaleValueChanger.Set((int)breathingSettings.GetExhaleDuration());
             afterInhaleHoldChanger.Set((int)breathingSettings.GetAfterInhaleDuration());

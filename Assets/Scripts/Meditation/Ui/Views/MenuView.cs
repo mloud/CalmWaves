@@ -5,6 +5,7 @@ using DG.Tweening;
 using Meditation.Ui.Calendar;
 using Meditation.Ui.Chart;
 using Meditation.Ui.Components;
+using OneDay.Core.Modules.Ui;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
@@ -16,24 +17,43 @@ namespace Meditation.Ui.Views
         public Button StartButton => startButton;
         public Button AiButton => aiButton;
         public Button MeasuringButton => measuringButton;
+        public Button NotificationButton => notificationButton;
         public DayTimeSpanChart BreathingChart => breathingChart;
         public CustomExerciseContainer CustomExerciseContainer => customExerciseContainer;
-        
 
-        [SerializeField] private Material skyBoxMaterial;
-        [SerializeField] private Transform container;
-        [SerializeField] private AssetReferenceGameObject menuButton;
+        
+        [Header("Buttons")]
         [SerializeField] private Button startButton;
         [SerializeField] private Button aiButton;
         [SerializeField] private Button measuringButton;
+        [SerializeField] private Button notificationButton;
+        
+        [SerializeField] private UiElement topPagePart;
+        [SerializeField] private Material skyBoxMaterial;
+        [SerializeField] private Transform container;
+        [SerializeField] private AssetReferenceGameObject menuButton;
+        
         [SerializeField] private WeekProgress weekProgress;
         [SerializeField] private DayTimeSpanChart breathingChart;
         [SerializeField] private Timer.Timer timer;
         [SerializeField] private CustomExerciseContainer customExerciseContainer;
         [SerializeField] private ScrollRect mainScrollRect;
+        [SerializeField] private ExpandableArea expandableArea;
         
         private List<GameObject> breathingButtons;
 
+        protected override void OnInit()
+        {
+            base.OnInit();
+            expandableArea.OnExpanded += (expanded) =>
+            {
+                if (expanded)
+                    topPagePart.Hide(true).Forget();
+                else
+                    topPagePart.Show(true).Forget();
+            };
+        }
+        
         public async UniTask InitializeBreathingButtons(IEnumerable<IBreathingSettings> settings, Action<string> menuButtonClicked)
         {
             breathingButtons = new List<GameObject>();

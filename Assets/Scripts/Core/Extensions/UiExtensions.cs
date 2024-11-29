@@ -1,6 +1,9 @@
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using OneDay.Core.Modules.Localization;
 using OneDay.Core.Modules.Ui.Components;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OneDay.Core.Extensions
@@ -26,5 +29,21 @@ namespace OneDay.Core.Extensions
 
         public static void SetTextId(this AExtendedText label, string textId) => 
             label.text = ServiceLocator.Get<ILocalizationManager>().Localize(textId);
+
+
+        public static void SetFrom(this RectTransform rectTransform, RectTransform source)
+        {
+            rectTransform.anchorMax = source.anchorMax;
+            rectTransform.anchorMin = source.anchorMin;
+            rectTransform.offsetMax = source.offsetMax;
+            rectTransform.offsetMin = source.offsetMin;
+        }
+        
+        public static async UniTask SetFromAsync(this RectTransform rectTransform, RectTransform source, float duration, Ease ease)
+        {
+            await UniTask.WhenAll(
+                rectTransform.DOAnchorMin(source.anchorMin, duration).SetEase(ease).ToUniTask(),
+                rectTransform.DOAnchorMax(source.anchorMax, duration).SetEase(ease).ToUniTask());
+        }
     }
 }

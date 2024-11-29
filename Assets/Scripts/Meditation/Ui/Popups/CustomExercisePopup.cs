@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Meditation.Data;
 using Meditation.Ui.Components;
 using OneDay.Core;
+using OneDay.Core.Extensions;
 using OneDay.Core.Modules.Ui;
 using OneDay.Core.Modules.Ui.Components;
 using TMPro;
@@ -17,6 +18,9 @@ namespace Meditation.Ui
         public Button SaveButton => saveButton;
         
         [SerializeField] private Button saveButton;
+        [SerializeField] private Button nextButton;
+
+        [SerializeField] private TextMeshProUGUI largeNameLabel;
         [SerializeField] private IntValueChanger inhaleValueChanger;
         [SerializeField] private IntValueChanger exhaleValueChanger;
         [SerializeField] private IntValueChanger afterInhaleHoldChanger;
@@ -24,8 +28,18 @@ namespace Meditation.Ui
         [SerializeField] private IntValueChanger roundsChanger;
         [SerializeField] private TMP_InputField inputField;
         [SerializeField] private TimeSpanText timeSpanText;
-
+        [SerializeField] private GameObject settingsNameStateContainer;
+        [SerializeField] private GameObject settingsTimerStateContainer;
+        
         private CustomBreathingSettings breathingSettings;
+
+        private enum State
+        {
+            ChoosingName,
+            SettingsTimer
+        }
+
+        private State state;
         protected override void OnInit()
         {
             inhaleValueChanger.Initialize(4, 1,15);
@@ -41,19 +55,24 @@ namespace Meditation.Ui
             afterInhaleHoldChanger.OnValueChanged += (v) => breathingSettings.BreathingTiming.AfterInhaleDuration = v;
             afterExhaleHoldChanger.OnValueChanged += (v) => breathingSettings.BreathingTiming.AfterExhaleDuration = v;
             roundsChanger.OnValueChanged += (v) => breathingSettings.Rounds = v;
-            
-            UpdateSaveButton();
+            nextButton.onClick.AddListener(async ()=>await OnNext());
+            UpdateNextButton();
         }
 
         protected override async UniTask OnOpenStarted(IUiParameter parameter)
         {
             breathingSettings = CustomBreathingSettings.Default();
-            inputField.text = "";
             inhaleValueChanger.Set((int)breathingSettings.GetInhaleDuration());
             exhaleValueChanger.Set((int)breathingSettings.GetExhaleDuration());
             afterInhaleHoldChanger.Set((int)breathingSettings.GetAfterInhaleDuration());
             afterExhaleHoldChanger.Set((int)breathingSettings.GetAfterExhaleDuration());
             roundsChanger.Set(breathingSettings.Rounds);
+            
+            
+            await EnterState(State.ChoosingName);
+            
+            
+         
                 
             ServiceLocator.Get<IUiManager>().HideRootView();
         }
@@ -73,18 +92,53 @@ namespace Meditation.Ui
         {
             name = name[..Math.Min(15, name.Length)];
             inputField.text = name;
-            UpdateSaveButton();
+            UpdateNextButton();
             breathingSettings.Name = name;
         }
         
-        private void UpdateSaveButton()=> SaveButton.interactable = inputField.text.Length > 0;
+        private void UpdateNextButton()=> nextButton.interactable = inputField.text.Length > 0;
 
         private void Update()
         {
-            if (breathingSettings == null)
-                return;
-            
-            timeSpanText.Set(TimeSpan.FromSeconds(breathingSettings.GetTotalTime()));
+           UpdateState(state);
+        }
+
+        private async UniTask EnterState(State state)
+        {
+            switch (state)
+            {
+                case State.ChoosingName:
+                    inputField.text = "";
+                    await settingsNameStateContainer.SetVisibleWithFade(true, 0, true);
+                    await settingsTimerStateContainer.SetVisibleWithFade(false, 0, true);
+                    break;
+                
+                case State.SettingsTimer:
+                    await settingsNameStateContainer.SetVisibleWithFade(false, 0.0f, true);
+                    await settingsTimerStateContainer.SetVisibleWithFade(true, 1.0f, true);
+                    break;
+            }
+
+            this.state = state;
+        }
+
+        private void UpdateState(State state)
+        {
+            switch (state)
+            {
+                case State.ChoosingName:
+                  
+                    break;
+                case State.SettingsTimer:
+                    timeSpanText.Set(TimeSpan.FromSeconds(breathingSettings.GetTotalTime()));
+                    break;
+            }
+        }
+        
+        private async UniTask OnNext()
+        {
+            largeNameLabel.text = inputField.text;
+            await EnterState(State.SettingsTimer);
         }
     }
 }

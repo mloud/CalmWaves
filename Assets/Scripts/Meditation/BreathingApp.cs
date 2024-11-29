@@ -17,7 +17,9 @@ using OneDay.Core.Modules.Share;
 using OneDay.Core.Modules.Sm;
 using OneDay.Core.Modules.Ui;
 using OneDay.Core.Modules.Update;
+using OneDay.Core.Modules.Vibrations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Meditation
 {
@@ -33,6 +35,7 @@ namespace Meditation
         [SerializeField] private ShareManager shareManager;
         [SerializeField] private MeasureManager measureManager;
         [SerializeField] private LocalizationManager localizationManager;
+        [SerializeField] private VibrationManager vibrationManager;
         private void Awake()
         {
             Boot().Forget();
@@ -51,6 +54,7 @@ namespace Meditation
             ServiceLocator.Register<IShare>(shareManager);
             ServiceLocator.Register<IMeasure>(measureManager);
             ServiceLocator.Register<ILocalizationManager>(localizationManager);
+            ServiceLocator.Register<IVibrationManager>(vibrationManager);
           
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<User>(new LocalStorage());

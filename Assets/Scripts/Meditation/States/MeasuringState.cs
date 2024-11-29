@@ -12,6 +12,7 @@ using OneDay.Core;
 using OneDay.Core.Extensions;
 using OneDay.Core.Modules.Sm;
 using OneDay.Core.Modules.Ui;
+using OneDay.Core.Modules.Vibrations;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -23,6 +24,7 @@ namespace Meditation.States
         private CancellationTokenSource ctx;
         private MeasuringView view;
         private BreathingTestResult result;
+        private IVibrationManager vibrationManager;
 
         private enum MeasurementType
         {
@@ -33,6 +35,8 @@ namespace Meditation.States
         public override UniTask Initialize()
         {
             view = ServiceLocator.Get<IUiManager>().GetView<MeasuringView>();
+            vibrationManager = ServiceLocator.Get<IVibrationManager>();
+            
             view.MouseHandler.onPointerDown.AddListener(OnFingerDown);
             view.MouseHandler.onPointerUp.AddListener(OnFingerUp);
             view.BindAction(view.BackButton, OnBack);
@@ -193,6 +197,7 @@ namespace Meditation.States
             view.TitleLabel.Set(measurementTexts.Title);
             view.Prompt.Set(measurementTexts.DuringSentence);
             const float maxTime = 20;
+            Vibrate().Forget();
             while (isFingerOnTheScreen)
             {
                 view.TimerLabel.text = stopWatch.Elapsed.TotalSeconds
@@ -202,6 +207,7 @@ namespace Meditation.States
                     progress = 1 - progress;
                 
                 view.MeasureCircle.transform.localScale = new Vector3(progress, progress, 1.0f);
+              
                 await UniTask.Yield(cancellationToken:ctx.Token);
             }
 
@@ -209,7 +215,20 @@ namespace Meditation.States
             view.MeasureCircle.SetVisibleWithFade(false, 0.5f, true).Forget();
             return (stopWatch.Elapsed, true);
         }
-        
+
+
+        private async UniTask Vibrate()
+        {
+            while (isFingerOnTheScreen)
+            {
+                #if UNITY_ANDROID
+                vibrationManager.VibrateCustom(20);
+                #else
+                vibrationManager.VibrateTiny();
+                #endif
+                await UniTask.WaitForSeconds(0.2f, cancellationToken:ctx.Token);
+            }
+        }
         public override async UniTask ExitAsync()
         {
             ctx.Cancel();
@@ -234,7 +253,6 @@ namespace Meditation.States
         private void OnSave()
         {
             Debug.Assert(result != null);
-            Debug.Log("OnSave");
             ServiceLocator.Get<IMeasure>().SaveBreathingTestResult(result);
             result = null;
             view.SaveButton.SetVisibleWithFade(false, 0.3f, true).Forget();

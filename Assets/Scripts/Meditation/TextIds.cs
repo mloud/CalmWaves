@@ -8,4 +8,5 @@ public static class TextIds
   public const string STR_HOLD = "STR_HOLD";
   public const string STR_ROUNDS = "STR_ROUNDS";
   public const string STR_RECENT_EXERCISE = "STR_RECENT_EXERCISE";
+  public const string STR_NEXT = "STR_NEXT";
 }

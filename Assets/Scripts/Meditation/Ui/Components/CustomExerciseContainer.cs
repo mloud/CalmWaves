@@ -14,6 +14,7 @@ namespace Meditation.Ui.Components
     {
         public Button CreateNewButton => createNewButton;
         public Action<CustomBreathingSettings> BreathingSettingsSelected { get; set; }
+        public Action<CustomBreathingSettings> BreathingSettingsDeleted { get; set; }
         
         [SerializeField] private Button createNewButton;
         [SerializeField] private CustomBreathingButton buttonPrefab;
@@ -32,7 +33,10 @@ namespace Meditation.Ui.Components
                 {
                     buttons.Add(Instantiate(buttonPrefab, container));
                 }
-                buttons[index].Set(settings, s => BreathingSettingsSelected(s));
+                buttons[index].Set(
+                    settings, 
+                    s => BreathingSettingsSelected(s),
+                    s=>BreathingSettingsDeleted(s));
                 index++;
             }
 

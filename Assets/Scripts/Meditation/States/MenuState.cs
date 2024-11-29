@@ -44,6 +44,7 @@ namespace Meditation.States
     
             await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<CustomBreathingSettings>());
             menuView.CustomExerciseContainer.BreathingSettingsSelected += OnCustomBreathingClicked;
+            menuView.CustomExerciseContainer.BreathingSettingsDeleted += async (s) => await OnCustomBreathingDeleteClicked(s);
         }
 
         public override async UniTask EnterAsync(StateData stateData = null)
@@ -128,11 +129,19 @@ namespace Meditation.States
             await request.OpenTask;
         }
         
-        private void OnCustomBreathingClicked(IBreathingSettings settings)
+        private void OnCustomBreathingClicked(CustomBreathingSettings settings)
         {
             StateMachine.SetStateAsync<BreathingState>(
                     StateData.Create(("Settings", settings)), false)
                 .Forget();
+        }
+
+        private async UniTask OnCustomBreathingDeleteClicked(CustomBreathingSettings settings)
+        {
+            var id = (await dataManager.GetAll<CustomBreathingSettings>())
+                .First(x => x.CreateTime == settings.CreateTime).Id;
+            await dataManager.Remove<CustomBreathingSettings>(id);
+            await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<CustomBreathingSettings>());
         }
     }
 }

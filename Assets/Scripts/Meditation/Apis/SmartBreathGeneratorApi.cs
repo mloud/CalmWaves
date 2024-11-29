@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis.Data;
 using Newtonsoft.Json;
@@ -37,10 +38,14 @@ namespace Meditation.Apis
             var response = await promptService.SendRequest(filledPrompt);
             
             if (response != null)
-            {
+            { 
+                const string pattern = @"\*\*.*?\*\*";
+          
+                response = Regex.Replace(response, pattern, string.Empty);
                 response = response
                     .Replace("```json", "")
                     .Replace("```", "");
+                
                 try
                 {
                     smartBreathResult = JsonConvert.DeserializeObject<SmartBreathResult>(response);

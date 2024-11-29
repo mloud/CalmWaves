@@ -12,7 +12,7 @@ namespace Meditation.Ui
 
         protected override UniTask OnOpenStarted(IUiParameter parameter)
         {
-            ServiceLocator.Get<IUiManager>().HideRootView();
+            ServiceLocator.Get<IUiManager>().HideView();
             musicSection.Initialize();
             soundSection.Initialize();
             return UniTask.CompletedTask;
@@ -20,7 +20,7 @@ namespace Meditation.Ui
         
         protected override UniTask OnCloseStarted()
         {
-            ServiceLocator.Get<IUiManager>().ShowRootViews();
+            ServiceLocator.Get<IUiManager>().ShowView();
             return UniTask.CompletedTask;
         }
     }

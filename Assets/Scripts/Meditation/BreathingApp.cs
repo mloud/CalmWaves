@@ -80,7 +80,7 @@ namespace Meditation
            
             ServiceLocator.Get<ISettingsApi>().RegisterModule<IVolumeModule>(new VolumeModule());
             ServiceLocator.Get<ISettingsApi>().RegisterModule<ISoundSettingsModule>(new SettingsModule());
-            await ServiceLocator.Get<IUiManager>().HideRootView(false);
+            await ServiceLocator.Get<IUiManager>().HideView(false);
             await ServiceLocator.Get<IUiManager>().GetPanel<TopHudPanel>().Initialize();
           
             

@@ -48,12 +48,12 @@ namespace Meditation.Ui
             chartExhale.Set(chartExhaleData);  
             chartExhale.Select(DateTime.Now.DayOfWeek);
             
-            ServiceLocator.Get<IUiManager>().HideRootView();
+            ServiceLocator.Get<IUiManager>().HideView();
         }
      
         protected override UniTask OnCloseStarted()
         {
-            ServiceLocator.Get<IUiManager>().ShowRootViews();
+            ServiceLocator.Get<IUiManager>().ShowView();
             return UniTask.CompletedTask;
         }
         

@@ -162,6 +162,10 @@ MonoBehaviour:
   button: {fileID: 4867404872838071814}
   onSprite: {fileID: 21300000, guid: 06a16cb520d0f2449a999572cae2cf97, type: 3}
   offSprite: {fileID: 21300000, guid: cabad5b87dec1fd4e8749fa9f8936e63, type: 3}
+  onGameObject: {fileID: 0}
+  offGameObject: {fileID: 0}
+  useFade: 0
+  toggleGroup: {fileID: 0}
 --- !u!114 &4867404872838071814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1515,6 +1519,10 @@ MonoBehaviour:
   button: {fileID: 3146539377678826365}
   onSprite: {fileID: 21300000, guid: fd30afab859581246b9ba7593ee3c10c, type: 3}
   offSprite: {fileID: 21300000, guid: d7f4f52e0d03f214b8b9ff47d92ab909, type: 3}
+  onGameObject: {fileID: 0}
+  offGameObject: {fileID: 0}
+  useFade: 0
+  toggleGroup: {fileID: 0}
 --- !u!114 &769948856598269793
 MonoBehaviour:
   m_ObjectHideFlags: 0

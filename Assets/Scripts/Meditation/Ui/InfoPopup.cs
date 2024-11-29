@@ -10,13 +10,16 @@ namespace Meditation.Ui
     public class InfoPopup : UiPopup
     {
         public Button ContinueButton => continueButton;
-        
+        public Button HelpButton => helpButton;
+       
+        [SerializeField] private Button helpButton;
         [SerializeField] private Button continueButton;
         [SerializeField] private TextMeshProUGUI titleLabel;
         [SerializeField] private TextMeshProUGUI textLabel;
         [SerializeField] private BreathingSettingsPanel breathingSettingsPanel;
 
 
+        
         protected override UniTask OnOpenStarted(IUiParameter parameter)
         {
             var breathingSettings = parameter.GetFirst<IBreathingSettings>();
@@ -24,15 +27,25 @@ namespace Meditation.Ui
             titleLabel.text = breathingSettings.GetName();
             textLabel.text = breathingSettings.GetDescription();
 
-            ServiceLocator.Get<IUiManager>().HideRootView().Forget();
-            
+            ServiceLocator.Get<IUiManager>().HideView().Forget();
+            BindAction(helpButton, OnHelp);
             return UniTask.CompletedTask;
         }
 
         protected override UniTask OnCloseStarted()
         {
-            ServiceLocator.Get<IUiManager>().ShowRootViews().Forget();   
+            helpButton.onClick.RemoveAllListeners();
+            ServiceLocator.Get<IUiManager>().ShowView().Forget();   
             return UniTask.CompletedTask;
+        }
+        
+        private async UniTask OnHelp()
+        {
+            var request = ServiceLocator.Get<IUiManager>().OpenPopup<BreathingHelpPopup>(null);
+            Hide(true).Forget();
+            request.OpenTask.Forget();
+            await request.WaitForCloseStarted();
+            Show(true).Forget();
         }
     }
 }

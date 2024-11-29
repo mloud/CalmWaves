@@ -86,7 +86,7 @@ namespace Meditation.States
                 request.Popup.BindAction(request.Popup.ContinueButton, () => request.Popup.Close().Forget());
 
                 await request.OpenTask;
-                await request.WaitForClose();
+                await request.WaitForCloseFinished();
                 if (canceled) return;
 
                 await breathingView.Show(true);
@@ -112,7 +112,7 @@ namespace Meditation.States
                         .OpenPopup<BreathingFinishedPopup>(UiParameter.Create(finishedBreathing));
 
                     await popupRequest.OpenTask;
-                    await popupRequest.WaitForClose();
+                    await popupRequest.WaitForCloseFinished();
 
                     StateMachine.SetStateAsync<MenuState>(
                         finishedBreathing != null ? StateData.Create((StateDataKeys.BreathingFinished, true)) : null,
@@ -194,7 +194,7 @@ namespace Meditation.States
                     .OpenPopup<BreathingFinishedPopup>(UiParameter.Create(finishedBreathing));
 
                 await popupRequest.OpenTask;
-                await popupRequest.WaitForClose();
+                await popupRequest.WaitForCloseFinished();
             }
 
             StateMachine.SetStateAsync<MenuState>(
@@ -208,7 +208,7 @@ namespace Meditation.States
             request.Popup.BindAction(request.Popup.CloseButton, () => request.Popup.Close(), true);
             request.OpenTask.Forget();
             SetPaused(true, false);
-            await request.WaitForClose();
+            await request.WaitForCloseFinished();
             SetPaused(false, false);
         }
 

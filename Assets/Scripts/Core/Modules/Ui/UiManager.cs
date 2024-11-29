@@ -10,8 +10,9 @@ namespace OneDay.Core.Modules.Ui
 {
     public interface IUiManager
     {
-        UniTask HideRootView(bool smooth = true);
-        UniTask ShowRootViews(bool smooth = true);
+        UniTask HideView(bool smooth = true);
+        UniTask ShowView(bool smooth = true);
+        
         T GetView<T>() where T : UiView;
         IEnumerable<UiView> GetAllViews();
         T GetPopup<T>() where T : UiPopup;
@@ -28,7 +29,9 @@ namespace OneDay.Core.Modules.Ui
         public UniTask OpenTask { get; set; }
         public T Popup { get; set; }
 
-        public async UniTask WaitForClose() =>
+        public async UniTask WaitForCloseStarted() =>
+            await UniTask.WaitUntil(()=>Popup.State == UiPopup.PopupState.Closing);
+        public async UniTask WaitForCloseFinished() =>
             await UniTask.WaitUntil(()=>Popup.State == UiPopup.PopupState.Closed);
     }
     
@@ -71,7 +74,7 @@ namespace OneDay.Core.Modules.Ui
         public T GetPanel<T>() where T : UiPanel => (T)panels.FirstOrDefault(x => x.GetType() == typeof(T));
         public IEnumerable<UiPanel> GetAllPanels() => panels;
       
-        public async UniTask HideRootView(bool smooth = true)
+        public async UniTask HideView(bool smooth = true)
         {
             if (smooth)
             {
@@ -82,7 +85,7 @@ namespace OneDay.Core.Modules.Ui
             sharedViewCg.gameObject.SetActive(false);
         }
         
-        public async UniTask ShowRootViews(bool smooth = true)
+        public async UniTask ShowView(bool smooth = true)
         {
             sharedViewCg.gameObject.SetActive(true);
 

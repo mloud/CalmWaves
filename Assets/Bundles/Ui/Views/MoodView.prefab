@@ -287,6 +287,8 @@ GameObject:
   - component: {fileID: 3401214540955382166}
   - component: {fileID: 4841817602911015639}
   - component: {fileID: 4893918559897841066}
+  - component: {fileID: 4883129106048276753}
+  - component: {fileID: 7799398736696626568}
   m_Layer: 5
   m_Name: MoodView
   m_TagString: Untagged
@@ -343,8 +345,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cg: {fileID: 4893918559897841066}
-  transitionInDuration: 0.5
+  transitionInDuration: 1
   transitionOutDuration: 0.5
+  showAnimation: {fileID: 7799398736696626568}
   backButton: {fileID: 9142981953606103276}
   moodeCg: {fileID: 8365372223520675367}
   container: {fileID: 8540180081947732704}
@@ -362,6 +365,35 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &4883129106048276753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2410602856328004951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1066e6f9955f45f8b7e313f5eab97239, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1
+  ease: 4
+--- !u!114 &7799398736696626568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2410602856328004951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e3e418bac284f2dae084a3bafdf0471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1
+  ease: 1
+  cg: {fileID: 4893918559897841066}
 --- !u!1 &7116649172357802130
 GameObject:
   m_ObjectHideFlags: 0

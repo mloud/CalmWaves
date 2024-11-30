@@ -19,11 +19,13 @@ namespace Core.Modules.Ui.Effects
         [SerializeField] private bool startOnEnable;
 
         private Vector3 originaPosition;
+
+        private Tween tween;
        
         public void Run()
         {
             originaPosition = transform.position;
-            transform.DOMove(transform.position + (target.position - transform.position) * normalizedDistance,
+            tween = transform.DOMove(transform.position + (target.position - transform.position) * normalizedDistance,
                     duration)
                 .SetLoops(-1, LoopType.Yoyo) // Infinite loop with ping-pong effect
                 .SetEase(Ease.InOutSine)
@@ -40,7 +42,8 @@ namespace Core.Modules.Ui.Effects
 
         private void OnDisable()
         {
-            DOTween.KillAll(true,transform);
+            tween?.Kill(true);
+            tween = null;
             transform.position = originaPosition;
         }
     }

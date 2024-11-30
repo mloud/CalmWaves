@@ -24,12 +24,10 @@ namespace Meditation.Ui.Views
 
         private List<Mood> moods;
         private Action<int, bool> moodSelectionChanged;
-        private IMoodDb moodDb;
         private int selectedMoods;
 
         public void Initialize(IMoodDb moodDb, Mood moodPrefab, Action<int, bool> moodSelectionChanged)
         {
-            this.moodDb = moodDb;
             this.moodSelectionChanged = moodSelectionChanged;
             
             moods = new List<Mood>();
@@ -63,7 +61,6 @@ namespace Meditation.Ui.Views
         public void Reset()
         {
             selectedMoods = 0;
-            moodeCg.alpha = 1;
             moods.ForEach(x=>x.GetComponent<CToggle>().SetOn(false, false));
             moods.ForEach(x=>x.gameObject.SetVisibleWithFade(false, 0, true).Forget());
             generateButton.Reset();

@@ -46,6 +46,8 @@ namespace OneDay.Core.Modules.Ui
         {
             GetAllPopups().ForEach(x=>x.Hide(false));
             GetAllViews().ForEach(x=>x.Hide(false));
+            
+            GetAllPopups().ForEach(x=>x.Initialize());
             return UniTask.CompletedTask;
         }
 

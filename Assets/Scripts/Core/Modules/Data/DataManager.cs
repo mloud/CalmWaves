@@ -17,11 +17,12 @@ namespace OneDay.Core.Modules.Data
         int Id { get; set; }
     }
 
+    [Serializable]
     public abstract class BaseDataObject : IDataObject
     {
         public int Id { get; set; }
     }
-    
+  
     public interface IDataManager : IStorage
     {
         void RegisterStorage<T>(IStorage storage);

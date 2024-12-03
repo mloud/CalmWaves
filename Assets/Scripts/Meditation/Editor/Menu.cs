@@ -10,19 +10,20 @@ public class Menu
     private static void DeleteAllData()
     {
         LocalStorage.RemoveAllEditor(
-            TypeToDataKeyBinding.User, 
-            TypeToDataKeyBinding.FinishedBreathing,
-            TypeToDataKeyBinding.BreathingTestResult,
-            TypeToDataKeyBinding.CustomBreathingSettings); 
+            TypeToDataKeyBinding.UserData, 
+            TypeToDataKeyBinding.UserFinishedBreathing,
+            TypeToDataKeyBinding.UserBreathingTestResult,
+            TypeToDataKeyBinding.UserCustomBreathingSettings); 
     }
     
     [MenuItem("CalmWaves/Dump all data")]
     private static void DumpAllData()
     {
-        LocalStorage.Dump<FinishedBreathing>(TypeToDataKeyBinding.User); 
-        LocalStorage.Dump<FinishedBreathing>(TypeToDataKeyBinding.FinishedBreathing); 
-        LocalStorage.Dump<BreathingTestResult>(TypeToDataKeyBinding.BreathingTestResult); 
-        LocalStorage.Dump<BreathingTestResult>(TypeToDataKeyBinding.CustomBreathingSettings); 
+        LocalStorage.Dump<FinishedBreathing>(TypeToDataKeyBinding.UserData); 
+        LocalStorage.Dump<FinishedBreathing>(TypeToDataKeyBinding.UserFinishedBreathing); 
+        LocalStorage.Dump<BreathingTestResult>(TypeToDataKeyBinding.UserBreathingTestResult); 
+        LocalStorage.Dump<BreathingTestResult>(TypeToDataKeyBinding.UserCustomBreathingSettings); 
+        LocalStorage.Dump<BreathingTestResult>(TypeToDataKeyBinding.UserNotificationSettings); 
     }
     
     [MenuItem("CalmWaves/Generate TextIds")]

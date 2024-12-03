@@ -20,6 +20,8 @@ namespace OneDay.Core.Modules.Ui
         }
         public PopupState State { get; private set; }
         
+        public virtual UniTask Initialize() => UniTask.CompletedTask;
+        
         public async UniTask Open(IUiParameter parameter)
         {
             State = PopupState.Opening;

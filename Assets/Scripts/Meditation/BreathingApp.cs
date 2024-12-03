@@ -5,7 +5,9 @@ using Meditation.Apis.Data;
 using Meditation.Apis.Measure;
 using Meditation.Apis.Settings;
 using Meditation.Data;
+using Meditation.Data.Notifications;
 using Meditation.Localization;
+using Meditation.Managers;
 using Meditation.States;
 using Meditation.Ui.Panels;
 using OneDay.Core;
@@ -19,7 +21,7 @@ using OneDay.Core.Modules.Ui;
 using OneDay.Core.Modules.Update;
 using OneDay.Core.Modules.Vibrations;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 namespace Meditation
 {
@@ -36,6 +38,8 @@ namespace Meditation
         [SerializeField] private MeasureManager measureManager;
         [SerializeField] private LocalizationManager localizationManager;
         [SerializeField] private VibrationManager vibrationManager;
+        [SerializeField] private NotificationManager notificationManager;
+
         private void Awake()
         {
             Boot().Forget();
@@ -55,16 +59,25 @@ namespace Meditation
             ServiceLocator.Register<IMeasure>(measureManager);
             ServiceLocator.Register<ILocalizationManager>(localizationManager);
             ServiceLocator.Register<IVibrationManager>(vibrationManager);
-          
+            ServiceLocator.Register<INotificationManager>(notificationManager);
+            
+            // Savable data
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<User>(new LocalStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<BreathingTestResult>(new LocalStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<CustomBreathingSettings>(new LocalStorage());
+            ServiceLocator.Get<IDataManager>().RegisterStorage<UserDayTimeNotificationSettings>(new LocalStorage());
 
-            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<FinishedBreathing>(TypeToDataKeyBinding.FinishedBreathing);
-            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<User>(TypeToDataKeyBinding.User);
-            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<BreathingTestResult>(TypeToDataKeyBinding.BreathingTestResult);
-            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<CustomBreathingSettings>(TypeToDataKeyBinding.CustomBreathingSettings);
+            // Readonly data 
+            ServiceLocator.Get<IDataManager>().RegisterStorage<ContentNotificationSettings>(new AddressableScriptableObjectStorage());
+
+
+            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<FinishedBreathing>(TypeToDataKeyBinding.UserFinishedBreathing);
+            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<User>(TypeToDataKeyBinding.UserData);
+            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<BreathingTestResult>(TypeToDataKeyBinding.UserBreathingTestResult);
+            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<CustomBreathingSettings>(TypeToDataKeyBinding.UserCustomBreathingSettings);
+            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<ContentNotificationSettings>(TypeToDataKeyBinding.ContentNotificationSettings);
+            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<UserDayTimeNotificationSettings>(TypeToDataKeyBinding.UserNotificationSettings);
 
             // load texts
             ServiceLocator.Get<ILocalizationManager>().LocalizationDatabase = LocalizationFactory.Create();

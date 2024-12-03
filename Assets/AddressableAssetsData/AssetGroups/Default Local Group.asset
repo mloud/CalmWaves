@@ -97,26 +97,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 673d6aa4777114c6792ca74a27355766
-    m_Address: CalmIcon
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d9e40016f2e4b4adaaaab681236d45ed
-    m_Address: EnergizeIcon
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c42e55ed4e7cb4e639f1df54059706c9
-    m_Address: FocusIcon
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 02dc06c9cc44c45ae93e2d95f10eb1e2
-    m_Address: SleepIcon
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 48167eafc83ba4b0097b911ec91f41f0, type: 2}
   m_SchemaSet:

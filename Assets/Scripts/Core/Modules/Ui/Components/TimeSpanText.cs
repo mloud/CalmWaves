@@ -16,11 +16,20 @@ namespace OneDay.Core.Modules.Ui.Components
         [SerializeField] private string minuteSuffix = " minutes";
         [SerializeField] private string secondSuffix = " seconds";
 
-        private TMP_Text tmpText;
+        [SerializeField] private TMP_Text tmpText;
 
         private void Awake()
         {
-            tmpText = GetComponent<TMP_Text>();
+            if (tmpText == null)
+                tmpText = GetComponent<TMP_Text>();
+        }
+
+        private void OnValidate()
+        {
+            if (tmpText == null)
+            {
+                tmpText = GetComponent<TMP_Text>();
+            }
         }
 
         public enum TimeFormat
@@ -35,6 +44,7 @@ namespace OneDay.Core.Modules.Ui.Components
         }
 
         public void Set(TimeSpan timeSpan) => tmpText.text = GetFormattedTimestamp(timeSpan);
+        public void Set(DateTime dateTime) => tmpText.text = GetFormattedTimestamp(dateTime.TimeOfDay);
 
         private string GetFormattedTimestamp(TimeSpan timeSpan)
         {

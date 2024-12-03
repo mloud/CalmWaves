@@ -33,8 +33,7 @@ namespace OneDay.Core.Modules.Ui.Components
                 toggleGroup.RegisterToggle(this);
 
             button.onClick.AddListener(OnClick);
-            SetOn(false, false);
-            
+            //SetOn(false, false);
         }
 
         public void SetOn(bool isOn, bool invokeListeners)

@@ -5,6 +5,8 @@ using Cysharp.Threading.Tasks;
 using Meditation.Data.Notifications;
 using OneDay.Core;
 using OneDay.Core.Modules.Data;
+using OneDay.Core.Modules.Notifications;
+using Unity.Notifications;
 using UnityEngine;
 
 namespace Meditation.Managers
@@ -19,10 +21,13 @@ namespace Meditation.Managers
     
     public class NotificationManager : MonoBehaviour, INotificationManager, IService
     {
-       
-        public UniTask Initialize()
+        private AsyncCache<IEnumerable<RuntimeOnlyDayTimeNotificationSettings>> settingsCache;
+        
+        public async UniTask Initialize()
         {
-            return UniTask.CompletedTask;
+            settingsCache =
+                new AsyncCache<IEnumerable<RuntimeOnlyDayTimeNotificationSettings>>(GetDayTimeNotificationSettings);
+            await settingsCache.Preload();
         }
 
         public async UniTask SaveDayTimeNotificationSettings(IEnumerable<RuntimeOnlyDayTimeNotificationSettings> runtimeNotificationSettings)
@@ -57,6 +62,8 @@ namespace Meditation.Managers
                     userSettings.ForEach(x=>dataManager.Remove<UserDayTimeNotificationSettings>(x.Id));
                 }
             }
+            settingsCache.Clear();
+            await settingsCache.Preload();
         }
 
         public async UniTask<IEnumerable<RuntimeOnlyDayTimeNotificationSettings>> GetDayTimeNotificationSettings()
@@ -84,6 +91,27 @@ namespace Meditation.Managers
             }
        
             return runtimeNotificationSettings;
+        }
+
+
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            if (!pauseStatus) return;
+         
+            var notificationsApi = ServiceLocator.Get<INotificationsApi>();
+            var notificationSettings = settingsCache.GetSync();
+
+            foreach (var runtimeNotification in notificationSettings)
+            {
+                if (!runtimeNotification.IsOn)
+                    continue;
+                var notification = new Notification
+                {
+                    Title = "test",
+                    Text = "text"
+                };
+                notificationsApi.ScheduleNotification(notification, DateTime.Today + runtimeNotification.Time, true);
+            }
         }
     }
 }

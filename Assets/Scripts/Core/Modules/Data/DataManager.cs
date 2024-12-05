@@ -233,9 +233,7 @@ namespace OneDay.Core.Modules.Data
         public static void Dump<T>(string key)
         {
             var content = PlayerPrefs.GetString(key);
-            Debug.Log($"=== Dump of {typeof(T)} ====");
-            Debug.Log(content);
-            Debug.Log($"=== End of Dump of {typeof(T)} ====");
+            Debug.Log($"=== Dump of {typeof(T)} ====\n{content}");
         }
         
         #endif

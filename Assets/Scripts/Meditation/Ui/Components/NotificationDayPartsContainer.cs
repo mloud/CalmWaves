@@ -3,6 +3,8 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Meditation.Managers;
 using OneDay.Core;
+using OneDay.Core.Modules.Notifications;
+using Unity.Notifications;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,9 +37,23 @@ namespace Meditation.Ui.Components
 
         public async UniTask Save()
         {
-            await ServiceLocator.Get<INotificationManager>()
-                .SaveDayTimeNotificationSettings(
-                    notificationsDayParts.Select(x => x.GetCurrentSettings()));
+            var settings = notificationsDayParts
+                .Select(x => x.GetCurrentSettings())
+                .ToList();
+            await ServiceLocator.Get<INotificationManager>().SaveDayTimeNotificationSettings(settings);
+
+            if (settings.Any(x => x.IsOn))
+            {
+                var permission = await ServiceLocator.Get<INotificationsApi>().RequestPermission();
+                if (permission == NotificationsPermissionStatus.Granted)
+                {
+                    Debug.LogError("User accepted permission");
+                }
+                else if (permission == NotificationsPermissionStatus.Denied)
+                {
+                    Debug.LogError("User needs to open settings to enable notifications");
+                }
+            }
         }
     }
 }

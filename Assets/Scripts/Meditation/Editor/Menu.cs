@@ -1,5 +1,6 @@
 using Meditation.Apis.Data;
 using Meditation.Data;
+using Meditation.Data.Notifications;
 using Meditation.Localization;
 using OneDay.Core.Modules.Data;
 using UnityEditor;
@@ -23,7 +24,7 @@ public class Menu
         LocalStorage.Dump<FinishedBreathing>(TypeToDataKeyBinding.UserFinishedBreathing); 
         LocalStorage.Dump<BreathingTestResult>(TypeToDataKeyBinding.UserBreathingTestResult); 
         LocalStorage.Dump<BreathingTestResult>(TypeToDataKeyBinding.UserCustomBreathingSettings); 
-        LocalStorage.Dump<BreathingTestResult>(TypeToDataKeyBinding.UserNotificationSettings); 
+        LocalStorage.Dump<UserDayTimeNotificationSettings>(TypeToDataKeyBinding.UserNotificationSettings); 
     }
     
     [MenuItem("CalmWaves/Generate TextIds")]

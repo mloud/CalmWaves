@@ -15,6 +15,7 @@ using OneDay.Core.Modules.Assets;
 using OneDay.Core.Modules.Audio;
 using OneDay.Core.Modules.Data;
 using OneDay.Core.Modules.Localization;
+using OneDay.Core.Modules.Notifications;
 using OneDay.Core.Modules.Share;
 using OneDay.Core.Modules.Sm;
 using OneDay.Core.Modules.Ui;
@@ -39,7 +40,7 @@ namespace Meditation
         [SerializeField] private LocalizationManager localizationManager;
         [SerializeField] private VibrationManager vibrationManager;
         [SerializeField] private NotificationManager notificationManager;
-
+        [SerializeField] private NotificationsApi notificationsApi; 
         private void Awake()
         {
             Boot().Forget();
@@ -60,6 +61,7 @@ namespace Meditation
             ServiceLocator.Register<ILocalizationManager>(localizationManager);
             ServiceLocator.Register<IVibrationManager>(vibrationManager);
             ServiceLocator.Register<INotificationManager>(notificationManager);
+            ServiceLocator.Register<INotificationsApi>(notificationsApi);
             
             // Savable data
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());

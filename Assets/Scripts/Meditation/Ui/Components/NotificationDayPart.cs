@@ -11,21 +11,28 @@ namespace Meditation.Ui.Components
     public class NotificationDayPart : MonoBehaviour
     {
         public bool IsOn => toggle.IsOn;
-        public TimeSpan Time => timeSpan;
+        public TimeSpan Time => new TimeSpan(hours, minutes, 0);
         
         [SerializeField] private TMP_Text dayTimeLabel;
         [SerializeField] private TimeSpanText timeLabel;
         [SerializeField] private CImage image;
         [SerializeField] private CToggle toggle;
-        [SerializeField] private Button upButton;
-        [SerializeField] private Button downButton;
+        [SerializeField] private Button upButtonHours;
+        [SerializeField] private Button downButtonHours;
+        [SerializeField] private Button upButtonMinutes;
+        [SerializeField] private Button downButtonMinutes;
 
-        private TimeSpan timeSpan;
         private RuntimeOnlyDayTimeNotificationSettings settings;
+
+        private int minutes;
+        private int hours;
+        
         private void Awake()
         {
-            upButton.onClick.AddListener(OnButtonUp);
-            downButton.onClick.AddListener(OnButtonDown);
+            upButtonHours.onClick.AddListener(OnHoursButtonUp);
+            downButtonHours.onClick.AddListener(OnHoursButtonDown);
+            upButtonMinutes.onClick.AddListener(OnMinutesButtonUp);
+            downButtonMinutes.onClick.AddListener(OnMinutesButtonDown);
             toggle.onChange.AddListener(OnSelected);
         }
 
@@ -34,7 +41,8 @@ namespace Meditation.Ui.Components
             this.settings = settings;
             
             toggle.SetOn(settings.IsOn, false);
-            timeSpan = settings.Time;
+            hours = this.settings.Time.Hours;
+            minutes = this.settings.Time.Minutes;
             timeLabel.Set(settings.Time);
             dayTimeLabel.text = this.settings.DefaultSettings.Name;
             await image.SetImage(settings.DefaultSettings.Icon);
@@ -43,18 +51,40 @@ namespace Meditation.Ui.Components
         public RuntimeOnlyDayTimeNotificationSettings GetCurrentSettings() => 
             settings;
         
-        private void OnButtonUp()
+        private void OnHoursButtonUp()
         {
-            timeSpan = timeSpan.Add(TimeSpan.FromHours(1));
-            timeLabel.Set(timeSpan);
-            settings.Time = timeSpan;
+            hours += 1;
+            hours %= 24;
+         
+            timeLabel.Set(Time);
+            settings.Time = Time;
         }
 
-        private void OnButtonDown()
+        private void OnHoursButtonDown()
         {
-            timeSpan = timeSpan.Add(-TimeSpan.FromHours(1));
-            timeLabel.Set(timeSpan);
-            settings.Time = timeSpan;
+            hours -= 1;
+            if (hours < 0)
+                hours += 24;
+            
+            timeLabel.Set(Time);
+            settings.Time = Time;
+        }
+        
+        private void OnMinutesButtonDown()
+        {
+            minutes -= 1;
+            if (minutes < 0)
+                minutes += 60;
+            timeLabel.Set(Time);
+            settings.Time = Time;
+        }
+
+        private void OnMinutesButtonUp()
+        {
+            minutes += 1;
+            minutes %= 60;
+            timeLabel.Set(Time);
+            settings.Time = Time;
         }
         
         private void OnSelected(bool isSelected)

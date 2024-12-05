@@ -20,15 +20,24 @@ MonoBehaviour:
       DefaultHour: 8
       DefaultMinute: 0
       DefaultState: 0
+      NotificationTitle: Time to Breathe
+      NotificationText: Start your day with calmness. Take a few deep breaths to
+        energize your morning.
     - NotificationId: ntf_noon
       Name: Noon
       Icon: NoonIcon
       DefaultHour: 12
       DefaultMinute: 0
       DefaultState: 0
+      NotificationTitle: Time to Breathe
+      NotificationText: Pause for a moment. A deep breath can refresh your mind and
+        body for the afternoon.
     - NotificationId: ntf_night
       Name: Evening
       Icon: NightIcon
       DefaultHour: 22
       DefaultMinute: 0
       DefaultState: 0
+      NotificationTitle: Time to Breathe
+      NotificationText: Unwind your day. Relax with slow, deep breaths to ease into
+        the night.

@@ -33,7 +33,7 @@ namespace OneDay.Core.Modules.Ui.Components
                 toggleGroup.RegisterToggle(this);
 
             button.onClick.AddListener(OnClick);
-            //SetOn(false, false);
+            SetOn(false, false);
         }
 
         public void SetOn(bool isOn, bool invokeListeners)
@@ -83,7 +83,7 @@ namespace OneDay.Core.Modules.Ui.Components
             onGameObject.SetVisibleWithFade(state, useFade ? fadeDuration : 0, false, ctx.Token).Forget();
             offGameObject.SetVisibleWithFade(!state, useFade ? fadeDuration : 0, false, ctx.Token).Forget();
             
-            button.image.SetAlpha(0);
+            //button.image.SetAlpha(0);
         }
 
         private void TryToSwitchSprites(bool state)

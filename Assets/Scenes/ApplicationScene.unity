@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 143a6a9034eb4a998aae1d0459234212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sendTestNotification: 0
   cancelAllNotificationsAfterStart: 1
   channelSettings:
     AndroidChannelId: default

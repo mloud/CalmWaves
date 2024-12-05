@@ -10,12 +10,14 @@ namespace Meditation.Data.Notifications
     [Serializable]
     public class NotificationDayTimeSettings
     {
-        [FormerlySerializedAs("Id")] public string NotificationId;
+        public string NotificationId;
         public string Name;
         public string Icon;
-        [FormerlySerializedAs("Hour")] public int DefaultHour;
-        [FormerlySerializedAs("Minute")] public int DefaultMinute;
+        public int DefaultHour;
+        public int DefaultMinute;
         public bool DefaultState;
+        public string NotificationTitle;
+        public string NotificationText;
     }
     
     [Serializable]

@@ -36,6 +36,7 @@ namespace OneDay.Core.Modules.Ui.Components
         {
             MM_SS, // Example: 30:15
             HH_MM_SS, // Example: 14:30:15
+            HH_MM,
             DD_MM_YYYY, // Example: 26/11/2024
             MM_DD_YYYY, // Example: 11/26/2024
             YYYY_MM_DD, // Example: 2024-11-26
@@ -51,6 +52,7 @@ namespace OneDay.Core.Modules.Ui.Components
             return timeFormat switch
             {
                 TimeFormat.HH_MM_SS => timeSpan.ToString(@"hh\:mm\:ss"),
+                TimeFormat.HH_MM => timeSpan.ToString(@"hh\:mm"),
                 TimeFormat.DD_MM_YYYY => timeSpan.ToString(@"dd\:mm\:yyyy"),
                 TimeFormat.MM_DD_YYYY => timeSpan.ToString(@"mm\:dd\:yyyy"),
                 TimeFormat.YYYY_MM_DD => timeSpan.ToString(@"yyyy\:mm\:dd"),

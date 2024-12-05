@@ -6,6 +6,7 @@ namespace OneDay.Core.Modules.Vibrations
     public interface IVibrationManager
     {
         void VibrateTiny();
+        void VibratePeek();
 #if UNITY_ANDROID
         void VibrateCustom(int ms);
 #endif
@@ -20,6 +21,11 @@ namespace OneDay.Core.Modules.Vibrations
         public void VibrateTiny()
         {
             Vibration.VibratePop();
+        }
+        
+        public void VibratePeek()
+        {
+            Vibration.VibratePeek();
         }
 
 #if UNITY_ANDROID

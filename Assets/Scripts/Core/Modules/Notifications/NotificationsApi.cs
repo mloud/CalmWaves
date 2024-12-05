@@ -24,6 +24,7 @@ namespace OneDay.Core.Modules.Notifications
     
     public class NotificationsApi : MonoBehaviour, IService, INotificationsApi
     {
+        [SerializeField] private bool sendTestNotification;
         public Action<Notification> ForegroundNotificationReceived { get; set; }
 
         public Notification? NotificationUsedToOpenApplication => 
@@ -76,6 +77,37 @@ namespace OneDay.Core.Modules.Notifications
         {
             Debug.Log($"Received notification when application running with title: {notification.Title}");
             ForegroundNotificationReceived?.Invoke(notification);
+        }
+
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            if (!pauseStatus)
+            {
+                if (cancelAllNotificationsAfterStart)
+                {
+                    NotificationCenter.CancelAllScheduledNotifications();
+                    NotificationCenter.CancelAllDeliveredNotifications();
+                }
+            }
+            else
+            {
+                if (sendTestNotification)
+                {
+                    var notificationInterval = new Notification
+                    {
+                        Title = "Testing notification interval",
+                        Text = "Text"
+                    };
+                    NotificationCenter.ScheduleNotification(notificationInterval, new NotificationIntervalSchedule(TimeSpan.FromSeconds(20)));
+                    
+                    var notificationExactTime = new Notification
+                    {
+                        Title = "Testing notification exact time",
+                        Text = "Text"
+                    };
+                    NotificationCenter.ScheduleNotification(notificationExactTime, new NotificationDateTimeSchedule(DateTime.Now + TimeSpan.FromSeconds(15)));
+                }
+            }
         }
     }
 }

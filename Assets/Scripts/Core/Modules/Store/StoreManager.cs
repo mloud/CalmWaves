@@ -15,10 +15,13 @@ namespace OneDay.Core.Modules.Store
         UniTask<IResult<RuntimeProductItem>> BuyProduct(string productId);
 
         IEnumerable<RuntimeProductItem> GetProducts(ProductType? productType);
+
+        bool IsSubscriptionActive(string subscriptionId);
     }
 
     public class StoreManager : MonoBehaviour, IService, IStoreManager, IDetailedStoreListener
     {
+        public IProductPurchaseValidator Validator { get; set; }
         private IStoreController storeController;
         private IExtensionProvider storeExtensionProvider;
         private IDataManager dataManager;
@@ -94,7 +97,24 @@ namespace OneDay.Core.Modules.Store
                 ? registeredProducts 
                 : registeredProducts
                     .Where(x => x.Setting.ItemType == productType);
-        
+
+        public bool IsSubscriptionActive(string subscriptionId)
+        {
+            if (storeController == null) return false;
+            var product = storeController.products.WithID(subscriptionId);
+
+            if (product != null && product.hasReceipt)
+            {
+                if (Validator != null) 
+                    return Validator.Validate(product.receipt);
+                Debug.LogWarning("Validation skipped - no validator set");
+                return true;
+            }
+
+            return false;
+        }
+     
+
         public void OnInitializeFailed(InitializationFailureReason error) => 
             Debug.LogError($"Initialization failed error: {error}");
 

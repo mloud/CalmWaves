@@ -13,6 +13,7 @@ using Meditation.Ui.Panels;
 using OneDay.Core;
 using OneDay.Core.Modules.Assets;
 using OneDay.Core.Modules.Audio;
+using OneDay.Core.Modules.Conditions;
 using OneDay.Core.Modules.Data;
 using OneDay.Core.Modules.Localization;
 using OneDay.Core.Modules.Notifications;
@@ -28,6 +29,7 @@ using UnityEngine;
 
 namespace Meditation
 {
+    [DefaultExecutionOrder(-100)]
     public class BreathingApp : MonoBehaviour
     {
         [SerializeField] private AudioManager audioManager;
@@ -44,7 +46,7 @@ namespace Meditation
         [SerializeField] private NotificationManager notificationManager;
         [SerializeField] private NotificationsApi notificationsApi;
         [SerializeField] private StoreManager storeManager;
-        
+        [SerializeField] private ConditionManager conditionManager;
         private void Awake()
         {
             Boot().Forget();
@@ -67,6 +69,7 @@ namespace Meditation
             ServiceLocator.Register<INotificationManager>(notificationManager);
             ServiceLocator.Register<INotificationsApi>(notificationsApi);
             ServiceLocator.Register<IStoreManager>(storeManager);
+            ServiceLocator.Register<IConditionManager>(conditionManager);
             
             // Savable data
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
@@ -89,6 +92,11 @@ namespace Meditation
 
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<UserDayTimeNotificationSettings>(TypeToDataKeyBinding.UserNotificationSettings);
 
+            // conditions
+            ServiceLocator.Get<IConditionManager>().RegisterCondition(ConditionIds.IsPremiumAccount, 
+                () => ServiceLocator.Get<IStoreManager>().IsSubscriptionActive("calmwaves.premium_subscription"));
+            
+            
             // load texts
             ServiceLocator.Get<ILocalizationManager>().LocalizationDatabase = LocalizationFactory.Create();
             ServiceLocator.Get<ILocalizationManager>().Language = "en";

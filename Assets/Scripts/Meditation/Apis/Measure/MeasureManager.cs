@@ -28,6 +28,8 @@ namespace Meditation.Apis.Measure
             var breathingTests = await dataManager.GetAll<BreathingTestResult>();
             breathingTestCalendar.AddEvents(breathingTests.Select(x=>(x, x.Date)).ToArray());
         }        
+        
+        public UniTask PostInitialize() => UniTask.CompletedTask;
     
         public async UniTask SaveBreathingTestResult(BreathingTestResult breathingTestResult)
         {

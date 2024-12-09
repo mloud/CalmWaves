@@ -97,6 +97,7 @@ namespace Meditation.Apis.Settings
         private Dictionary<Type, ISettingsModule> modules = new();
 
         public UniTask Initialize() => UniTask.CompletedTask;
+        public UniTask PostInitialize() => UniTask.CompletedTask;
 
         public T GetModule<T>() where T : ISettingsModule
         {

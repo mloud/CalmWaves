@@ -72,6 +72,8 @@ namespace Meditation.Apis
                 await dataManager.Actualize(user);
             }
         }
+        
+        public UniTask PostInitialize() => UniTask.CompletedTask;
 
         public int GetStreak() => user.Streak;
         

@@ -10,6 +10,6 @@ namespace Meditation.Data
         public const string UserNotificationSettings = "UserNotificationSettings";
         // readonly
         public const string ContentNotificationSettings = "NotificationSettings";
-
+        public const string ContentStoreItemSettings = "StoreItemSettings";
     }
 }

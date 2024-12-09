@@ -199,7 +199,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Colorful Minimalist Space Desktop Wallpaper (1080 x 1920 px) (12)_3
+      name: Frame colored
       rect:
         serializedVersion: 2
         x: 468
@@ -925,7 +925,6 @@ TextureImporter:
       Colorful Minimalist Space Desktop Wallpaper (1080 x 1920 px) (12)_27: 2096864422
       Colorful Minimalist Space Desktop Wallpaper (1080 x 1920 px) (12)_28: 1565651336
       Colorful Minimalist Space Desktop Wallpaper (1080 x 1920 px) (12)_29: 1926194544
-      Colorful Minimalist Space Desktop Wallpaper (1080 x 1920 px) (12)_3: 1747868301
       Colorful Minimalist Space Desktop Wallpaper (1080 x 1920 px) (12)_30: -909363366
       Colorful Minimalist Space Desktop Wallpaper (1080 x 1920 px) (12)_31: -857917486
       Colorful Minimalist Space Desktop Wallpaper (1080 x 1920 px) (12)_32: 252473266
@@ -938,6 +937,7 @@ TextureImporter:
       Colorful Minimalist Space Desktop Wallpaper (1080 x 1920 px) (12)_7: 721221094
       Colorful Minimalist Space Desktop Wallpaper (1080 x 1920 px) (12)_8: -1786391101
       Colorful Minimalist Space Desktop Wallpaper (1080 x 1920 px) (12)_9: 1830619498
+      Frame colored: 1747868301
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

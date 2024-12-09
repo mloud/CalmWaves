@@ -37,10 +37,8 @@ namespace OneDay.Core.Modules.Data
     {
         private Dictionary<Type, IStorage> storages;
 
-        public UniTask Initialize()
-        {
-            return UniTask.CompletedTask;
-        }
+        public UniTask Initialize() => UniTask.CompletedTask;
+        public UniTask PostInitialize() => UniTask.CompletedTask;
 
         public void RegisterStorage<T>(IStorage storage)
         {

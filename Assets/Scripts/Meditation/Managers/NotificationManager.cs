@@ -32,6 +32,8 @@ namespace Meditation.Managers
             IsInitialized = true;
         }
 
+        public UniTask PostInitialize() => UniTask.CompletedTask;
+        
         public async UniTask SaveDayTimeNotificationSettings(IEnumerable<RuntimeOnlyDayTimeNotificationSettings> runtimeNotificationSettings)
         {
             var dataManager = ServiceLocator.Get<IDataManager>();

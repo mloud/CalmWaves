@@ -48,6 +48,8 @@ namespace OneDay.Core.Modules.Notifications
             NotificationCenter.OnNotificationReceived += NotificationReceivedWhileApplicationRunning;
             return UniTask.CompletedTask;
         }
+        
+        public UniTask PostInitialize() => UniTask.CompletedTask;
 
         public void ScheduleNotification(Notification notification, TimeSpan after)
         {

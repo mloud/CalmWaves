@@ -16,6 +16,7 @@ namespace OneDay.Core.Modules.Share
         [SerializeField] private string url;
         [SerializeField] private string filename;
         public UniTask Initialize() => UniTask.CompletedTask;
+        public UniTask PostInitialize() => UniTask.CompletedTask;
         
         public async UniTask TakeScreenshotAndShare()
         {

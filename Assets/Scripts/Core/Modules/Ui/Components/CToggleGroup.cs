@@ -8,9 +8,11 @@ namespace OneDay.Core.Modules.Ui.Components
     {
         public int MinSelectedToggles = 0;
         public int MaxSelectedToggles = -1;
+        public bool IsUsingSwitchBehaviour => useSwitchBehaviour;
+        public IEnumerable<CToggle> Toggles => toggles;
         
         [SerializeField] private List<CToggle> toggles;
-    
+        [SerializeField] private bool useSwitchBehaviour; 
         public void RegisterToggle(CToggle toggle)
         {
             if (toggles.Contains(toggle))
@@ -30,7 +32,6 @@ namespace OneDay.Core.Modules.Ui.Components
             {
                 return MaxSelectedToggles == -1 || toggles.Count(x => x.IsOn) < MaxSelectedToggles;
             }
-
             return toggles.Count(x => x.IsOn) > MinSelectedToggles;
         }
     }

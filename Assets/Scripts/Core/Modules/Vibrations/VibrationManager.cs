@@ -18,21 +18,12 @@ namespace OneDay.Core.Modules.Vibrations
             Vibration.Init();
             return UniTask.CompletedTask;
         }
-        public void VibrateTiny()
-        {
-            Vibration.VibratePop();
-        }
-        
-        public void VibratePeek()
-        {
-            Vibration.VibratePeek();
-        }
+        public UniTask PostInitialize() => UniTask.CompletedTask;
+        public void VibrateTiny() => Vibration.VibratePop();
+        public void VibratePeek() => Vibration.VibratePeek();
 
 #if UNITY_ANDROID
-        public void VibrateCustom(int ms)
-        {
-            Vibration.VibrateAndroid(ms);
-        }
+        public void VibrateCustom(int ms) => Vibration.VibrateAndroid(ms);
 #endif
     }
 }

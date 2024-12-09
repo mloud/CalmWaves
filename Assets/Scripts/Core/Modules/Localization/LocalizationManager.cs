@@ -41,5 +41,6 @@ namespace OneDay.Core.Modules.Localization
        }
 
        public UniTask Initialize() => UniTask.CompletedTask;
+       public UniTask PostInitialize() => UniTask.CompletedTask;
    }
 }

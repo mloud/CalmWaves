@@ -68,6 +68,9 @@ namespace OneDay.Core.Modules.Audio
             return UniTask.CompletedTask;
         }
 
+        public UniTask PostInitialize() => UniTask.CompletedTask;
+
+        
         public async UniTask PlayMusic(string musicName)
         {
             if (string.IsNullOrEmpty(musicName))

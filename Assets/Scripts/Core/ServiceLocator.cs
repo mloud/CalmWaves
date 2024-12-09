@@ -8,6 +8,7 @@ namespace OneDay.Core
     public interface IService
     {
         UniTask Initialize();
+        UniTask PostInitialize();
     }
 
     public static class ServiceLocator

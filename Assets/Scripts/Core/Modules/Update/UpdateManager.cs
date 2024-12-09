@@ -21,10 +21,8 @@ namespace OneDay.Core.Modules.Update
         private readonly List<Action<float>> lateUpdateMethods = new();
         private readonly List<Action<float>> fixedUpdateMethods = new();
 
-        public async UniTask Initialize()
-        {
-            await UniTask.CompletedTask; // Simulate asynchronous initialization
-        }
+        public async UniTask Initialize() => await UniTask.CompletedTask; // Simulate asynchronous initialization
+        public UniTask PostInitialize() => UniTask.CompletedTask;
 
         public void RegisterUpdate(Action<float> updateMethod)
         {

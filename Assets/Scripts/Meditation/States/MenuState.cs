@@ -41,7 +41,8 @@ namespace Meditation.States
                 .BindAction(menuView.AiButton, OnAiClicked)
                 .BindAction(menuView.MeasuringButton, OnMeasureClicked)
                 .BindAction(menuView.CustomExerciseContainer.CreateNewButton, OnCreateNewExercise)
-                .BindAction(menuView.NotificationButton, OnNotificationClicked);
+                .BindAction(menuView.NotificationButton, OnNotificationClicked)
+                .BindAction(menuView.SubscriptionButton, OnSubscriptionClicked);
     
             await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<CustomBreathingSettings>());
             menuView.CustomExerciseContainer.BreathingSettingsSelected += OnCustomBreathingClicked;
@@ -148,6 +149,12 @@ namespace Meditation.States
         private async UniTask OnNotificationClicked()
         {
             var request = uiManager.OpenPopup<NotificationPopup>(null);
+            await request.OpenTask;
+        }
+        
+        private async UniTask OnSubscriptionClicked()
+        {
+            var request = uiManager.OpenPopup<SubscriptionPopup>(null);
             await request.OpenTask;
         }
     }

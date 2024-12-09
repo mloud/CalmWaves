@@ -51,6 +51,12 @@ namespace OneDay.Core.Modules.Ui
             return UniTask.CompletedTask;
         }
 
+        public UniTask PostInitialize()
+        {
+            GetAllPopups().ForEach(x=>x.Initialize());
+            return UniTask.CompletedTask;
+        }
+
         #region Views
         public T GetView<T>() where T : UiView => (T)views.FirstOrDefault(x => x.GetType() == typeof(T));
         public IEnumerable<UiView> GetAllViews() => views;

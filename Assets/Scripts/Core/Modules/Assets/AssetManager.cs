@@ -12,6 +12,7 @@ namespace OneDay.Core.Modules.Assets
     public class AssetManager : MonoBehaviour, IAssetManager, IService
     {
         public UniTask Initialize() => UniTask.CompletedTask;
+        public UniTask PostInitialize() => UniTask.CompletedTask;
         /// <summary>
         /// Load an asset of type T by its address key.
         /// </summary>

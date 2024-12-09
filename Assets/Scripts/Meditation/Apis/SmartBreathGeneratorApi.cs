@@ -26,6 +26,7 @@ namespace Meditation.Apis
             promptService = new PromptService(url);
             return UniTask.CompletedTask;
         }
+        public UniTask PostInitialize() => UniTask.CompletedTask;
 
         public async UniTask<IBreathingSettings> Generate(IEnumerable<string> moods)
         {

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using OneDay.Core.Extensions;
@@ -23,6 +24,9 @@ namespace OneDay.Core.Modules.Ui.Components
         private CancellationTokenSource ctx;
         private bool isOn;
         private float fadeDuration = 0.2f;
+
+        private bool isAlreadySet;
+        
         private void Awake()
         {
             if (toggleGroup == null)
@@ -33,14 +37,16 @@ namespace OneDay.Core.Modules.Ui.Components
                 toggleGroup.RegisterToggle(this);
 
             button.onClick.AddListener(OnClick);
-            SetOn(false, false);
+
+            if (!isAlreadySet)
+            {
+                SetOn(false, false);
+            }
         }
 
         public void SetOn(bool isOn, bool invokeListeners)
         {
-            if (toggleGroup != null && !toggleGroup.CanSetToggle(isOn))
-                return;
-            
+            isAlreadySet = true;
             this.isOn = isOn;
             
             TryToSwitchGameObjects(this.isOn);
@@ -54,7 +60,23 @@ namespace OneDay.Core.Modules.Ui.Components
 
         private void OnClick()
         {
-            SetOn(!isOn, true);
+            if (toggleGroup != null && toggleGroup.IsUsingSwitchBehaviour)
+            {
+                if (!isOn)
+                {
+                    SetOn(true, true);
+                    toggleGroup.Toggles
+                        .Where(x=>x!=this)
+                        .ForEach(x=>x.SetOn(false, true));   
+                }
+            }
+            else
+            {
+                if (toggleGroup != null && !toggleGroup.CanSetToggle(!isOn))
+                    return;
+                
+                SetOn(!isOn, true);
+            }
         }
 
         private void OnValidate()

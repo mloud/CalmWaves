@@ -18,6 +18,7 @@ namespace Meditation.Ui.Views
         public Button AiButton => aiButton;
         public Button MeasuringButton => measuringButton;
         public Button NotificationButton => notificationButton;
+        public Button SubscriptionButton => subscriptionButton;
         public DayTimeSpanChart BreathingChart => breathingChart;
         public CustomExerciseContainer CustomExerciseContainer => customExerciseContainer;
 
@@ -27,6 +28,8 @@ namespace Meditation.Ui.Views
         [SerializeField] private Button aiButton;
         [SerializeField] private Button measuringButton;
         [SerializeField] private Button notificationButton;
+        [SerializeField] private Button subscriptionButton;
+
         
         [SerializeField] private UiElement topPagePart;
         [SerializeField] private Material skyBoxMaterial;

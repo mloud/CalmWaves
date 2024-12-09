@@ -56,7 +56,7 @@ namespace OneDay.Core.Modules.Store
                 return Result<RuntimeProductItem>.CreateError("StoreManager is not initialized");
             }
 
-            if (PurchaseRequest != null)
+            if (PurchaseRequest != null && PurchaseRequest.PurchaseState == PurchaseRequest.State.InProgress)
             {
                 return Result<RuntimeProductItem>.CreateError(
                     $"Purchase already in progress {PurchaseRequest.Product.definition.id}");
@@ -105,7 +105,6 @@ namespace OneDay.Core.Modules.Store
         {
             Debug.Log($"ProcessPurchase {purchaseEvent.purchasedProduct.definition.id}");
             PurchaseRequest?.MarkedAsPurchased();
-            PurchaseRequest = null;
             return PurchaseProcessingResult.Complete;
         }
 
@@ -116,7 +115,6 @@ namespace OneDay.Core.Modules.Store
                            $"reason: {failureReason}");
             
             PurchaseRequest?.MarkAsFailed(failureReason.ToString());
-            PurchaseRequest = null;
         }
 
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)

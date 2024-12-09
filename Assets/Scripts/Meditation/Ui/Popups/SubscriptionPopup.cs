@@ -3,6 +3,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using OneDay.Core;
 using OneDay.Core.Extensions;
+using OneDay.Core.Modules.Assets;
 using OneDay.Core.Modules.Store;
 using OneDay.Core.Modules.Store.Ui;
 using OneDay.Core.Modules.Ui;
@@ -23,7 +24,7 @@ namespace Meditation.Ui
         
         protected void Awake()
         {
-            continueButton.onClick.AddListener(OnContinue);
+            continueButton.onClick.AddListener(()=>OnContinue());
         }
 
         protected override async UniTask OnOpenStarted(IUiParameter parameter)
@@ -33,8 +34,6 @@ namespace Meditation.Ui
                 await InitializeSubscriptions();
                 isInitialized = true;
             }
-            
-            //productPanel.Items.ForEach(x=>x.GetComponent<CToggle>().SetOn(false, false));
             productPanel.Get(1).GetComponent<CToggle>().SetOn(true, false);
             
             ServiceLocator.Get<IUiManager>().HideView();
@@ -59,9 +58,12 @@ namespace Meditation.Ui
             }
         }
         
-        private void OnContinue()
+        private async UniTask OnContinue()
         {
-            
+            var selectedProduct = productPanel.Items.FirstOrDefault(x => x.GetComponent<CToggle>().IsOn);
+            Debug.Assert(selectedProduct!= null);
+            Debug.Log($"Purchasing  {selectedProduct.ProductItem.Product.definition.id}");
+            await ServiceLocator.Get<IStoreManager>().BuyProduct(selectedProduct.ProductItem.Product.definition.id);
         }
     }
 }

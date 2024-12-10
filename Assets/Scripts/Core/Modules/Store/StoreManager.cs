@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using OneDay.Core.Debugging;
 using OneDay.Core.Modules.Data;
 using OneDay.Core.Modules.Store.Data;
 using UnityEngine;
@@ -18,7 +19,8 @@ namespace OneDay.Core.Modules.Store
 
         bool IsSubscriptionActive(string subscriptionId);
     }
-
+    
+    [LogSection("Store")]
     public class StoreManager : MonoBehaviour, IService, IStoreManager, IDetailedStoreListener
     {
         public IProductPurchaseValidator Validator { get; set; }
@@ -55,7 +57,7 @@ namespace OneDay.Core.Modules.Store
         {
             if (!IsInitialized())
             {
-                Debug.LogError("Unity IAP not initialized");
+                D.LogError("Unity IAP not initialized", this);
                 return Result<RuntimeProductItem>.CreateError("StoreManager is not initialized");
             }
 
@@ -77,7 +79,7 @@ namespace OneDay.Core.Modules.Store
 
             if (product == null || !product.availableToPurchase)
             {
-                Debug.LogError("Product not available for purchase: " + productId);
+                D.LogError("Product not available for purchase: " + productId, this);
                 return Result<RuntimeProductItem>.CreateError("Product not available for purchase: " + productId);
             }
 
@@ -116,30 +118,30 @@ namespace OneDay.Core.Modules.Store
      
 
         public void OnInitializeFailed(InitializationFailureReason error) => 
-            Debug.LogError($"Initialization failed error: {error}");
+            D.LogError($"Initialization failed error: {error}", this);
 
         public void OnInitializeFailed(InitializationFailureReason error, string message) => 
-            Debug.LogError($"Initialization failed error: {error} message: {message}");
+            D.LogError($"Initialization failed error: {error} message: {message}", this);
 
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
         {
-            Debug.Log($"ProcessPurchase {purchaseEvent.purchasedProduct.definition.id}");
+            D.LogInfo($"ProcessPurchase {purchaseEvent.purchasedProduct.definition.id}", this);
             PurchaseRequest?.MarkedAsPurchased();
             return PurchaseProcessingResult.Complete;
         }
 
         public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
         {
-            Debug.LogError($"PurchaseFailed " +
+            D.LogError($"PurchaseFailed " +
                            $"product: {product}" +
-                           $"reason: {failureReason}");
+                           $"reason: {failureReason}", this);
             
             PurchaseRequest?.MarkAsFailed(failureReason.ToString());
         }
 
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
         {
-            Debug.Log($"Initialized");
+            D.LogInfo($"Initialized", this);
             Debug.Assert(productSettings != null);
             storeController = controller;
             storeExtensionProvider = extensions;
@@ -147,15 +149,15 @@ namespace OneDay.Core.Modules.Store
                 new RuntimeProductItem(storeController.products.WithID(x.ProductId), x))
                 .ToList();
             
-            Debug.Log(JsonConvert.SerializeObject(registeredProducts));
+            D.LogInfo(JsonConvert.SerializeObject(registeredProducts), this);
         }
 
         public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
         {
-            Debug.LogError($"PurchaseFailed " +
+            D.LogError($"PurchaseFailed " +
                            $"product: {product}" +
                            $"reason: {failureDescription.reason} " +
-                           $"description: {failureDescription.message}");
+                           $"description: {failureDescription.message}", this);
             
             PurchaseRequest?.MarkAsFailed(failureDescription.message);
         }

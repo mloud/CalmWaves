@@ -3,6 +3,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Meditation.Ui;
+using OneDay.Core.Debugging;
 using OneDay.Core.Extensions;
 using UnityEngine;
 
@@ -35,6 +36,7 @@ namespace OneDay.Core.Modules.Ui
             await UniTask.WaitUntil(()=>Popup.State == UiPopup.PopupState.Closed);
     }
     
+    [LogSection("Ui")]
     public class UiManager: MonoBehaviour, IService, IUiManager
     {
         [SerializeField] private List<UiView> views;

@@ -11,6 +11,7 @@ using Meditation.Managers;
 using Meditation.States;
 using Meditation.Ui.Panels;
 using OneDay.Core;
+using OneDay.Core.Debugging;
 using OneDay.Core.Modules.Assets;
 using OneDay.Core.Modules.Audio;
 using OneDay.Core.Modules.Conditions;
@@ -32,6 +33,7 @@ namespace Meditation
     [DefaultExecutionOrder(-100)]
     public class BreathingApp : MonoBehaviour
     {
+        [SerializeField] private DebugSections debugSections;
         [SerializeField] private AudioManager audioManager;
         [SerializeField] private AssetManager assetManager;
         [SerializeField] private UiManager uiManager;
@@ -54,7 +56,11 @@ namespace Meditation
 
         private async UniTask Boot()
         {
+            D.Initialize(debugSections.Sections);
+            
             Application.targetFrameRate = 60;
+            await UnityGS.Initialize("production");
+            
             ServiceLocator.Register<IAudioManager>(audioManager);
             ServiceLocator.Register<IAssetManager>(assetManager);
             ServiceLocator.Register<IUiManager>(uiManager);

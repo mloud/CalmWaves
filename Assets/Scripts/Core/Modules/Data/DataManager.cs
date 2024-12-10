@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Meditation;
 using Meditation.Data;
 using Newtonsoft.Json;
+using OneDay.Core.Debugging;
 using OneDay.Core.Extensions;
 using OneDay.Core.Modules.Assets;
 using UnityEngine;
@@ -33,6 +34,7 @@ namespace OneDay.Core.Modules.Data
         UniTask<AddressableAsset<MoodDb>> GetMoodSettings();
     }
     
+    [LogSection("Data")]
     public class DataManager :  MonoBehaviour, IService, IDataManager
     {
         private Dictionary<Type, IStorage> storages;
@@ -213,7 +215,7 @@ namespace OneDay.Core.Modules.Data
             int index = storageContent.FindIndex(x => x.Id == id);
             if (index == -1)
             {
-                Log.LogError($"No such data object with id {id} exists", "DataManager");
+                D.LogError($"No such data object with id {id} exists", "DataManager");
                 return new UniTask<T>(default);
             }
             

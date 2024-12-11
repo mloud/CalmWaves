@@ -172,7 +172,7 @@ PlayerSettings:
     iPhone: 0
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 2
+  AndroidBundleVersionCode: 24
   AndroidMinSdkVersion: 24
   AndroidTargetSdkVersion: 34
   AndroidPreferredInstallLocation: 1
@@ -270,7 +270,7 @@ PlayerSettings:
   AndroidKeystoreName: '{inproject}: upload.keystore'
   AndroidKeyaliasName: upload
   AndroidEnableArmv9SecurityFeatures: 0
-  AndroidBuildApkPerCpuArchitecture: 0
+  AndroidBuildApkPerCpuArchitecture: 1
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
   AndroidEnableTango: 0

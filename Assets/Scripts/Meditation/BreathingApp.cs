@@ -100,7 +100,7 @@ namespace Meditation
 
             // conditions
             ServiceLocator.Get<IConditionManager>().RegisterCondition(ConditionIds.IsPremiumAccount, 
-                () => ServiceLocator.Get<IStoreManager>().IsSubscriptionActive("calmwaves.premium_subscription"));
+                () => ServiceLocator.Get<IStoreManager>().IsSubscriptionActive("calmwaves.test_subscription"));
             
             
             // load texts

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -34,8 +35,14 @@ namespace Meditation.Ui
                 await InitializeSubscriptions();
                 isInitialized = true;
             }
-            productPanel.Get(1).GetComponent<CToggle>().SetOn(true, false);
-            
+
+            if (productPanel.Items.Any())
+            {
+                productPanel.Get(Math.Min(1, productPanel.Count-1))
+                    .GetComponent<CToggle>()
+                    .SetOn(true, false);
+            }
+
             ServiceLocator.Get<IUiManager>().HideView();
         }
 
@@ -64,6 +71,7 @@ namespace Meditation.Ui
             Debug.Assert(selectedProduct!= null);
             Debug.Log($"Purchasing  {selectedProduct.ProductItem.Product.definition.id}");
             await ServiceLocator.Get<IStoreManager>().BuyProduct(selectedProduct.ProductItem.Product.definition.id);
+            Close();
         }
     }
 }

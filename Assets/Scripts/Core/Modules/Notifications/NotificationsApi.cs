@@ -27,6 +27,9 @@ namespace OneDay.Core.Modules.Notifications
         [SerializeField] private bool sendTestNotification;
         public Action<Notification> ForegroundNotificationReceived { get; set; }
 
+
+        private bool isInitialized;
+        
         public Notification? NotificationUsedToOpenApplication => 
             NotificationCenter.LastRespondedNotification;
         
@@ -46,6 +49,7 @@ namespace OneDay.Core.Modules.Notifications
                 NotificationCenter.CancelAllDeliveredNotifications();
             }
             NotificationCenter.OnNotificationReceived += NotificationReceivedWhileApplicationRunning;
+            isInitialized = true;
             return UniTask.CompletedTask;
         }
         
@@ -83,6 +87,9 @@ namespace OneDay.Core.Modules.Notifications
 
         private void OnApplicationPause(bool pauseStatus)
         {
+            if (!isInitialized)
+                return;
+            
             if (!pauseStatus)
             {
                 if (cancelAllNotificationsAfterStart)

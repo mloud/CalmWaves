@@ -6,20 +6,25 @@ namespace OneDay.Core.Modules.Conditions.Ui
     public class ConditionComponent : MonoBehaviour
     {
         [SerializeField] private string conditionName;
-
+        [SerializeField] private bool refreshOnEnable;
         private void OnEnable()
         {
-            Refresh();
+            if (refreshOnEnable)
+            {
+                Refresh();
+            }
         }
 
-        private async UniTask Refresh()
+        public async UniTask Refresh()
         {
             if (string.IsNullOrEmpty(conditionName))
             {
                 Debug.LogError($"No condition set on {gameObject.name}", gameObject);
                 return;
             }
-            var result = await ServiceLocator.Get<IConditionManager>().Evaluate(conditionName);
+
+            var conditionManager = ServiceLocator.Get<IConditionManager>();
+            var result = await conditionManager.Evaluate(conditionName);
             gameObject.SetActive(result);
         }
     }

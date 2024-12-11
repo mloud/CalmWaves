@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace OneDay.Core.Modules.Store
 {
     public interface IStoreManager
     {
+        Action<string> ProductPurchased { get; set; }
         UniTask<IResult<RuntimeProductItem>> BuyProduct(string productId);
 
         IEnumerable<RuntimeProductItem> GetProducts(ProductType? productType);
@@ -23,6 +25,7 @@ namespace OneDay.Core.Modules.Store
     [LogSection("Store")]
     public class StoreManager : MonoBehaviour, IService, IStoreManager, IDetailedStoreListener
     {
+        public Action<string> ProductPurchased { get; set; }
         public IProductPurchaseValidator Validator { get; set; }
         private IStoreController storeController;
         private IExtensionProvider storeExtensionProvider;
@@ -41,18 +44,22 @@ namespace OneDay.Core.Modules.Store
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
    
             productSettings = (await dataManager.GetAll<ProductSettings>()).ToList();
-            productSettings.ForEach(x=>
-                builder.AddProduct(x.ProductId, x.ItemType , new IDs {
-                { x.ProductId, GooglePlay.Name },
-                /*{ "com.yourapp.weekly", AppleAppStore.Name }*/ 
-                }));
+            productSettings.ForEach(x =>
+                {
+                    builder.AddProduct(x.ProductId, x.ItemType, new IDs
+                    {
+                        { x.ProductId, GooglePlay.Name },
+                        /*{ "com.yourapp.weekly", AppleAppStore.Name }*/
+                    });
+                    D.LogInfo($"Adding product: {x.ProductId} od type: {x.ItemType} to the builder");
+                }
+            );
         
             UnityPurchasing.Initialize(this, builder);
         }
         
         public UniTask PostInitialize() => UniTask.CompletedTask;
 
- 
         public async UniTask<IResult<RuntimeProductItem>> BuyProduct(string productId)
         {
             if (!IsInitialized())
@@ -88,7 +95,14 @@ namespace OneDay.Core.Modules.Store
 
             await UniTask.WaitUntil(() => PurchaseRequest.PurchaseState != PurchaseRequest.State.InProgress);
 
-            return PurchaseRequest.PurchaseState == PurchaseRequest.State.Ok
+            bool wasSuccessful = PurchaseRequest.PurchaseState == PurchaseRequest.State.Ok;
+            
+            if (wasSuccessful)
+            {
+                ProductPurchased?.Invoke(productId);
+            }
+            
+            return wasSuccessful
                 ? Result<RuntimeProductItem>.CreateSuccessful(
                     new RuntimeProductItem(PurchaseRequest.Product, setting))
                 : Result<RuntimeProductItem>.CreateError($"Purchase failed with error: {PurchaseRequest.Error}");

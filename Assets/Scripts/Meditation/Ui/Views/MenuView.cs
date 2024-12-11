@@ -5,6 +5,9 @@ using DG.Tweening;
 using Meditation.Ui.Calendar;
 using Meditation.Ui.Chart;
 using Meditation.Ui.Components;
+using OneDay.Core;
+using OneDay.Core.Modules.Conditions.Ui;
+using OneDay.Core.Modules.Store;
 using OneDay.Core.Modules.Ui;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -42,6 +45,7 @@ namespace Meditation.Ui.Views
         [SerializeField] private CustomExerciseContainer customExerciseContainer;
         [SerializeField] private ScrollRect mainScrollRect;
         [SerializeField] private ExpandableArea expandableArea;
+        [SerializeField] private ConditionComponent premiumComponent;
         
         private List<GameObject> breathingButtons;
 
@@ -71,6 +75,7 @@ namespace Meditation.Ui.Views
         public override async UniTask Show(bool useSmooth, float speedMultiplier = 1.0f)
         {
             mainScrollRect.verticalNormalizedPosition = 1;
+            await premiumComponent.Refresh();
             await base.Show(useSmooth, speedMultiplier);
         }
 
@@ -98,6 +103,12 @@ namespace Meditation.Ui.Views
             IReadOnlyList<(DayOfWeek dayOfWeek, TimeSpan breathingDuration)> breathingTimesInWeek, TimeSpan requiredBreathingTime)
         {
             weekProgress.Set(breathingTimesInWeek,requiredBreathingTime);
+            return UniTask.CompletedTask;
+        }
+
+        public UniTask InitializePremium()
+        {
+            ServiceLocator.Get<IStoreManager>().ProductPurchased += _ => premiumComponent.Refresh();
             return UniTask.CompletedTask;
         }
 

@@ -59,11 +59,13 @@ namespace OneDay.Core.Editor.Build
             // Log output and errors
             if (output.Contains("error", StringComparison.CurrentCultureIgnoreCase))
             {
+                Debug.LogError($"Python Script Error:\n{output}");
                 return new UploadSummary(false, $"Python Script Error:\n{output}");
             }
             // Log output and errors
             if (!string.IsNullOrEmpty(error))
             {
+                Debug.LogError($"Python Script Error:\n{error}");
                 return new UploadSummary(false, $"Python Script Error:\n{error}");
             }
 

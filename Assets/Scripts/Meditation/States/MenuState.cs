@@ -35,6 +35,7 @@ namespace Meditation.States
             await menuView.InitializeBreathingButtons(breathingDbAsset.GetReference().GetAll() , OnMenuButtonClicked);
             await menuView.InitializeWeekCalendar(breathingApi.BreathingHistory.GetBreathingTimesThisWeek(), breathingApi.GetRequiredBreathingDuration());
             await menuView.InitializeTimer();
+            await menuView.InitializePremium();
 
             menuView
                 .BindAction(menuView.StartButton, OnStartClick)

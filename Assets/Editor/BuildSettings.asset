@@ -16,7 +16,7 @@ MonoBehaviour:
   buildName: CalmWaves
   developmentBuild: 0
   cleanBuild: 0
-  bundleVersionCode: 24
+  bundleVersionCode: 30
   pathToPython: /Library/Frameworks/Python.framework/Versions/3.13/bin/python3
   googleUploadScriptPath: Scripts/Core/Editor/Build/UploadToGoogle.py
   serviceAccountJsonFile: Scripts/Core/Editor/Build/ServiceAccount.json

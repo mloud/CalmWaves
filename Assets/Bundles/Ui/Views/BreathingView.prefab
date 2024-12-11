@@ -1340,6 +1340,7 @@ MonoBehaviour:
   cg: {fileID: 5987960430406546701}
   transitionInDuration: 1
   transitionOutDuration: 0.5
+  showAnimation: {fileID: 0}
   backButton: {fileID: 5662396327985016863}
   elementsCg: {fileID: 8991282012404490619}
   basicElementsCg: {fileID: 4231960541265855440}
@@ -1748,6 +1749,7 @@ MonoBehaviour:
   cg: {fileID: 0}
   transitionInDuration: 0.5
   transitionOutDuration: 0.5
+  showAnimation: {fileID: 0}
   button: {fileID: 2056180192599471640}
 --- !u!1 &8872063613475915829
 GameObject:

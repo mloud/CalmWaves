@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: StoreItemSettings
   m_EditorClassIdentifier: 
   data:
-  - ProductId: 'calmwaves.premium_weekly_subscription '
+  - ProductId: calmwaves.premium_weekly_subscription
     Name: Weekly
     Description: 
     Label: 
     ItemType: 2
-  - ProductId: 'calmwaves.premium_monthly_subscription '
+  - ProductId: calmwaves.premium_monthly_subscription
     Name: Monthly
     Description: 
     Label: 
     ItemType: 2
-  - ProductId: 'calmwaves.premium_yearly_subscription '
+  - ProductId: calmwaves.premium_yearly_subscription
     Name: Yearly
     Description: 
     Label: 

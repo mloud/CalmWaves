@@ -42,6 +42,18 @@ namespace OneDay.Core.Extensions
         public static async UniTask SetFromAsync(this RectTransform rectTransform, RectTransform source, float duration, Ease ease)
         {
             await UniTask.WhenAll(
+                DOTween.To(() => rectTransform.offsetMin, v => rectTransform.offsetMin = v, source.offsetMin, duration).SetEase(ease)
+                    .ToUniTask(),
+                DOTween.To(() => rectTransform.offsetMax, v => rectTransform.offsetMax = v, source.offsetMax, duration).SetEase(ease)
+                    .ToUniTask()
+            );
+
+              
+          //  rectTransform.offsetMin = source.offsetMin;
+          //  rectTransform.offsetMax = source.offsetMax;
+            
+            
+            await UniTask.WhenAll(
                 rectTransform.DOAnchorMin(source.anchorMin, duration).SetEase(ease).ToUniTask(),
                 rectTransform.DOAnchorMax(source.anchorMax, duration).SetEase(ease).ToUniTask());
         }

@@ -504,7 +504,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 140.8
+  m_Spacing: 67.96
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
@@ -1193,6 +1193,7 @@ MonoBehaviour:
   cg: {fileID: 5970243378669461777}
   transitionInDuration: 0.5
   transitionOutDuration: 0.5
+  showAnimation: {fileID: 0}
   closeButton: {fileID: 8431417371927194043}
 --- !u!1 &7811852346427625009
 GameObject:

@@ -114,7 +114,7 @@ namespace Meditation.Ui
                     break;
                 
                 case State.SettingsTimer:
-                    await settingsNameStateContainer.SetVisibleWithFade(false, 0.0f, true);
+                    await settingsNameStateContainer.SetVisibleWithFade(false, 0.2f, true);
                     await settingsTimerStateContainer.SetVisibleWithFade(true, 1.0f, true);
                     break;
             }

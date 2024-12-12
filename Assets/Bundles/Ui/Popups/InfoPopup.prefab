@@ -1747,6 +1747,7 @@ MonoBehaviour:
   cg: {fileID: 5970243378669461777}
   transitionInDuration: 0.5
   transitionOutDuration: 0.5
+  showAnimation: {fileID: 0}
   closeButton: {fileID: 8431417371927194043}
   helpButton: {fileID: 9096406919749495119}
   continueButton: {fileID: 1233515092330160775}
@@ -2748,7 +2749,7 @@ PrefabInstance:
     - target: {fileID: 6327578645917089686, guid: 750042a8bb6934fe5b40ab126fc3fef8,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -263.87
+      value: -114
       objectReference: {fileID: 0}
     - target: {fileID: 6327578645917089686, guid: 750042a8bb6934fe5b40ab126fc3fef8,
         type: 3}

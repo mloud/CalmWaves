@@ -1,48 +1,51 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 
 namespace OneDay.Core.Modules.Conditions
 {
     public abstract class CompositeCondition: ICondition
     {
-        protected Func<UniTask<bool>> ConditionA { get; }
-        protected Func<UniTask<bool>> ConditionB { get; }
-        
-        protected CompositeCondition(ICondition conditionA, ICondition conditionB)
-        {
-            ConditionA = conditionA.Evaluate;
-            ConditionB = conditionB.Evaluate;
-        }
-        
-        protected CompositeCondition(Func<UniTask<bool>> conditionA, Func<UniTask<bool>> conditionB)
-        {
-            ConditionA = conditionA;
-            ConditionB = conditionB;
-        }
+        protected List<Func<UniTask<bool>>> Conditions { get; }
+
+        protected CompositeCondition(params ICondition[] conditions) =>
+            Conditions = conditions.Select(x => (Func<UniTask<bool>>)x.Evaluate).ToList();
+
+        protected CompositeCondition(params Func<UniTask<bool>>[] conditions) => 
+            Conditions = conditions.ToList();
+
+        protected CompositeCondition(params Func<bool>[] conditions) =>
+            Conditions = conditions.Select(condition => (Func<UniTask<bool>>)(() => UniTask.FromResult(condition()))).ToList();
 
         public abstract UniTask<bool> Evaluate();
     }
     
     public class CompositeAndCondition : CompositeCondition
     {
-        public CompositeAndCondition(ICondition conditionA, ICondition conditionB) : 
-            base(conditionA, conditionB) {}
-        
-        public CompositeAndCondition(Func<UniTask<bool>> conditionA, Func<UniTask<bool>> conditionB) :
-            base(conditionA, conditionB) {}
-        
-        public override async UniTask<bool> Evaluate() => 
-            await ConditionA() && await ConditionB();
+        public CompositeAndCondition(params ICondition[] conditions) : base(conditions){}
+        public CompositeAndCondition(params Func<UniTask<bool>>[] conditions) : base(conditions){}
+        public CompositeAndCondition(params Func<bool>[] conditions) : base(conditions){}
+        public override async UniTask<bool> Evaluate()
+        {
+            foreach (var condition in Conditions)
+                if (!await condition())
+                    return false;
+            return true;
+        }
     }
     
     public class CompositeOrCondition : CompositeCondition
     {
-        public CompositeOrCondition(ICondition conditionA, ICondition conditionB) : 
-            base(conditionA, conditionB) {}
-        
-        public CompositeOrCondition(Func<UniTask<bool>> conditionA, Func<UniTask<bool>> conditionB) :
-            base(conditionA, conditionB) {}
-        public override async UniTask<bool> Evaluate() => 
-            await ConditionA() || await ConditionB();
+        public CompositeOrCondition(params ICondition[] conditions) : base(conditions){}
+        public CompositeOrCondition(params Func<UniTask<bool>>[] conditions) : base(conditions){}
+        public CompositeOrCondition(params Func<bool>[] conditions) : base(conditions){}
+        public override async UniTask<bool> Evaluate()
+        {
+            foreach (var condition in Conditions)
+                if (await condition())
+                    return true;
+            return false;
+        }
     }
 }

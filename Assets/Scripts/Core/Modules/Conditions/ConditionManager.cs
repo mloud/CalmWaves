@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using OneDay.Core.Debugging;
 using UnityEngine;
 
 namespace OneDay.Core.Modules.Conditions
@@ -18,6 +19,7 @@ namespace OneDay.Core.Modules.Conditions
         void RegisterCondition(string name, ICondition method);
     }
     
+    [LogSection("Condition")]
     public class ConditionManager : MonoBehaviour, IService, IConditionManager
     {
         public UniTask Initialize() => UniTask.CompletedTask;
@@ -28,9 +30,13 @@ namespace OneDay.Core.Modules.Conditions
         public async UniTask<bool> Evaluate(string conditionName)
         {
             if (conditions.TryGetValue(conditionName, out var condition))
-                return await condition();
-           
-            Debug.LogError($"Condition {conditionName} is not registered");
+            {
+                var result = await condition.Invoke();
+                D.LogInfo($"Condition {conditionName} evaluated: {result}", this);
+                return result;
+            }
+
+            D.LogError($"Condition {conditionName} is not registered", this);
             return false;
         }
 
@@ -43,7 +49,7 @@ namespace OneDay.Core.Modules.Conditions
 
         public void RegisterCondition(string conditionName, Func<bool> method)
         {
-            if (conditions.TryAdd(conditionName, () => new UniTask<bool>(method())))
+            if (conditions.TryAdd(conditionName, () => UniTask.FromResult(method())))
                 return;
             Debug.LogError($"Condition {conditionName} is already registered");
         }

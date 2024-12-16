@@ -17,6 +17,16 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 2176cd01de7c54d7c9699f325c7aa9c2
   m_SerializeEntries:
+  - m_GUID: 3c273554b11fb4df3a074a9e0a8d9a80
+    m_Address: AudioDefinitionTable
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5afef5573c6fc488da81d2756bf340b0
+    m_Address: StoreItemSettings
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7fd9bf71e66a742709125678e213ea33
     m_Address: DailyBreathingExerciseDb
     m_ReadOnly: 0
@@ -29,11 +39,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c4285fcbfeea947888c13f7a1e2eb9ef
     m_Address: NotificationSettings
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5afef5573c6fc488da81d2756bf340b0
-    m_Address: StoreItemSettings
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

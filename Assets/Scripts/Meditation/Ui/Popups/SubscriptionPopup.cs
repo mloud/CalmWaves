@@ -35,7 +35,8 @@ namespace Meditation.Ui
                 await InitializeSubscriptions();
                 isInitialized = true;
             }
-
+            
+            productPanel.Items.ForEach(x=>x.GetComponent<CToggle>().SetOn(false, false));
             if (productPanel.Items.Any())
             {
                 productPanel.Get(Math.Min(1, productPanel.Count-1))
@@ -61,7 +62,7 @@ namespace Meditation.Ui
             
             for (int i = 0; i < subscriptions.Count; i++)
             {
-                productPanel.Get(i).Set(subscriptions[i]);         
+                productPanel.Get(i).Set(subscriptions[i]);     
             }
         }
         

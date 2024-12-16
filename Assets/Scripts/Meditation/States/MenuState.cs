@@ -5,6 +5,7 @@ using Meditation.Apis;
 using Meditation.Core.Utils;
 using Meditation.Data;
 using Meditation.Ui;
+using Meditation.Ui.Audio;
 using Meditation.Ui.Chart;
 using Meditation.Ui.Views;
 using OneDay.Core;
@@ -43,7 +44,8 @@ namespace Meditation.States
                 .BindAction(menuView.MeasuringButton, OnMeasureClicked)
                 .BindAction(menuView.CustomExerciseContainer.CreateNewButton, OnCreateNewExercise)
                 .BindAction(menuView.NotificationButton, OnNotificationClicked)
-                .BindAction(menuView.SubscriptionButton, OnSubscriptionClicked);
+                .BindAction(menuView.SubscriptionButton, OnSubscriptionClicked)
+                .BindAction(menuView.MusicButton, OnMusicClicked);
     
             await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<CustomBreathingSettings>());
             menuView.CustomExerciseContainer.BreathingSettingsSelected += OnCustomBreathingClicked;
@@ -70,9 +72,8 @@ namespace Meditation.States
             menuView.BreathingChart.Set(new DayTimeSpanChartData(breathingTimesThisWeek, chartMax));
             menuView.BreathingChart.Select(DateTime.Now.DayOfWeek);
             menuView.CustomExerciseContainer.ScrollTobBeginning();
-            
             await menuView.Show(true);
-            ServiceLocator.Get<IAudioManager>().PlayMusic("Menu");
+            //ServiceLocator.Get<IAudioManager>().PlayMusic("Menu");
             if (stateData != null)
             {
                 var finishedBreathing = stateData.GetValue<bool>(StateDataKeys.BreathingFinished);
@@ -156,6 +157,12 @@ namespace Meditation.States
         private async UniTask OnSubscriptionClicked()
         {
             var request = uiManager.OpenPopup<SubscriptionPopup>(null);
+            await request.OpenTask;
+        }
+        
+        private async UniTask OnMusicClicked()
+        {
+            var request = uiManager.OpenPopup<AudioPopup>(null);
             await request.OpenTask;
         }
     }

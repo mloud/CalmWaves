@@ -6,7 +6,9 @@ namespace Meditation.Core.Utils
     {
         public static int GetVersionCode()
         {
-            #if UNITY_ANDROID
+#if UNITY_EDITOR
+            return UnityEditor.PlayerSettings.Android.bundleVersionCode;
+#elif UNITY_ANDROID
             return GetAndroidVersionCode();
 #else
             return -1;

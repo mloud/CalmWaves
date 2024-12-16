@@ -14,7 +14,8 @@ public class Menu
             TypeToDataKeyBinding.UserData, 
             TypeToDataKeyBinding.UserFinishedBreathing,
             TypeToDataKeyBinding.UserBreathingTestResult,
-            TypeToDataKeyBinding.UserCustomBreathingSettings); 
+            TypeToDataKeyBinding.UserCustomBreathingSettings,
+            TypeToDataKeyBinding.AudioMixSettings); 
     }
     
     [MenuItem("CalmWaves/Dump all data")]

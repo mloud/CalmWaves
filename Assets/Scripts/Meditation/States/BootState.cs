@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Meditation.Apis.Audio;
 using OneDay.Core;
 using OneDay.Core.Extensions;
 using OneDay.Core.Modules.Sm;
@@ -12,6 +13,7 @@ namespace Meditation.States
 
         public override async UniTask EnterAsync(StateData stateData = null)
         {
+            ServiceLocator.Get<IAudioEnvironmentManager>().Apply("default");
             ServiceLocator.Get<IUiManager>().HideView(false);
             ServiceLocator.Get<IUiManager>().GetAllViews().ForEach(view=>view.Hide(false));
             ServiceLocator.Get<IUiManager>().ShowView(true);

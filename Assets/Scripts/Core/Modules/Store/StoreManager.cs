@@ -4,6 +4,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using OneDay.Core.Debugging;
+using OneDay.Core.Extensions;
 using OneDay.Core.Modules.Data;
 using OneDay.Core.Modules.Store.Data;
 using UnityEngine;
@@ -51,7 +52,7 @@ namespace OneDay.Core.Modules.Store
                         { x.ProductId, GooglePlay.Name },
                         /*{ "com.yourapp.weekly", AppleAppStore.Name }*/
                     });
-                    D.LogInfo($"Adding product: {x.ProductId} od type: {x.ItemType} to the builder");
+                    D.LogInfo($"Adding product: {x.ProductId} od type: {x.ItemType} to the builder", this);
                 }
             );
         
@@ -99,6 +100,7 @@ namespace OneDay.Core.Modules.Store
             
             if (wasSuccessful)
             {
+                D.LogInfo($"Sending callbacks to: {string.Join(',',ProductPurchased.GetListeners())}", this);
                 ProductPurchased?.Invoke(productId);
             }
             
@@ -116,18 +118,35 @@ namespace OneDay.Core.Modules.Store
 
         public bool IsSubscriptionActive(string subscriptionId)
         {
-            if (storeController == null) return false;
+            if (storeController == null)
+            {
+                D.LogError($"{nameof(StoreManager)} is not initialized!", this);
+                return false;
+            }
             var product = storeController.products.WithID(subscriptionId);
 
+            bool isSubscriptionActive = false;
+            
             if (product != null && product.hasReceipt)
             {
                 if (Validator != null) 
-                    return Validator.Validate(product.receipt);
-                Debug.LogWarning("Validation skipped - no validator set");
-                return true;
-            }
+                {
+                    bool isValid = Validator.Validate(product.receipt);
+                    if (!isValid)
+                    {
+                        D.LogError($"Validation on product {subscriptionId} failed", this);
+                    }
 
-            return false;
+                    isSubscriptionActive = isValid;
+                }
+                else
+                {
+                    Debug.LogWarning("Validation skipped - no validator set", this);
+                    isSubscriptionActive = true;
+                }
+            }
+            D.LogInfo($"Subscription query on {subscriptionId} resolved as active: {isSubscriptionActive}", this);
+            return isSubscriptionActive;
         }
      
 

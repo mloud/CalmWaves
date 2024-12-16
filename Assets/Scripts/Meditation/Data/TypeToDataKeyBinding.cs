@@ -8,8 +8,11 @@ namespace Meditation.Data
         public const string UserBreathingTestResult = "BreathingTestResult";
         public const string UserCustomBreathingSettings = "CustomBreathingSettings";
         public const string UserNotificationSettings = "UserNotificationSettings";
+        public const string AudioMixSettings = "AudioMixSettings";
+
         // readonly
         public const string ContentNotificationSettings = "NotificationSettings";
         public const string ContentStoreItemSettings = "StoreItemSettings";
+        public const string ContentAudioDefinition = "AudioDefinitionTable";
     }
 }

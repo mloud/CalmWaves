@@ -76,14 +76,9 @@ namespace OneDay.Core.Debugging
             }
         }
         
-        public static void LogError(string message, string section = null)
-        {
-            if (IsSectionEnabled(section))
-            {
-                Debug.LogError(CreateLogMessage(section, message));
-            }
-        }
-        
+        public static void LogError(string message, string section = null) => 
+            Debug.LogError(CreateLogMessage(section, message));
+
         public static void LogError(string message, object context = null)
         {
             var section = TryGetLogSection(context);

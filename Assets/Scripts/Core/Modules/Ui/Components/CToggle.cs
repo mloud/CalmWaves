@@ -4,11 +4,12 @@ using Cysharp.Threading.Tasks;
 using OneDay.Core.Extensions;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace OneDay.Core.Modules.Ui.Components
 {
-    public class CToggle : MonoBehaviour
+    public class CToggle : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         public bool IsOn => isOn;
         public UnityEvent<bool> onChange;
@@ -26,6 +27,7 @@ namespace OneDay.Core.Modules.Ui.Components
         private float fadeDuration = 0.2f;
 
         private bool isAlreadySet;
+        private bool isDragging = false;
         
         private void Awake()
         {
@@ -46,6 +48,9 @@ namespace OneDay.Core.Modules.Ui.Components
 
         public void SetOn(bool isOn, bool invokeListeners)
         {
+            if (isAlreadySet && this.isOn == isOn)
+                return;
+            
             isAlreadySet = true;
             this.isOn = isOn;
             
@@ -60,6 +65,9 @@ namespace OneDay.Core.Modules.Ui.Components
 
         private void OnClick()
         {
+            if (isDragging)
+                return;
+            
             if (toggleGroup != null && toggleGroup.IsUsingSwitchBehaviour)
             {
                 if (!isOn)
@@ -68,6 +76,9 @@ namespace OneDay.Core.Modules.Ui.Components
                     toggleGroup.Toggles
                         .Where(x=>x!=this)
                         .ForEach(x=>x.SetOn(false, true));   
+                } else if (toggleGroup.MinSelectedToggles == 0)
+                {
+                    SetOn(false, true);
                 }
             }
             else
@@ -120,5 +131,8 @@ namespace OneDay.Core.Modules.Ui.Components
             button.image.SetAlpha(1.0f);
             button.image.sprite = state ? onSprite : offSprite;
         }
+
+        public void OnBeginDrag(PointerEventData eventData) => isDragging = true;
+        public void OnEndDrag(PointerEventData eventData) => isDragging = false;
     }
 }

@@ -1,6 +1,7 @@
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
+using Meditation.Apis.Audio;
 using Meditation.Apis.Data;
 using Meditation.Apis.Measure;
 using Meditation.Apis.Settings;
@@ -49,6 +50,8 @@ namespace Meditation
         [SerializeField] private NotificationsApi notificationsApi;
         [SerializeField] private StoreManager storeManager;
         [SerializeField] private ConditionManager conditionManager;
+        [SerializeField] private AudioEnvironmentManager audioEnvironmentManager;
+
         private void Awake()
         {
             Boot().Forget();
@@ -76,6 +79,7 @@ namespace Meditation
             ServiceLocator.Register<INotificationsApi>(notificationsApi);
             ServiceLocator.Register<IStoreManager>(storeManager);
             ServiceLocator.Register<IConditionManager>(conditionManager);
+            ServiceLocator.Register<IAudioEnvironmentManager>(audioEnvironmentManager);
             
             // Savable data
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
@@ -83,25 +87,30 @@ namespace Meditation
             ServiceLocator.Get<IDataManager>().RegisterStorage<BreathingTestResult>(new LocalStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<CustomBreathingSettings>(new LocalStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<UserDayTimeNotificationSettings>(new LocalStorage());
+            ServiceLocator.Get<IDataManager>().RegisterStorage<AudioMixSettings>(new LocalStorage());
 
             // Readonly data 
             ServiceLocator.Get<IDataManager>().RegisterStorage<ContentNotificationSettings>(new AddressableScriptableObjectStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<ProductSettings>(new AddressableScriptableObjectStorage());
-
-
+            ServiceLocator.Get<IDataManager>().RegisterStorage<AudioDefinition>(new AddressableScriptableObjectStorage());
+            
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<FinishedBreathing>(TypeToDataKeyBinding.UserFinishedBreathing);
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<User>(TypeToDataKeyBinding.UserData);
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<BreathingTestResult>(TypeToDataKeyBinding.UserBreathingTestResult);
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<CustomBreathingSettings>(TypeToDataKeyBinding.UserCustomBreathingSettings);
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<ContentNotificationSettings>(TypeToDataKeyBinding.ContentNotificationSettings);
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<ProductSettings>(TypeToDataKeyBinding.ContentStoreItemSettings);
+            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<AudioMixSettings>(TypeToDataKeyBinding.AudioMixSettings);
+            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<AudioDefinition>(TypeToDataKeyBinding.ContentAudioDefinition);
 
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<UserDayTimeNotificationSettings>(TypeToDataKeyBinding.UserNotificationSettings);
 
-            // conditions
-            ServiceLocator.Get<IConditionManager>().RegisterCondition(ConditionIds.IsPremiumAccount, 
-                () => ServiceLocator.Get<IStoreManager>().IsSubscriptionActive("calmwaves.test_subscription"));
-            
+            ServiceLocator.Get<IConditionManager>().RegisterCondition(ConditionIds.IsPremiumAccount,
+                new CompositeOrCondition(
+                    ()=>ServiceLocator.Get<IStoreManager>().IsSubscriptionActive("calmwaves.premium_weekly_subscription"),
+                    ()=>ServiceLocator.Get<IStoreManager>().IsSubscriptionActive("calmwaves.premium_monthly_subscription"),
+                    ()=>ServiceLocator.Get<IStoreManager>().IsSubscriptionActive("calmwaves.premium_yearly_subscription")));
+
             
             // load texts
             ServiceLocator.Get<ILocalizationManager>().LocalizationDatabase = LocalizationFactory.Create();

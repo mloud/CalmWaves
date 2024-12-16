@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19dfa86e603044809682907fd944ddfa, type: 3}
+  m_Name: AudioDefinitionTable
+  m_EditorClassIdentifier: 
+  data:
+  - Type: 0
+    Name: Box
+    Category: 
+    AudioSourceName: BoxMusic
+    Tags: []
+  - Type: 0
+    Name: Deep
+    Category: 
+    AudioSourceName: DeepMusic
+    Tags: []
+  - Type: 0
+    Name: Meditation
+    Category: 
+    AudioSourceName: Meditation
+    Tags: []
+  - Type: 0
+    Name: Mental
+    Category: 
+    AudioSourceName: MentalMusic
+    Tags: []
+  - Type: 0
+    Name: Menu
+    Category: 
+    AudioSourceName: Menu
+    Tags: []
+  - Type: 0
+    Name: Pad
+    Category: 
+    AudioSourceName: PadSound
+    Tags: []
+  - Type: 0
+    Name: Relaxation
+    Category: 
+    AudioSourceName: Relaxaction
+    Tags: []
+  - Type: 0
+    Name: Sleep
+    Category: 
+    AudioSourceName: SleepMusic
+    Tags: []
+  - Type: 0
+    Name: Uplifting
+    Category: 
+    AudioSourceName: Uplifting
+    Tags: []
+  - Type: 0
+    Name: Piano
+    Category: 
+    AudioSourceName: Piano
+    Tags: []
+  - Type: 0
+    Name: Happy
+    Category: 
+    AudioSourceName: Happy
+    Tags: []
+  - Type: 0
+    Name: Atmospheric
+    Category: 
+    AudioSourceName: Atmospheric
+    Tags: []
+  - Type: 1
+    Name: Birds
+    Category: 
+    AudioSourceName: birds
+    Tags: []
+  - Type: 1
+    Name: Campfire
+    Category: 
+    AudioSourceName: campfire
+    Tags: []
+  - Type: 1
+    Name: Night
+    Category: 
+    AudioSourceName: night
+    Tags: []
+  - Type: 1
+    Name: Ocean
+    Category: 
+    AudioSourceName: ocean
+    Tags: []
+  - Type: 1
+    Name: Rain
+    Category: 
+    AudioSourceName: rain
+    Tags: []
+  - Type: 1
+    Name: Thunder
+    Category: 
+    AudioSourceName: thunder
+    Tags: []
+  - Type: 1
+    Name: Water
+    Category: 
+    AudioSourceName: water
+    Tags: []
+  - Type: 1
+    Name: Whales
+    Category: 
+    AudioSourceName: whales
+    Tags: []
+  - Type: 1
+    Name: Wind
+    Category: 
+    AudioSourceName: wind
+    Tags: []
+  - Type: 1
+    Name: Jungle
+    Category: 
+    AudioSourceName: jungle
+    Tags: []

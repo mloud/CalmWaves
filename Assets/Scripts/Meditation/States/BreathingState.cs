@@ -82,7 +82,7 @@ namespace Meditation.States
                         StateMachine.SetStateAsync<MenuState>().Forget();
                         request.Popup.Close().Forget();
                     });
-                audioManager.PlayMusic(breathingSettings.GetMusic()).Forget();
+                //audioManager.PlayMusic(breathingSettings.GetMusic()).Forget();
                 request.Popup.BindAction(request.Popup.ContinueButton, () => request.Popup.Close().Forget());
 
                 await request.OpenTask;

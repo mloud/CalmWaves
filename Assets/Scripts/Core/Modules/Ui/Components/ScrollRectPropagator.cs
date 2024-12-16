@@ -1,3 +1,4 @@
+using System;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,6 +9,11 @@ namespace OneDay.Core.Modules.Ui.Components
     {
         [SerializeField] private ScrollRect parentScrollRect;
         [SerializeField] private ScrollRect thisScrollRect;
+
+        private void Awake()
+        {
+            parentScrollRect = GetComponentInParent<ScrollRect>();
+        }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
@@ -55,10 +61,13 @@ namespace OneDay.Core.Modules.Ui.Components
             }
         }
 
-        private bool IsProperlySetup() => thisScrollRect != null && parentScrollRect != null;
+        private bool IsProperlySetup() => parentScrollRect != null;
 
         private bool CouldScrollThis(PointerEventData eventData)
         {
+            if (thisScrollRect == null)
+                return false;
+            
             if (thisScrollRect.horizontal && Mathf.Abs(eventData.delta.x) > Mathf.Abs(eventData.delta.y))
                 return true;
             

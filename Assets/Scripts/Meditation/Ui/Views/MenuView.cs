@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Core.Modules.Ui.Effects;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Meditation.Ui.Calendar;
@@ -22,16 +23,19 @@ namespace Meditation.Ui.Views
         public Button MeasuringButton => measuringButton;
         public Button NotificationButton => notificationButton;
         public Button SubscriptionButton => subscriptionButton;
+        public Button MusicButton => musicButton;
         public DayTimeSpanChart BreathingChart => breathingChart;
         public CustomExerciseContainer CustomExerciseContainer => customExerciseContainer;
-
+        public List<ConditionComponent> ConditionComponents => conditionComponents;
         
         [Header("Buttons")]
+        [SerializeField] private Button sleepButton;
         [SerializeField] private Button startButton;
         [SerializeField] private Button aiButton;
         [SerializeField] private Button measuringButton;
         [SerializeField] private Button notificationButton;
         [SerializeField] private Button subscriptionButton;
+        [SerializeField] private Button musicButton;
 
         
         [SerializeField] private UiElement topPagePart;
@@ -45,7 +49,7 @@ namespace Meditation.Ui.Views
         [SerializeField] private CustomExerciseContainer customExerciseContainer;
         [SerializeField] private ScrollRect mainScrollRect;
         [SerializeField] private ExpandableArea expandableArea;
-        [SerializeField] private ConditionComponent premiumComponent;
+        [SerializeField] private List<ConditionComponent> conditionComponents;
         
         private List<GameObject> breathingButtons;
 
@@ -75,7 +79,7 @@ namespace Meditation.Ui.Views
         public override async UniTask Show(bool useSmooth, float speedMultiplier = 1.0f)
         {
             mainScrollRect.verticalNormalizedPosition = 1;
-            await premiumComponent.Refresh();
+            await UniTask.WhenAll(conditionComponents.Select(x => x.Refresh()));
             await base.Show(useSmooth, speedMultiplier);
         }
 
@@ -108,7 +112,8 @@ namespace Meditation.Ui.Views
 
         public UniTask InitializePremium()
         {
-            ServiceLocator.Get<IStoreManager>().ProductPurchased += _ => premiumComponent.Refresh();
+            ServiceLocator.Get<IStoreManager>().ProductPurchased += _ => 
+                conditionComponents.ForEach(x => x.Refresh());
             return UniTask.CompletedTask;
         }
 

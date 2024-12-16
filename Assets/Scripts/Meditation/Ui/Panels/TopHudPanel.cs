@@ -10,7 +10,7 @@ namespace Meditation.Ui.Panels
         [SerializeField] private TotalBreathCounter totalBreathCounter;
         [SerializeField] private StreakCounter streakCounter;
         
-        public UniTask Initialize()
+        public override UniTask Initialize()
         {
             totalBreathCounter.Initialize();
             streakCounter.Initialize();

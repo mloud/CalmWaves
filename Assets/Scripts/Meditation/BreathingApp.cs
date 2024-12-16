@@ -62,6 +62,8 @@ namespace Meditation
             D.Initialize(debugSections.Sections);
             
             Application.targetFrameRate = 60;
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            
             await UnityGS.Initialize("production");
             
             ServiceLocator.Register<IAudioManager>(audioManager);
@@ -128,7 +130,7 @@ namespace Meditation
             ServiceLocator.Get<ISettingsApi>().RegisterModule<IVolumeModule>(new VolumeModule());
             ServiceLocator.Get<ISettingsApi>().RegisterModule<ISoundSettingsModule>(new SettingsModule());
             await ServiceLocator.Get<IUiManager>().HideView(false);
-            await ServiceLocator.Get<IUiManager>().GetPanel<TopHudPanel>().Initialize();
+            //await ServiceLocator.Get<IUiManager>().GetPanel<TopHudPanel>().Initialize();
           
             
             
@@ -140,6 +142,7 @@ namespace Meditation
             await StateMachineEnvironment.Default.RegisterState<BreathingState>();
             await StateMachineEnvironment.Default.RegisterState<MoodState>();
             await StateMachineEnvironment.Default.RegisterState<MeasuringState>();
+            await StateMachineEnvironment.Default.RegisterState<SleepState>();
             await StateMachineEnvironment.Default.SetStateAsync<BootState>();
         }
     }

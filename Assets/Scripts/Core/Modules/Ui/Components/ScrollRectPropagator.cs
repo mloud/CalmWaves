@@ -12,7 +12,8 @@ namespace OneDay.Core.Modules.Ui.Components
 
         private void Awake()
         {
-            parentScrollRect = GetComponentInParent<ScrollRect>();
+            if (parentScrollRect == null)
+                parentScrollRect = GetComponentInParent<ScrollRect>();
         }
 
         public void OnBeginDrag(PointerEventData eventData)

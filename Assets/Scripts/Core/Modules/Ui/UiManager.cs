@@ -56,6 +56,7 @@ namespace OneDay.Core.Modules.Ui
         public UniTask PostInitialize()
         {
             GetAllPopups().ForEach(x=>x.Initialize());
+            GetAllPanels().ForEach(x=>x.Initialize());
             return UniTask.CompletedTask;
         }
 

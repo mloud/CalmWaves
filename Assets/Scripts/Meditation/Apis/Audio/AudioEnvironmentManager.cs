@@ -24,7 +24,7 @@ namespace Meditation.Apis.Audio
     {
         public AudioMixSettings Settings { get; private set; }
         
-        [SerializeField] AudioMixSettings defaultMix;
+        [SerializeField] List<AudioMixSettings> defaultMixes;
         [SerializeField] private List<AudioSource> musicSources;
         [SerializeField] private List<AudioSource> effectSources;
 
@@ -45,7 +45,13 @@ namespace Meditation.Apis.Audio
             var defaultSettings = mixSettings.FirstOrDefault(x => x.MixName == "default");
             if (defaultSettings == null)
             {
-                ServiceLocator.Get<IDataManager>().Add(defaultMix);
+                ServiceLocator.Get<IDataManager>().Add(defaultMixes.First(x=>x.MixName == "default"));
+            }
+            
+            var sleepDefaultSettings = mixSettings.FirstOrDefault(x => x.MixName == "sleepDefault");
+            if (sleepDefaultSettings == null)
+            {
+                ServiceLocator.Get<IDataManager>().Add(defaultMixes.First(x=>x.MixName == "sleepDefault"));
             }
             
             effectSources.ForEach(x=>x.enabled = false);
@@ -122,22 +128,26 @@ namespace Meditation.Apis.Audio
             musicToUpdate.ForEach(effectName=>UpdateAudio(settings.Music.First(x=>x.EffectName == effectName), musicSources));
         }
  
-        private UniTask StopAudio(string effectName, List<AudioSource> audioSources)
+        private async UniTask StopAudio(string effectName, List<AudioSource> audioSources)
         {
-            Debug.Log($"XXX stopping audio {effectName}");
-            clipAssets.GetValueOrDefault(effectName)?.Release();
-            clipAssets.Remove(effectName);
+            var tasks = audioSources.Where(source => source.gameObject.name == effectName)
+                .Select(source=>DOTween.To(() => source.volume, t => source.volume = t, 0, 1f)
+                .SetEase(Ease.Linear)
+                .ToUniTask());
 
+            await UniTask.WhenAll(tasks);
+           
             audioSources.Where(source => source.gameObject.name == effectName)
                 .ForEach(source=>
             {
-                source.Stop();
                 source.clip = null;
                 source.enabled = false;
                 source.gameObject.SetActive(false);
             });
-            return UniTask.CompletedTask;
-        }
+            
+            clipAssets.GetValueOrDefault(effectName)?.Release();
+            clipAssets.Remove(effectName);
+    }
 
         private void UpdateAudio(EffectSettings settings, List<AudioSource> audioSources)
         {

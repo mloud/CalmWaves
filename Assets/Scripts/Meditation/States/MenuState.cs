@@ -45,7 +45,8 @@ namespace Meditation.States
                 .BindAction(menuView.CustomExerciseContainer.CreateNewButton, OnCreateNewExercise)
                 .BindAction(menuView.NotificationButton, OnNotificationClicked)
                 .BindAction(menuView.SubscriptionButton, OnSubscriptionClicked)
-                .BindAction(menuView.MusicButton, OnMusicClicked);
+                .BindAction(menuView.MusicButton, OnMusicClicked)
+                .BindAction(menuView.SleepButton, OnSleepClicked);
     
             await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<CustomBreathingSettings>());
             menuView.CustomExerciseContainer.BreathingSettingsSelected += OnCustomBreathingClicked;
@@ -164,6 +165,12 @@ namespace Meditation.States
         {
             var request = uiManager.OpenPopup<AudioPopup>(null);
             await request.OpenTask;
+        }
+        
+        private void OnSleepClicked()
+        {
+            StateMachine.SetStateAsync<SleepState>(null, false)
+                .Forget();
         }
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Core.Modules.Ui.Effects;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Meditation.Ui.Calendar;
@@ -24,6 +23,7 @@ namespace Meditation.Ui.Views
         public Button NotificationButton => notificationButton;
         public Button SubscriptionButton => subscriptionButton;
         public Button MusicButton => musicButton;
+        public Button SleepButton => sleepButton;
         public DayTimeSpanChart BreathingChart => breathingChart;
         public CustomExerciseContainer CustomExerciseContainer => customExerciseContainer;
         public List<ConditionComponent> ConditionComponents => conditionComponents;

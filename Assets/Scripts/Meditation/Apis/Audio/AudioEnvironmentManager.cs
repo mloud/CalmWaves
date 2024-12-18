@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -39,6 +40,8 @@ namespace Meditation.Apis.Audio
         // music
         private static Dictionary<string, AddressableAsset<AudioClip>> clipAssets = new();
         private IDataManager dataManager;
+        private bool willUnmuteAfterResume;
+        private float volume;
         
         public async UniTask Initialize()
         {
@@ -90,18 +93,6 @@ namespace Meditation.Apis.Audio
         {
             float finalVolume = isMuted ? -80 : 0;
             await DOTween.To(GetVolume, SetVolume, finalVolume, duration).AsyncWaitForCompletion();
-            return;
-            
-            float GetVolume()
-            {
-                audioMixerGroup.audioMixer.GetFloat("EnvironmentVolume", out var volume);
-                return volume;
-            }
-            
-            void SetVolume(float volume)
-            {
-                audioMixerGroup.audioMixer.SetFloat("EnvironmentVolume", volume);
-            }
         }
       
         public async UniTask StopAll(float duration)
@@ -225,6 +216,42 @@ namespace Meditation.Apis.Audio
                 .From(0)
                 .SetEase(Ease.Linear)
                 .AsyncWaitForCompletion();
+        }
+
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            if (pauseStatus)
+            {
+                willUnmuteAfterResume = GetNormalizedVolume() > 0;
+                if (willUnmuteAfterResume)
+                {
+                    volume = GetVolume();
+                    SetNormalizedVolume(0);
+                }
+            }
+            else
+            {
+                if (willUnmuteAfterResume)
+                {
+                    DOTween.To(GetVolume, SetVolume, volume, 3.0f).From(-80);
+                }
+            }
+        }
+
+
+        private float GetNormalizedVolume() => (GetVolume() - -80) / 80;
+
+        private void SetNormalizedVolume(float volume) => SetVolume (-80 + volume * 80);
+
+        private float GetVolume()
+        {
+            audioMixerGroup.audioMixer.GetFloat("EnvironmentVolume", out var volume);
+            return volume;
+        }
+            
+        private void SetVolume(float volume)
+        {
+            audioMixerGroup.audioMixer.SetFloat("EnvironmentVolume", volume);
         }
     }
 }

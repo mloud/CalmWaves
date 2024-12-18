@@ -3201,6 +3201,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: StartButton
       objectReference: {fileID: 0}
+    - target: {fileID: 4888618222648437308, guid: fc518323d54b74f0a8488fe4bea4b4d9,
+        type: 3}
+      propertyPath: m_text
+      value: Breathe
+      objectReference: {fileID: 0}
     - target: {fileID: 5794989184965730536, guid: fc518323d54b74f0a8488fe4bea4b4d9,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -3896,7 +3901,7 @@ PrefabInstance:
     - target: {fileID: 8962725004673994437, guid: 2ab92e7b4ded941609603fc7b55b913c,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 426.6633
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 8962725004673994437, guid: 2ab92e7b4ded941609603fc7b55b913c,
         type: 3}

@@ -8,6 +8,7 @@ using OneDay.Core.Extensions;
 using OneDay.Core.Modules.Assets;
 using OneDay.Core.Modules.Data;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Meditation.Apis.Audio
 {
@@ -17,14 +18,18 @@ namespace Meditation.Apis.Audio
         UniTask Apply(AudioMixSettings settings);
         UniTask Apply(string name);
         UniTask Save(AudioMixSettings settings);
+
+        UniTask SetMuted(bool isMuted, float duration);
+        UniTask StopAll(float duration);
     }
     
     [LogSection("Audio")]
     public class AudioEnvironmentManager : MonoBehaviour, IAudioEnvironmentManager, IService
     {
         public AudioMixSettings Settings { get; private set; }
-        
-        [SerializeField] List<AudioMixSettings> defaultMixes;
+
+        [SerializeField] private AudioMixerGroup audioMixerGroup;
+        [SerializeField] private List<AudioMixSettings> defaultMixes;
         [SerializeField] private List<AudioSource> musicSources;
         [SerializeField] private List<AudioSource> effectSources;
 
@@ -81,6 +86,31 @@ namespace Meditation.Apis.Audio
             }
         }
 
+        public async UniTask SetMuted(bool isMuted, float duration)
+        {
+            float finalVolume = isMuted ? -80 : 0;
+            await DOTween.To(GetVolume, SetVolume, finalVolume, duration).AsyncWaitForCompletion();
+            return;
+            
+            float GetVolume()
+            {
+                audioMixerGroup.audioMixer.GetFloat("EnvironmentVolume", out var volume);
+                return volume;
+            }
+            
+            void SetVolume(float volume)
+            {
+                audioMixerGroup.audioMixer.SetFloat("EnvironmentVolume", volume);
+            }
+        }
+      
+        public async UniTask StopAll(float duration)
+        {
+            await UniTask.WhenAll(
+                StopAudio("*", musicSources, duration),
+                StopAudio("*", effectSources, duration));
+        }
+
         public UniTask SaveCurrent(AudioMixSettings settings)
         {
             throw new System.NotImplementedException();
@@ -128,9 +158,9 @@ namespace Meditation.Apis.Audio
             musicToUpdate.ForEach(effectName=>UpdateAudio(settings.Music.First(x=>x.EffectName == effectName), musicSources));
         }
  
-        private async UniTask StopAudio(string effectName, List<AudioSource> audioSources)
+        private async UniTask StopAudio(string effectName, List<AudioSource> audioSources, float duration = 1.0f)
         {
-            var tasks = audioSources.Where(source => source.gameObject.name == effectName)
+            var tasks = audioSources.Where(source => effectName == "*" || source.gameObject.name == effectName)
                 .Select(source=>DOTween.To(() => source.volume, t => source.volume = t, 0, 1f)
                 .SetEase(Ease.Linear)
                 .ToUniTask());
@@ -151,7 +181,6 @@ namespace Meditation.Apis.Audio
 
         private void UpdateAudio(EffectSettings settings, List<AudioSource> audioSources)
         {
-            Debug.Log($"XXX updating audio {settings.EffectName}");
             var audioSource = audioSources.Find(x => x.gameObject.name == settings.EffectName);
             Debug.Assert(audioSource != null);
             audioSource.volume = settings.NormalizedVolume;
@@ -159,7 +188,6 @@ namespace Meditation.Apis.Audio
         
         private async UniTask PlayAudio(EffectSettings settings, List<AudioSource> audioSources, Transform container)
         {
-            Debug.Log($"XXX playing audio {settings.EffectName}");
             var audioSource = audioSources.Find(x => x.gameObject.name == settings.EffectName);
             
             if (audioSource == null)
@@ -171,6 +199,7 @@ namespace Meditation.Apis.Audio
             }
 
             audioSource.gameObject.SetActive(true);
+            audioSource.outputAudioMixerGroup = audioMixerGroup;
             audioSource.enabled = true;
             audioSource.volume = settings.NormalizedVolume;
             audioSource.loop = true;

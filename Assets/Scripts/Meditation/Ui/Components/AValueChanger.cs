@@ -1,4 +1,5 @@
 using System;
+using OneDay.Core.Extensions;
 using OneDay.Core.Modules.Ui.Components;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ namespace Meditation.Ui.Components
 {
     public abstract class AValueChanger<T> : MonoBehaviour where T: IComparable<T>
     {
+        public T Value => value;
         public Action<T> OnValueChanged { get; set; }
         
         [SerializeField] private Button plusButton;
@@ -25,6 +27,7 @@ namespace Meditation.Ui.Components
 
         public void Initialize(T value, T minValue, T maxValue)
         {
+            SetButtonsVisible(true, false);
             this.minValue = minValue;
             this.maxValue = maxValue;
             Set(value);
@@ -37,6 +40,12 @@ namespace Meditation.Ui.Components
             
             if (callListeners)
                 OnValueChanged?.Invoke(this.value);
+        }
+
+        public void SetButtonsVisible(bool isVisible, bool useFade)
+        {
+            plusButton.gameObject.SetVisibleWithFade(isVisible, useFade ? 0.5f :0, true);
+            minusButton.gameObject.SetVisibleWithFade(isVisible, useFade ? 0.5f :0, true);
         }
         
         protected abstract T IncreaseValue(in T value);

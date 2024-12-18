@@ -42,7 +42,10 @@ namespace OneDay.Core.Modules.Ui.Components
 
             if (!isAlreadySet)
             {
-                SetOn(false, false);
+                isOn = false;
+                TryToSwitchGameObjects(isOn, 0);
+                TryToSwitchSprites(isOn);
+                isAlreadySet = true;
             }
         }
 
@@ -53,8 +56,8 @@ namespace OneDay.Core.Modules.Ui.Components
             
             isAlreadySet = true;
             this.isOn = isOn;
-            
-            TryToSwitchGameObjects(this.isOn);
+
+            TryToSwitchGameObjects(this.isOn, useFade ? fadeDuration : 0.0f);
             TryToSwitchSprites(this.isOn);
            
             if (invokeListeners)
@@ -101,7 +104,7 @@ namespace OneDay.Core.Modules.Ui.Components
                 toggleGroup.UnregisterToggle(this);
         }
 
-        private void TryToSwitchGameObjects(bool state)
+        private void TryToSwitchGameObjects(bool state, float duration)
         {
             if (onGameObject == null || offGameObject == null) return;
 
@@ -113,8 +116,8 @@ namespace OneDay.Core.Modules.Ui.Components
 
             ctx = new CancellationTokenSource();
             
-            onGameObject.SetVisibleWithFade(state, useFade ? fadeDuration : 0, false, ctx.Token).Forget();
-            offGameObject.SetVisibleWithFade(!state, useFade ? fadeDuration : 0, false, ctx.Token).Forget();
+            onGameObject.SetVisibleWithFade(state, duration, false, ctx.Token).Forget();
+            offGameObject.SetVisibleWithFade(!state, duration, false, ctx.Token).Forget();
             
             //button.image.SetAlpha(0);
         }

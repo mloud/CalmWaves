@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
+using Meditation.Apis.Audio;
 using Meditation.Apis.Data;
 using Meditation.Apis.Settings;
 using Meditation.Ui;
@@ -21,6 +22,7 @@ namespace Meditation.States
         private CancellationTokenSource cancellationTokenSource;
         private ISoundSettingsModule settings;
         private IAudioManager audioManager;
+        private IAudioEnvironmentManager audioEnvironmentManager;
         private IUpdateManager updateManager;
         private IUiManager uiManager;
         private IBreathingApi breathingApi;
@@ -40,14 +42,17 @@ namespace Meditation.States
             updateManager = ServiceLocator.Get<IUpdateManager>();
             uiManager = ServiceLocator.Get<IUiManager>();
             breathingApi = ServiceLocator.Get<IBreathingApi>();
-
+            audioEnvironmentManager = ServiceLocator.Get<IAudioEnvironmentManager>();
+            
             settings = ServiceLocator.Get<ISettingsApi>().GetModule<ISoundSettingsModule>();
             breathingView = uiManager.GetView<BreathingView>();
             breathingView
                 .BindAction(breathingView.PauseButton, OnPause)
                 .BindAction(breathingView.BackButton, OnBack)
                 .BindAction(breathingView.SettingsButton, OnSettingsClicked);
-           
+            
+            breathingView.AudioToggle.onChange.AddListener(OnAudioToggleValueChanged);
+            
             winClip = await ServiceLocator.Get<IAssetManager>().GetAssetAsync<AudioClip>("win");
         }
 
@@ -58,11 +63,12 @@ namespace Meditation.States
             breathingFinished = false;
             Debug.Assert(stateData != null, "State data is required when entering BreathingState");
             breathingSettings = stateData.GetValue<IBreathingSettings>("Settings");
-         
+
             cancellationTokenSource?.Dispose();
             cancellationTokenSource = new CancellationTokenSource();
             
             // initialize
+            breathingView.AudioToggle.SetOn(true, false);
             breathingView.TotalTimeVisualizer.Initialize();
             breathingView.BreathingVisualizer.Initialize();
             breathingView.PauseText.Clear();
@@ -137,6 +143,7 @@ namespace Meditation.States
 
         public override async UniTask ExitAsync()
         {
+            audioEnvironmentManager.SetMuted(false, 1.0f);
             cancellationTokenSource.Dispose();
             cancellationTokenSource = null;
             await breathingView.Hide(true);
@@ -239,6 +246,11 @@ namespace Meditation.States
             {
                 breathingTime += dt;
             }
+        }
+        
+        private void OnAudioToggleValueChanged(bool isMuted)
+        {
+            audioEnvironmentManager.SetMuted(!isMuted, 1.0f);
         }
     }
 }

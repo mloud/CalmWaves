@@ -69,44 +69,89 @@ namespace OneDay.Core.Extensions
             }
 
             float targetAlpha = isVisible ? 1 : 0;
-                if (canvasGroup != null)
+            if (canvasGroup != null)
+            {
+                if (duration > 0)
+                {
                     await canvasGroup.DOFade(targetAlpha, duration)
                         .SetEase(ease)
-                        .ToUniTask(cancellationToken:token);
+                        .ToUniTask(cancellationToken: token);
+                }
                 else
                 {
-                    var image = go.GetComponent<Image>();
-                    if (image != null)
+                    canvasGroup.alpha = targetAlpha;
+                }
+            }
+            else
+            {
+                var image = go.GetComponent<Image>();
+                if (image != null)
+                {
+                    if (duration > 0)
+                    {
                         await image.DOFade(targetAlpha, duration)
                             .SetEase(ease)
-                            .ToUniTask(cancellationToken:token);
+                            .ToUniTask(cancellationToken: token);
+                    }
                     else
                     {
-                        var spriteRenderer = go.GetComponent<SpriteRenderer>();
-                        if (spriteRenderer != null)
+                        image.SetAlpha(targetAlpha);
+                    }
+                }
+                else
+                {
+                    var spriteRenderer = go.GetComponent<SpriteRenderer>();
+                    if (spriteRenderer != null)
+                    {
+                        if (duration > 0)
+                        {
                             await spriteRenderer.DOFade(targetAlpha, duration)
                                 .SetEase(ease)
-                                .ToUniTask(cancellationToken:token);
+                                .ToUniTask(cancellationToken: token);
+                        }
                         else
                         {
-                            var textUi = go.GetComponent<TextMeshProUGUI>();
-                            if (textUi != null)
+                            spriteRenderer.SetAlpha(targetAlpha);
+                        }
+                    }
+                    else
+                    {
+                        var textUi = go.GetComponent<TextMeshProUGUI>();
+                        if (textUi != null)
+                        {
+                            if (duration > 0)
+                            {
                                 await textUi.DOFade(targetAlpha, duration)
                                     .SetEase(ease)
-                                    .ToUniTask(cancellationToken:token);
+                                    .ToUniTask(cancellationToken: token);
+                            }
                             else
                             {
-                                var text = go.GetComponent<TextMeshPro>();
-                                if (text != null)
+                                textUi.SetAlpha(targetAlpha);
+                            }
+                        }
+                        else
+                        {
+                            var text = go.GetComponent<TextMeshPro>();
+                            if (text != null)
+                            {
+                                if (duration > 0)
+                                {
                                     await text.DOFade(targetAlpha, duration)
                                         .SetEase(ease)
-                                        .ToUniTask(cancellationToken:token);
+                                        .ToUniTask(cancellationToken: token);
+                                }
+                                else
+                                {
+                                    text.SetAlpha(targetAlpha);
+                                }
                             }
                         }
                     }
                 }
+            }
 
-                if (!isVisible)
+            if (!isVisible)
                 go.SetActive(false);
         }
     }

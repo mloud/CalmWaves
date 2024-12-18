@@ -56,6 +56,7 @@ namespace Meditation.States
             cancellationTokenSource?.Cancel();
             audioEnvironmentManager.Save(audioEnvironmentManager.Settings);
             audioEnvironmentManager.Apply("default");
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
            
             await view.Hide(true);
         }
@@ -115,6 +116,7 @@ namespace Meditation.States
             await view.TimerContainer.SetVisibleWithFade(false, 1.0f, true);
             await view.RunningContainer.SetVisibleWithFade(false, 1.0f, true);
             await view.FinishedContainer.SetVisibleWithFade(true, 1.0f, true);
+            Screen.sleepTimeout = SleepTimeout.SystemSetting;
         }
     }
 }

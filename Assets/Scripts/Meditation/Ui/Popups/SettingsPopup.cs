@@ -7,13 +7,11 @@ namespace Meditation.Ui
 {
     public class SettingsPopup : UiPopup
     {
-        [SerializeField] private MusicSection musicSection;
         [SerializeField] private SoundSection soundSection;
 
         protected override UniTask OnOpenStarted(IUiParameter parameter)
         {
             ServiceLocator.Get<IUiManager>().HideView();
-            musicSection.Initialize();
             soundSection.Initialize();
             return UniTask.CompletedTask;
         }

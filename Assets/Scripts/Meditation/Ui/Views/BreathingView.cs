@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Meditation.Visualizers;
+using OneDay.Core.Modules.Ui.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ namespace Meditation.Ui.Views
         public TextMeshProUGUI NameLabel => nameLabel;
         public Button PauseButton => pauseButton;
         public Button SettingsButton => settingsButton;
+        public CToggle AudioToggle => audioToggle;
         
         [SerializeField] private ATotalTimeVisualizer totalTimeVisualizer;
         [SerializeField] private ACountDownVisualizer countDownVisualizer;
@@ -29,6 +31,7 @@ namespace Meditation.Ui.Views
         [SerializeField] private TextMeshProUGUI nameLabel;
         [SerializeField] private Button pauseButton;
         [SerializeField] private Button settingsButton;
+        [SerializeField] private CToggle audioToggle;
      
         public async UniTask FadeOutElements(bool includeBasicElements = false)
         {

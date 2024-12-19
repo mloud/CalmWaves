@@ -57,9 +57,9 @@ namespace Meditation.Ui.Views
             expandableArea.OnExpanded += (expanded) =>
             {
                 if (expanded)
-                    topPagePart.Hide(true).Forget();
+                    topPagePart.Hide(true, 2f).Forget();
                 else
-                    topPagePart.Show(true).Forget();
+                    topPagePart.Show(true, 2f).Forget();
             };
         }
         

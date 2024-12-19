@@ -18,11 +18,11 @@ namespace Meditation.Ui.Components
         {
             if (isExpanded)
             {
-                transformToExpand.SetFromAsync(expandedArea, 0.5f, Ease.InOutSine).Forget();
+                transformToExpand.SetFromAsync(expandedArea, 1.0f, Ease.InOutCubic).Forget();
             }
             else
             {
-                transformToExpand.SetFromAsync(collapsedArea, 0.5f, Ease.InOutSine).Forget();
+                transformToExpand.SetFromAsync(collapsedArea, 1.0f, Ease.InOutCubic).Forget();
             }
             OnExpanded?.Invoke(isExpanded);
         }

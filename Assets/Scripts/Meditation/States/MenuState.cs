@@ -4,6 +4,8 @@ using System.Threading;
 using Core.Modules.Ui.Effects;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
+using Meditation.Apis.Audio;
+using Meditation.Apis.Visual;
 using Meditation.Core.Utils;
 using Meditation.Data;
 using Meditation.Ui;
@@ -13,11 +15,10 @@ using Meditation.Ui.Views;
 using OneDay.Core;
 using OneDay.Core.Extensions;
 using OneDay.Core.Modules.Assets;
-using OneDay.Core.Modules.Audio;
 using OneDay.Core.Modules.Data;
 using OneDay.Core.Modules.Sm;
 using OneDay.Core.Modules.Ui;
-using UnityEngine;
+
 
 namespace Meditation.States
 {
@@ -66,7 +67,7 @@ namespace Meditation.States
             
             if (stateData != null && stateData.GetValue<bool>("FadeSkybox"))
             {
-                menuView.FadeInSkybox().Forget();
+                await ServiceLocator.Get<IVisualEnvironmentManager>().FadeInSkybox();
             }
             
             // set breathing chart
@@ -82,8 +83,9 @@ namespace Meditation.States
             menuView.BreathingChart.Set(new DayTimeSpanChartData(breathingTimesThisWeek, chartMax));
             menuView.BreathingChart.Select(DateTime.Now.DayOfWeek);
             menuView.CustomExerciseContainer.ScrollTobBeginning();
+            ServiceLocator.Get<IUiManager>().GetAllPanels().ForEach(view=>view.Show(true));
             await menuView.Show(true);
-            //ServiceLocator.Get<IAudioManager>().PlayMusic("Menu");
+           
             if (stateData != null)
             {
                 var finishedBreathing = stateData.GetValue<bool>(StateDataKeys.BreathingFinished);
@@ -99,6 +101,7 @@ namespace Meditation.States
 
             PlayParticleEffectsOnUi(cancellationTokenSource.Token);
             PlayFloatingEffects(cancellationTokenSource.Token);
+            ServiceLocator.Get<IAudioEnvironmentManager>().Apply("default");
         }
 
         public override async UniTask ExecuteAsync()

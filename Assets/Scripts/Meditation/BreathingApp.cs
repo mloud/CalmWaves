@@ -6,12 +6,12 @@ using Meditation.Apis.Audio;
 using Meditation.Apis.Data;
 using Meditation.Apis.Measure;
 using Meditation.Apis.Settings;
+using Meditation.Apis.Visual;
 using Meditation.Data;
 using Meditation.Data.Notifications;
 using Meditation.Localization;
 using Meditation.Managers;
 using Meditation.States;
-using Meditation.Ui.Panels;
 using OneDay.Core;
 using OneDay.Core.Debugging;
 using OneDay.Core.Modules.Assets;
@@ -52,6 +52,7 @@ namespace Meditation
         [SerializeField] private StoreManager storeManager;
         [SerializeField] private ConditionManager conditionManager;
         [SerializeField] private AudioEnvironmentManager audioEnvironmentManager;
+        [SerializeField] private VisualEnvironmentManager visualEnvironmentManager;
         [SerializeField] private EffectManager effectManager;
 
         private void Awake()
@@ -85,7 +86,7 @@ namespace Meditation
             ServiceLocator.Register<IConditionManager>(conditionManager);
             ServiceLocator.Register<IAudioEnvironmentManager>(audioEnvironmentManager);
             ServiceLocator.Register<IEffectManager>(effectManager);
-
+            ServiceLocator.Register<IVisualEnvironmentManager>(visualEnvironmentManager);
             
             // Savable data
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
@@ -145,6 +146,7 @@ namespace Meditation
             await StateMachineEnvironment.Default.RegisterState<MoodState>();
             await StateMachineEnvironment.Default.RegisterState<MeasuringState>();
             await StateMachineEnvironment.Default.RegisterState<SleepState>();
+            await StateMachineEnvironment.Default.RegisterState<IntroState>();
             await StateMachineEnvironment.Default.SetStateAsync<BootState>();
         }
     }

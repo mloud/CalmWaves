@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Newtonsoft.Json;
 using OneDay.Core;
 using OneDay.Core.Debugging;
 using OneDay.Core.Extensions;
@@ -61,7 +62,6 @@ namespace Meditation.Apis.Audio
             {
                 ServiceLocator.Get<IDataManager>().Add(defaultMixes.First(x=>x.MixName == "sleepDefault"));
             }
-            
             effectSources.ForEach(x=>x.enabled = false);
         }
         
@@ -72,7 +72,13 @@ namespace Meditation.Apis.Audio
         {
             var mixSettings = await dataManager.GetAll<AudioMixSettings>();
             var settings = mixSettings.FirstOrDefault(x => x.MixName == name);
+
+            if (settings == null)
+            {
+                settings = defaultMixes.FirstOrDefault(x => x.MixName == name);
+            }
             Debug.Assert(settings != null, "No such settings exists", this);
+            D.LogInfo($"Applying mix {JsonConvert.SerializeObject(settings)}", this);
             await Apply(settings);
         }
 

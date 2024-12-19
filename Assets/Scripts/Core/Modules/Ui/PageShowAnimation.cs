@@ -24,22 +24,16 @@ namespace OneDay.Core.Modules.Ui
         public override async UniTask Show(bool useSmooth, float speedMultiplier = 1)
         {
             rectTransform.anchoredPosition = screenRight * 2; // Start at right
-            await rectTransform.DOAnchorPos(screenCenter, duration).SetEase(ease).AsyncWaitForCompletion();
-            
-            //await rectTransform.DOMoveX(0, duration)
-            //    .SetEase(ease)
-             //   .From(Screen.width)
-             //   .AsyncWaitForCompletion();
+            await rectTransform.DOAnchorPos(screenCenter, useSmooth ? duration : 0)
+                .SetEase(ease)
+                .AsyncWaitForCompletion();
         }
 
         public override async UniTask Hide(bool useSmooth, float speedMultiplier = 1)
         {
-            await rectTransform.DOAnchorPos(screenLeft * 2, duration).SetEase(ease).AsyncWaitForCompletion();
-            
+            await rectTransform.DOAnchorPos(screenLeft * 2, useSmooth ? duration : 0)
+                .SetEase(ease)
+                .AsyncWaitForCompletion();
         }
-            // await transform.DOMoveX(0 - ((RectTransform)transform).rect.width, duration)
-            //     .SetEase(ease)
-            //     .AsyncWaitForCompletion();
-        
     }
 }

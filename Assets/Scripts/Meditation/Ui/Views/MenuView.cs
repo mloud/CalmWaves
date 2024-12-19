@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using Meditation.Ui.Calendar;
 using Meditation.Ui.Chart;
 using Meditation.Ui.Components;
@@ -39,7 +38,6 @@ namespace Meditation.Ui.Views
 
         
         [SerializeField] private UiElement topPagePart;
-        [SerializeField] private Material skyBoxMaterial;
         [SerializeField] private Transform container;
         [SerializeField] private AssetReferenceGameObject menuButton;
         
@@ -81,20 +79,6 @@ namespace Meditation.Ui.Views
             mainScrollRect.verticalNormalizedPosition = 1;
             await UniTask.WhenAll(conditionComponents.Select(x => x.Refresh()));
             await base.Show(useSmooth, speedMultiplier);
-        }
-
-        public async UniTask FadeInSkybox()
-        {
-            await skyBoxMaterial
-                .DOFloat(1.0f, "_Exposure", 2.0f)
-                .SetEase(Ease.Linear)
-                .From(0)
-                .AsyncWaitForCompletion();
-        }
-
-        private void OnValidate()
-        {
-            skyBoxMaterial.SetFloat("_Exposure",0);
         }
 
         public UniTask InitializeStartButton(Action menuButtonClicked)

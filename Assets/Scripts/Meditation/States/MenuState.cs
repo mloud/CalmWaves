@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.Threading;
+using Core.Modules.Ui.Effects;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
 using Meditation.Core.Utils;
@@ -9,11 +11,13 @@ using Meditation.Ui.Audio;
 using Meditation.Ui.Chart;
 using Meditation.Ui.Views;
 using OneDay.Core;
+using OneDay.Core.Extensions;
 using OneDay.Core.Modules.Assets;
 using OneDay.Core.Modules.Audio;
 using OneDay.Core.Modules.Data;
 using OneDay.Core.Modules.Sm;
 using OneDay.Core.Modules.Ui;
+using UnityEngine;
 
 namespace Meditation.States
 {
@@ -24,6 +28,8 @@ namespace Meditation.States
         private IDataManager dataManager;
         private IBreathingApi breathingApi;
         private IUiManager uiManager;
+
+        private CancellationTokenSource cancellationTokenSource;
         
         public override async UniTask Initialize()
         {
@@ -55,6 +61,9 @@ namespace Meditation.States
 
         public override async UniTask EnterAsync(StateData stateData = null)
         {
+            cancellationTokenSource?.Dispose();
+            cancellationTokenSource = new CancellationTokenSource();
+            
             if (stateData != null && stateData.GetValue<bool>("FadeSkybox"))
             {
                 menuView.FadeInSkybox().Forget();
@@ -87,6 +96,9 @@ namespace Meditation.States
                         );
                 }
             }
+
+            PlayParticleEffectsOnUi(cancellationTokenSource.Token);
+            PlayFloatingEffects(cancellationTokenSource.Token);
         }
 
         public override async UniTask ExecuteAsync()
@@ -96,6 +108,7 @@ namespace Meditation.States
 
         public override async UniTask ExitAsync()
         {
+            cancellationTokenSource.Cancel();
             await menuView.Hide(true);
         }
         
@@ -171,6 +184,42 @@ namespace Meditation.States
         {
             StateMachine.SetStateAsync<SleepState>(null, false)
                 .Forget();
+        }
+
+
+        private async UniTask PlayFloatingEffects(CancellationToken cancellationToken)
+        {
+            var effects = ServiceLocator.Get<IEffectManager>()
+                .GetEffects("FloatingEffect");
+            effects.ForEach(x=>x.Run());
+        }
+        
+        private async UniTask PlayParticleEffectsOnUi(CancellationToken cancellationToken)
+        {
+            var effects = ServiceLocator.Get<IEffectManager>()
+                .GetEffects("UiEdgeParticle").ToList();
+            
+            if (effects.Count == 0)
+                return;
+
+            var randomizedEffects = effects.GetRandomized();
+       
+            int index = 0;
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    await UniTask.WaitForSeconds(5.0f, cancellationToken: cancellationToken);
+                    var effect = randomizedEffects[index];
+                    effect.Run();
+                    index = (index + 1) % effects.Count;
+
+                    await UniTask.WaitUntil(() => !effect.IsPlaying(), cancellationToken: cancellationToken);
+                }
+                catch (OperationCanceledException _)
+                {
+                }
+            }
         }
     }
 }

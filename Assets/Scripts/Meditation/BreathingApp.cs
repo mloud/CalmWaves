@@ -1,4 +1,5 @@
 using System.Linq;
+using Core.Modules.Ui.Effects;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis;
 using Meditation.Apis.Audio;
@@ -51,6 +52,7 @@ namespace Meditation
         [SerializeField] private StoreManager storeManager;
         [SerializeField] private ConditionManager conditionManager;
         [SerializeField] private AudioEnvironmentManager audioEnvironmentManager;
+        [SerializeField] private EffectManager effectManager;
 
         private void Awake()
         {
@@ -82,6 +84,8 @@ namespace Meditation
             ServiceLocator.Register<IStoreManager>(storeManager);
             ServiceLocator.Register<IConditionManager>(conditionManager);
             ServiceLocator.Register<IAudioEnvironmentManager>(audioEnvironmentManager);
+            ServiceLocator.Register<IEffectManager>(effectManager);
+
             
             // Savable data
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
@@ -130,8 +134,6 @@ namespace Meditation
             ServiceLocator.Get<ISettingsApi>().RegisterModule<IVolumeModule>(new VolumeModule());
             ServiceLocator.Get<ISettingsApi>().RegisterModule<ISoundSettingsModule>(new SettingsModule());
             await ServiceLocator.Get<IUiManager>().HideView(false);
-            //await ServiceLocator.Get<IUiManager>().GetPanel<TopHudPanel>().Initialize();
-          
             
             
             StateMachineEnvironment.UnregisterAll();

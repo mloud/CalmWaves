@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7740762323157769978}
   - component: {fileID: 6309310247605022501}
   - component: {fileID: 1888276260856405018}
+  - component: {fileID: 8605803634050011594}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -93,6 +94,23 @@ MonoBehaviour:
   delay: 1
   duration: 3
   image: {fileID: 6309310247605022501}
+--- !u!114 &8605803634050011594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389918718503706507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87b64371571b4f8292f56d2273307bf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: FloatingButtonEffect
+  height: 15
+  duration: 5
+  delay: 0
+  ease: 4
 --- !u!1 &1909442246518608322
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,6 +258,7 @@ GameObject:
   - component: {fileID: 1151706840481171289}
   - component: {fileID: 9047664638223496277}
   - component: {fileID: 6976465973843678747}
+  - component: {fileID: 7484588322827950919}
   m_Layer: 5
   m_Name: LargeBreathingExerciseButton
   m_TagString: Untagged
@@ -371,6 +390,23 @@ MonoBehaviour:
   infoButton: {fileID: 9012423034807164417}
   labelWithImage: {fileID: 5619851128306804859}
   icon: {fileID: 6309310247605022501}
+--- !u!114 &7484588322827950919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2736734159290409219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87b64371571b4f8292f56d2273307bf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: FloatingButtonEffectUnused
+  height: 15
+  duration: 5
+  delay: 0
+  ease: 4
 --- !u!1 &3565062809830012190
 GameObject:
   m_ObjectHideFlags: 0

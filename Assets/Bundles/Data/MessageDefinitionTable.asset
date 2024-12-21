@@ -1,0 +1,215 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47ac024612854234a979e22990604171, type: 3}
+  m_Name: MessageDefinitionTable
+  m_EditorClassIdentifier: 
+  data:
+  - Text: Breathe deeply, peace begins within.
+    Area: menu
+  - Text: Every breath is a fresh start.
+    Area: menu
+  - Text: You are exactly where you need to be.
+    Area: menu
+  - Text: Calm is your natural state.
+    Area: menu
+  - Text: Inhale confidence, exhale doubt.
+    Area: menu
+  - Text: Let go, and let the calm flow.
+    Area: menu
+  - Text: Rest is productive.
+    Area: menu
+  - Text: You are safe, here and now.
+    Area: menu
+  - Text: Serenity is one breath away.
+    Area: menu
+  - Text: The present moment is your refuge.
+    Area: menu
+  - Text: Gentle breaths, peaceful mind.
+    Area: menu
+  - Text: Trust the rhythm of your breath.
+    Area: menu
+  - Text: Inner calm leads to outer strength.
+    Area: menu
+  - Text: Relaxation is your superpower.
+    Area: menu
+  - Text: Pause, and feel the quiet within.
+    Area: menu
+  - Text: You deserve this moment of peace.
+    Area: menu
+  - Text: Let your breath guide you home.
+    Area: menu
+  - Text: Your breath is your anchor.
+    Area: menu
+  - Text: Stillness is strength.
+    Area: menu
+  - Text: Let tension melt with every exhale.
+    Area: menu
+  - Text: You are enough, just as you are.
+    Area: menu
+  - Text: Quiet the mind, and the soul will speak.
+    Area: menu
+  - Text: Rest renews your spirit.
+    Area: menu
+  - Text: Breathe in light, breathe out darkness.
+    Area: menu
+  - Text: You are the calm in the storm.
+    Area: menu
+  - Text: Trust your inner stillness.
+    Area: menu
+  - Text: Peace begins with a single breath.
+    Area: menu
+  - Text: Each breath is a chance to start over.
+    Area: menu
+  - Text: Softness is strength.
+    Area: menu
+  - Text: Your breath connects you to life.
+    Area: menu
+  - Text: A quiet mind is a powerful mind.
+    Area: menu
+  - Text: Let peace flow through you.
+    Area: menu
+  - Text: You are worthy of rest.
+    Area: menu
+  - Text: Stillness is where clarity begins.
+    Area: menu
+  - Text: Let go, and feel free.
+    Area: menu
+  - Text: Embrace the quiet moments.
+    Area: menu
+  - Text: "Rest is not a luxury; it\u2019s a necessity."
+    Area: menu
+  - Text: You have the power to find peace.
+    Area: menu
+  - Text: Inhale peace, exhale worry.
+    Area: menu
+  - Text: Your calm is contagious.
+    Area: menu
+  - Text: Pause, breathe, and reset.
+    Area: menu
+  - Text: Relaxation is the art of letting go.
+    Area: menu
+  - Text: Rest is a gift you give yourself.
+    Area: menu
+  - Text: The quieter you become, the more you hear.
+    Area: menu
+  - Text: Peace is your birthright.
+    Area: menu
+  - Text: Exhale stress; inhale serenity.
+    Area: menu
+  - Text: You carry peace within you.
+    Area: menu
+  - Text: Let the rhythm of your breath soothe you.
+    Area: menu
+  - Text: Your mind deserves rest.
+    Area: menu
+  - Text: Trust in the healing power of stillness.
+    Area: menu
+  - Text: Calmness is clarity.
+    Area: menu
+  - Text: Inhale love, exhale judgment.
+    Area: menu
+  - Text: You are stronger than your stress.
+    Area: menu
+  - Text: Let your breath be your sanctuary.
+    Area: menu
+  - Text: Rest nurtures your soul.
+    Area: menu
+  - Text: Every breath restores you.
+    Area: menu
+  - Text: A peaceful mind creates a peaceful life.
+    Area: menu
+  - Text: You are the creator of your calm.
+    Area: menu
+  - Text: Give yourself permission to relax.
+    Area: menu
+  - Text: Inner peace is always within reach.
+    Area: menu
+  - Text: Deep breaths clear the mind.
+    Area: menu
+  - Text: Serenity flows from within.
+    Area: menu
+  - Text: Let your breath slow the world around you.
+    Area: menu
+  - Text: You are the calm amidst chaos.
+    Area: menu
+  - Text: Choose peace over pressure.
+    Area: menu
+  - Text: Relaxation is your natural state.
+    Area: menu
+  - Text: Quiet moments build strength.
+    Area: menu
+  - Text: Rest and rise renewed.
+    Area: menu
+  - Text: Breathe in courage, breathe out fear.
+    Area: menu
+  - Text: Peace begins with a pause.
+    Area: menu
+  - Text: You hold the key to your serenity.
+    Area: menu
+  - Text: Gentle breaths, gentle thoughts.
+    Area: menu
+  - Text: Trust in the stillness.
+    Area: menu
+  - Text: The universe breathes with you.
+    Area: menu
+  - Text: You are grounded, calm, and safe.
+    Area: menu
+  - Text: Peace is found in the present.
+    Area: menu
+  - Text: Release and find your center.
+    Area: menu
+  - Text: Your calm is unshakable.
+    Area: menu
+  - Text: Rest opens the door to clarity.
+    Area: menu
+  - Text: You are in harmony with yourself.
+    Area: menu
+  - Text: Inhale gratitude, exhale stress.
+    Area: menu
+  - Text: Stillness reveals your strength.
+    Area: menu
+  - Text: Quiet moments are sacred.
+    Area: menu
+  - Text: You are whole, just as you are.
+    Area: menu
+  - Text: Rest resets your mind.
+    Area: menu
+  - Text: Let your breath restore balance.
+    Area: menu
+  - Text: "Calm is contagious\u2014spread it."
+    Area: menu
+  - Text: Trust your breath; it knows the way.
+    Area: menu
+  - Text: Relaxation is a skill you can master.
+    Area: menu
+  - Text: Every breath grounds you deeper.
+    Area: menu
+  - Text: The present moment is your gift.
+    Area: menu
+  - Text: Be still, and know your strength.
+    Area: menu
+  - Text: Serenity is within your reach.
+    Area: menu
+  - Text: Rest allows you to bloom.
+    Area: menu
+  - Text: Your calmness inspires others.
+    Area: menu
+  - Text: Release, and let peace flow in.
+    Area: menu
+  - Text: A deep breath can change your day.
+    Area: menu
+  - Text: Inner stillness is your foundation.
+    Area: menu
+  - Text: Choose calm, and peace will follow.
+    Area: menu
+  - Text: You are the embodiment of tranquility.
+    Area: menu

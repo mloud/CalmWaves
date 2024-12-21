@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Meditation.Managers.Messages.Ui;
 using Meditation.Ui.Calendar;
 using Meditation.Ui.Chart;
 using Meditation.Ui.Components;
@@ -26,6 +27,7 @@ namespace Meditation.Ui.Views
         public DayTimeSpanChart BreathingChart => breathingChart;
         public CustomExerciseContainer CustomExerciseContainer => customExerciseContainer;
         public List<ConditionComponent> ConditionComponents => conditionComponents;
+        public MessageComponent MessageComponent => messageComponent;
         
         [Header("Buttons")]
         [SerializeField] private Button sleepButton;
@@ -48,7 +50,8 @@ namespace Meditation.Ui.Views
         [SerializeField] private ScrollRect mainScrollRect;
         [SerializeField] private ExpandableArea expandableArea;
         [SerializeField] private List<ConditionComponent> conditionComponents;
-        
+        [SerializeField] private MessageComponent messageComponent;
+
         private List<GameObject> breathingButtons;
 
         protected override void OnInit()

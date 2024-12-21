@@ -162,7 +162,7 @@ PrefabInstance:
     - target: {fileID: 857410424271091638, guid: e9ef198444d8240bfac54005bed6b303,
         type: 3}
       propertyPath: m_text
-      value: "\u201EV\u011Bdom\xE9 d\xFDch\xE1n\xED zlep\u0161uje koncentraci a energii.\u201C"
+      value: "\u201CMindful breathing improves focus and energy.\u201D"
       objectReference: {fileID: 0}
     - target: {fileID: 857410424271091638, guid: e9ef198444d8240bfac54005bed6b303,
         type: 3}
@@ -312,7 +312,7 @@ PrefabInstance:
     - target: {fileID: 857410424271091638, guid: e9ef198444d8240bfac54005bed6b303,
         type: 3}
       propertyPath: m_text
-      value: "\u201EZastavte se. C\xEDt\xEDte sv\u016Fj dech?\u201C"
+      value: "\u201CPause. Can you feel your breath?\u201D"
       objectReference: {fileID: 0}
     - target: {fileID: 857410424271091638, guid: e9ef198444d8240bfac54005bed6b303,
         type: 3}
@@ -462,7 +462,7 @@ PrefabInstance:
     - target: {fileID: 857410424271091638, guid: e9ef198444d8240bfac54005bed6b303,
         type: 3}
       propertyPath: m_text
-      value: "\u201EZa\u010Dn\u011Bte svou cestu. N\xE1dech\u2026 V\xFDdech\u2026\u201C"
+      value: "\u201CBegin your journey. Inhale\u2026 Exhale\u2026\u201D"
       objectReference: {fileID: 0}
     - target: {fileID: 857410424271091638, guid: e9ef198444d8240bfac54005bed6b303,
         type: 3}
@@ -612,7 +612,7 @@ PrefabInstance:
     - target: {fileID: 857410424271091638, guid: e9ef198444d8240bfac54005bed6b303,
         type: 3}
       propertyPath: m_text
-      value: "\u201ESpr\xE1vn\xE9 d\xFDch\xE1n\xED zklid\u0148uje mysl i t\u011Blo.\u201C"
+      value: "\u201CProper breathing calms the mind and body.\u201D"
       objectReference: {fileID: 0}
     - target: {fileID: 857410424271091638, guid: e9ef198444d8240bfac54005bed6b303,
         type: 3}

@@ -11,6 +11,8 @@ using Meditation.Data;
 using Meditation.Data.Notifications;
 using Meditation.Localization;
 using Meditation.Managers;
+using Meditation.Managers.Messages;
+using Meditation.Managers.Messages.Data;
 using Meditation.States;
 using OneDay.Core;
 using OneDay.Core.Debugging;
@@ -54,6 +56,7 @@ namespace Meditation
         [SerializeField] private AudioEnvironmentManager audioEnvironmentManager;
         [SerializeField] private VisualEnvironmentManager visualEnvironmentManager;
         [SerializeField] private EffectManager effectManager;
+        [SerializeField] private MessageManager messageManager;
 
         private void Awake()
         {
@@ -87,7 +90,7 @@ namespace Meditation
             ServiceLocator.Register<IAudioEnvironmentManager>(audioEnvironmentManager);
             ServiceLocator.Register<IEffectManager>(effectManager);
             ServiceLocator.Register<IVisualEnvironmentManager>(visualEnvironmentManager);
-            
+            ServiceLocator.Register<IMessageManager>(messageManager);
             // Savable data
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<User>(new LocalStorage());
@@ -100,7 +103,8 @@ namespace Meditation
             ServiceLocator.Get<IDataManager>().RegisterStorage<ContentNotificationSettings>(new AddressableScriptableObjectStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<ProductSettings>(new AddressableScriptableObjectStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<AudioDefinition>(new AddressableScriptableObjectStorage());
-            
+            ServiceLocator.Get<IDataManager>().RegisterStorage<MessageDefinition>(new AddressableScriptableObjectStorage());
+
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<FinishedBreathing>(TypeToDataKeyBinding.UserFinishedBreathing);
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<User>(TypeToDataKeyBinding.UserData);
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<BreathingTestResult>(TypeToDataKeyBinding.UserBreathingTestResult);
@@ -109,6 +113,7 @@ namespace Meditation
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<ProductSettings>(TypeToDataKeyBinding.ContentStoreItemSettings);
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<AudioMixSettings>(TypeToDataKeyBinding.AudioMixSettings);
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<AudioDefinition>(TypeToDataKeyBinding.ContentAudioDefinition);
+            ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<MessageDefinition>(TypeToDataKeyBinding.ContentMessageDefinition);
 
             ServiceLocator.Get<IDataManager>().RegisterTypeToKeyBinding<UserDayTimeNotificationSettings>(TypeToDataKeyBinding.UserNotificationSettings);
 

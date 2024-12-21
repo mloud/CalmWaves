@@ -63,7 +63,7 @@ namespace OneDay.Core.Modules.Ui.Components
 
         private void SetTextWithoutTransition(string text)
         {
-            text1.alpha = 1.0f;
+            text1.alpha = originalAlpha;
             text1.text = text;
             if (text2 != null)
             {
@@ -80,7 +80,7 @@ namespace OneDay.Core.Modules.Ui.Components
                 text2.enabled = false;
             }
 
-            if (!string.IsNullOrEmpty(text1.text))
+            //if (!string.IsNullOrEmpty(text1.text))
             {
                 sequence.Append(text1.DOFade(0, EffectDuration).SetEase(Ease.Linear));
             }

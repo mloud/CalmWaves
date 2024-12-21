@@ -85,7 +85,8 @@ namespace Meditation.States
             menuView.CustomExerciseContainer.ScrollTobBeginning();
             ServiceLocator.Get<IUiManager>().GetAllPanels().ForEach(view=>view.Show(true));
             await menuView.Show(true);
-           
+            menuView.MessageComponent.StartDisplaying();
+            
             if (stateData != null)
             {
                 var finishedBreathing = stateData.GetValue<bool>(StateDataKeys.BreathingFinished);
@@ -113,6 +114,7 @@ namespace Meditation.States
         {
             cancellationTokenSource.Cancel();
             await menuView.Hide(true);
+            menuView.MessageComponent.StopDisplaying();
         }
         
         private async UniTask OnStartClick()
@@ -189,12 +191,19 @@ namespace Meditation.States
                 .Forget();
         }
 
-
         private async UniTask PlayFloatingEffects(CancellationToken cancellationToken)
         {
             var effects = ServiceLocator.Get<IEffectManager>()
                 .GetEffects("FloatingEffect");
             effects.ForEach(x=>x.Run());
+
+            effects = ServiceLocator.Get<IEffectManager>()
+                .GetEffects("FloatingButtonEffect");
+            foreach (var effect in effects)
+            {
+                effect.Run();
+                await UniTask.WaitForSeconds(0.8f,cancellationToken:cancellationToken);
+            }
         }
         
         private async UniTask PlayParticleEffectsOnUi(CancellationToken cancellationToken)

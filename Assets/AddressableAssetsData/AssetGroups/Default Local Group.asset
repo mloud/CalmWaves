@@ -67,6 +67,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 506879159016e45d2b9a406f75442096
+    m_Address: white_noise
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 56f952c55f2d64b60922ce0a38181e25
     m_Address: campfire
     m_ReadOnly: 0

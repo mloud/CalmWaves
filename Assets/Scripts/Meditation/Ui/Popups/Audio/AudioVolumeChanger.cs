@@ -32,10 +32,12 @@ namespace Meditation.Ui.Audio
                 out var localPoint
             );
         
-            float width = rectTransform.rect.width;
-            float n = (localPoint.x - rectTransform.rect.xMin) / width;
-            fillImage.fillAmount = n;
-            VolumeChange?.Invoke(n);
+            //float width = rectTransform.rect.width;
+            //float n = (localPoint.x - rectTransform.rect.xMin) / width;
+            //fillImage.fillAmount = n;
+
+            fillImage.fillAmount += eventData.delta.x / rectTransform.rect.width;
+            VolumeChange?.Invoke(fillImage.fillAmount);
         }
 
         public void SetVisible(bool visible)

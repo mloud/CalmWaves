@@ -123,3 +123,13 @@ MonoBehaviour:
     Category: 
     AudioSourceName: jungle
     Tags: []
+  - Type: 1
+    Name: Deep Breath
+    Category: 
+    AudioSourceName: deep_breath
+    Tags: []
+  - Type: 1
+    Name: White Noise
+    Category: 
+    AudioSourceName: white_noise
+    Tags: []

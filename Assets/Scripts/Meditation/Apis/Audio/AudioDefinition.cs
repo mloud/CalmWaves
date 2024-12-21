@@ -10,6 +10,7 @@ namespace Meditation.Apis.Audio
         public string Name;
         public string Category;
         public string AudioSourceName;
+        public string IconKey;
         public List<string> Tags;
     }
 }

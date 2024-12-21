@@ -11,10 +11,17 @@ namespace OneDay.Core.Modules.Ui.Components
         private AddressableAsset<Sprite> asset;
 
         [SerializeField] private Image image;
+        [SerializeField] private string addressableKey;
+        
         private void Awake()
         {
             if (image == null)
                 image = GetComponent<Image>();
+
+            if (image.sprite == null && !string.IsNullOrEmpty(addressableKey))
+            {
+                SetImage(addressableKey);
+            }
         }
 
         private void OnValidate()

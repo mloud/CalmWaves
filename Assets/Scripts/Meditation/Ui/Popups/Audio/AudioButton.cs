@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Meditation.Apis.Audio;
 using OneDay.Core.Modules.Ui.Components;
 using TMPro;
@@ -12,13 +13,14 @@ namespace Meditation.Ui.Audio
         [SerializeField] private TextMeshProUGUI nameLabel;
         [SerializeField] private CToggle toggle;
         [SerializeField] private AudioVolumeChanger volumeChanger;
+        [SerializeField] private CImage icon;
         
         private AudioDefinition definition;
         
         private void Awake() => 
             toggle.onChange.AddListener(OnSelectionChanged);
 
-        public AudioButton Set(AudioDefinition definition,  (bool isSelected, float volume) state)
+        public AudioButton Set(AudioDefinition definition, (bool isSelected, float volume) state)
         {
             this.definition = definition;
             nameLabel.text = definition.Name;
@@ -26,6 +28,16 @@ namespace Meditation.Ui.Audio
             volumeChanger.SetVisible(state.isSelected);
             volumeChanger.SetVolume(state.volume);
             volumeChanger.VolumeChange = OnVolumeChanged;
+
+            if (!string.IsNullOrEmpty(definition.IconKey))
+            {
+                icon.gameObject.SetActive(true);
+                icon.SetImage(definition.IconKey).Forget();
+            }
+            else
+            {
+                icon.gameObject.SetActive(false);
+            }
             return this;
         }
 

@@ -27,7 +27,7 @@ namespace Core.Modules.Ui.Effects
 
         public override void Stop()
         {
-            tween?.Kill();
+            tween?.Kill(true);
             tween = null;
         }
 

@@ -50,10 +50,9 @@ namespace Meditation.States
                 .BindAction(menuView.AiButton, OnAiClicked)
                 .BindAction(menuView.MeasuringButton, OnMeasureClicked)
                 .BindAction(menuView.CustomExerciseContainer.CreateNewButton, OnCreateNewExercise)
-                .BindAction(menuView.NotificationButton, OnNotificationClicked)
-                .BindAction(menuView.SubscriptionButton, OnSubscriptionClicked)
                 .BindAction(menuView.MusicButton, OnMusicClicked)
-                .BindAction(menuView.SleepButton, OnSleepClicked);
+                .BindAction(menuView.SleepButton, OnSleepClicked)
+                .BindAction(menuView.SettingsButton, OnSettingsClicked);
     
             await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<CustomBreathingSettings>());
             menuView.CustomExerciseContainer.BreathingSettingsSelected += OnCustomBreathingClicked;
@@ -191,6 +190,12 @@ namespace Meditation.States
                 .Forget();
         }
 
+        private async UniTask OnSettingsClicked()
+        {
+            var request = uiManager.OpenPopup<MenuSettingsPopup>(null);
+            await request.OpenTask;
+        }
+        
         private async UniTask PlayFloatingEffects(CancellationToken cancellationToken)
         {
             var effects = ServiceLocator.Get<IEffectManager>()

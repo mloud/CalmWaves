@@ -20,10 +20,9 @@ namespace Meditation.Ui.Views
         public Button StartButton => startButton;
         public Button AiButton => aiButton;
         public Button MeasuringButton => measuringButton;
-        public Button NotificationButton => notificationButton;
-        public Button SubscriptionButton => subscriptionButton;
         public Button MusicButton => musicButton;
         public Button SleepButton => sleepButton;
+        public Button SettingsButton => settingsButton;
         public DayTimeSpanChart BreathingChart => breathingChart;
         public CustomExerciseContainer CustomExerciseContainer => customExerciseContainer;
         public List<ConditionComponent> ConditionComponents => conditionComponents;
@@ -34,11 +33,9 @@ namespace Meditation.Ui.Views
         [SerializeField] private Button startButton;
         [SerializeField] private Button aiButton;
         [SerializeField] private Button measuringButton;
-        [SerializeField] private Button notificationButton;
-        [SerializeField] private Button subscriptionButton;
         [SerializeField] private Button musicButton;
-
-        
+        [SerializeField] private Button settingsButton;
+    
         [SerializeField] private UiElement topPagePart;
         [SerializeField] private Transform container;
         [SerializeField] private AssetReferenceGameObject menuButton;

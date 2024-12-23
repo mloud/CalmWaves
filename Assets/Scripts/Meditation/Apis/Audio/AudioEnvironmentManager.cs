@@ -16,6 +16,7 @@ namespace Meditation.Apis.Audio
 {
     public interface IAudioEnvironmentManager
     {
+        float NormalizedVolume { get; set; }
         AudioMixSettings Settings { get; }
         UniTask Apply(AudioMixSettings settings);
         UniTask Apply(string name);
@@ -28,6 +29,11 @@ namespace Meditation.Apis.Audio
     [LogSection("Audio")]
     public class AudioEnvironmentManager : MonoBehaviour, IAudioEnvironmentManager, IService
     {
+        public float NormalizedVolume
+        {
+            get => GetVolume();
+            set => SetVolume(value);
+        }
         public AudioMixSettings Settings { get; private set; }
 
         [SerializeField] private AudioMixerGroup audioMixerGroup;
@@ -228,36 +234,33 @@ namespace Meditation.Apis.Audio
         {
             if (pauseStatus)
             {
-                willUnmuteAfterResume = GetNormalizedVolume() > 0;
+                willUnmuteAfterResume = GetVolume() > 0.001f;
                 if (willUnmuteAfterResume)
                 {
                     volume = GetVolume();
-                    SetNormalizedVolume(0);
+                    SetVolume(0);
                 }
             }
             else
             {
                 if (willUnmuteAfterResume)
                 {
-                    DOTween.To(GetVolume, SetVolume, volume, 3.0f).From(-80);
+                    DOTween.To(GetVolume, SetVolume, volume, 3.0f).From(0);
                 }
             }
         }
 
-
-        private float GetNormalizedVolume() => (GetVolume() - -80) / 80;
-
-        private void SetNormalizedVolume(float volume) => SetVolume (-80 + volume * 80);
-
+       
         private float GetVolume()
         {
-            audioMixerGroup.audioMixer.GetFloat("EnvironmentVolume", out var volume);
-            return volume;
+            audioMixerGroup.audioMixer.GetFloat("EnvironmentVolume", out float currentVolume);
+            return Mathf.Pow(10, currentVolume / 20);
         }
             
         private void SetVolume(float volume)
         {
-            audioMixerGroup.audioMixer.SetFloat("EnvironmentVolume", volume);
+            volume = Mathf.Clamp(volume, 0.0001f, 1.0f); // Ensure targetLinear is > 0
+            audioMixerGroup.audioMixer.SetFloat("EnvironmentVolume", 20f * Mathf.Log10(volume));
         }
     }
 }

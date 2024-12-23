@@ -6,8 +6,10 @@ using Meditation.Ui.Audio;
 using Meditation.Ui.Views;
 using OneDay.Core;
 using OneDay.Core.Extensions;
+using OneDay.Core.Modules.Performance;
 using OneDay.Core.Modules.Sm;
 using OneDay.Core.Modules.Ui;
+using OneDay.Core.Modules.Update;
 using UnityEngine;
 
 namespace Meditation.States
@@ -18,6 +20,10 @@ namespace Meditation.States
         private IUiManager uiManager;
         private IAudioEnvironmentManager audioEnvironmentManager;
         private CancellationTokenSource cancellationTokenSource;
+
+        private bool isTimerRunning;
+        private bool dimMusic;
+        private float dimTimer;
         public override async UniTask Initialize()
         {
             audioEnvironmentManager = ServiceLocator.Get<IAudioEnvironmentManager>();
@@ -28,12 +34,17 @@ namespace Meditation.States
                 .BindAction(view.AudioButton, OnAudioClicked)
                 .BindAction(view.ContinueButton, OnContinueClicked);
             
-        
+            ServiceLocator.Get<IUpdateManager>().RegisterUpdate(CustomUpdate);
             view.TimerContainer.SetVisibleWithFade(false, 0, true);
+            view.FadeOutMusicToggle.SetOn(false,false);
+            view.FadeOutMusicToggle.onChange.AddListener(OnFadeOutMusicToggleChanged);
+            
         }
 
         public override async UniTask EnterAsync(StateData stateData = null)
         {
+            isTimerRunning = false;
+            dimMusic = false;
             view.HoursValueChanger.Initialize(0, 0,59);
             view.MinutesValueChanger.Initialize(10, 0,59);
             view.SecondsValueChanger.Initialize(0, 0,59);
@@ -56,6 +67,7 @@ namespace Meditation.States
             cancellationTokenSource?.Cancel();
             audioEnvironmentManager.Save(audioEnvironmentManager.Settings);
             audioEnvironmentManager.Apply("default");
+            audioEnvironmentManager.NormalizedVolume = 1;
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
            
             await view.Hide(true);
@@ -97,12 +109,28 @@ namespace Meditation.States
 
         private async UniTask StartTimer(TimeSpan timeSpan, CancellationToken cancellationToken)
         {
+            isTimerRunning = true;
+            dimTimer = 5;
+            
             while (timeSpan.TotalSeconds > 0)
             {
                 timeSpan -= TimeSpan.FromSeconds(Time.deltaTime);
                 view.HoursValueChanger.Set(timeSpan.Hours);
                 view.MinutesValueChanger.Set(timeSpan.Minutes);
                 view.SecondsValueChanger.Set(timeSpan.Seconds);
+
+                if (dimMusic)
+                {
+                    var currentVolume = audioEnvironmentManager.NormalizedVolume;
+                    // Calculate the decrement per frame
+                    float decrement = audioEnvironmentManager.NormalizedVolume / (float)timeSpan.TotalSeconds * Time.deltaTime;
+                    currentVolume -= decrement;
+                    currentVolume = Mathf.Clamp01(currentVolume);
+
+                    // Apply the new volume to the audio source
+                    audioEnvironmentManager.NormalizedVolume = currentVolume;
+                }
+                
                 
                 await UniTask.Yield(cancellationToken);
                 if (cancellationToken.IsCancellationRequested)
@@ -117,6 +145,32 @@ namespace Meditation.States
             await view.RunningContainer.SetVisibleWithFade(false, 1.0f, true);
             await view.FinishedContainer.SetVisibleWithFade(true, 1.0f, true);
             Screen.sleepTimeout = SleepTimeout.SystemSetting;
+        }
+        
+        private void CustomUpdate(float dt)
+        {
+            if (isTimerRunning)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    ServiceLocator.Get<IPerformanceManager>().SetScreenDimmed(false);
+                    dimTimer = 5;
+                }
+                else
+                {
+                    dimTimer -= dt;
+                    if (dimTimer < 0)
+                    {
+                        ServiceLocator.Get<IPerformanceManager>().SetScreenDimmed(true);
+                        dimTimer = 0;
+                    }
+                }
+            }
+        }
+
+        private void OnFadeOutMusicToggleChanged(bool isOn)
+        {
+            dimMusic = isOn;
         }
     }
 }

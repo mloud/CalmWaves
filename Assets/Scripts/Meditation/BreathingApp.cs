@@ -22,6 +22,7 @@ using OneDay.Core.Modules.Conditions;
 using OneDay.Core.Modules.Data;
 using OneDay.Core.Modules.Localization;
 using OneDay.Core.Modules.Notifications;
+using OneDay.Core.Modules.Performance;
 using OneDay.Core.Modules.Share;
 using OneDay.Core.Modules.Sm;
 using OneDay.Core.Modules.Store;
@@ -57,6 +58,7 @@ namespace Meditation
         [SerializeField] private VisualEnvironmentManager visualEnvironmentManager;
         [SerializeField] private EffectManager effectManager;
         [SerializeField] private MessageManager messageManager;
+        [SerializeField] private PerformanceManager performanceManager;
 
         private void Awake()
         {
@@ -67,7 +69,6 @@ namespace Meditation
         {
             D.Initialize(debugSections.Sections);
             
-            Application.targetFrameRate = 60;
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
             
             await UnityGS.Initialize("production");
@@ -91,6 +92,8 @@ namespace Meditation
             ServiceLocator.Register<IEffectManager>(effectManager);
             ServiceLocator.Register<IVisualEnvironmentManager>(visualEnvironmentManager);
             ServiceLocator.Register<IMessageManager>(messageManager);
+            ServiceLocator.Register<IPerformanceManager>(performanceManager);
+
             // Savable data
             ServiceLocator.Get<IDataManager>().RegisterStorage<FinishedBreathing>(new LocalStorage());
             ServiceLocator.Get<IDataManager>().RegisterStorage<User>(new LocalStorage());
@@ -139,6 +142,10 @@ namespace Meditation
            
             ServiceLocator.Get<ISettingsApi>().RegisterModule<IVolumeModule>(new VolumeModule());
             ServiceLocator.Get<ISettingsApi>().RegisterModule<ISoundSettingsModule>(new SettingsModule());
+            
+            ServiceLocator.Get<IPerformanceManager>().SwitchToHighPerformance();
+
+            
             await ServiceLocator.Get<IUiManager>().HideView(false);
             
             

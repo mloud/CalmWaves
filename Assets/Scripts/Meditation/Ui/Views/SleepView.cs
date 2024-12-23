@@ -1,4 +1,5 @@
 using Meditation.Ui.Components;
+using OneDay.Core.Modules.Ui.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,7 @@ namespace Meditation.Ui.Views
         public IntValueChanger HoursValueChanger => hoursValueChanger;
         public IntValueChanger SecondsValueChanger => secondsValueChanger;
         public GameObject TimerContainer => timerContainer;
+        public CToggle FadeOutMusicToggle => fadeOutMusicToggle;
 
         [SerializeField] private Button audioButton;
         [SerializeField] private Button continueButton;
@@ -25,5 +27,7 @@ namespace Meditation.Ui.Views
         [SerializeField] private GameObject runningContainer;
         [SerializeField] private GameObject finishedContainer;
         [SerializeField] private GameObject timerContainer;
+        [SerializeField] private CToggle fadeOutMusicToggle;
+
     }
 }

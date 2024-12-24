@@ -103,7 +103,7 @@ namespace Meditation.Apis.Audio
 
         public async UniTask SetMuted(bool isMuted, float duration)
         {
-            float finalVolume = isMuted ? -80 : 0;
+            float finalVolume = isMuted ? 0 : 1;
             await DOTween.To(GetVolume, SetVolume, finalVolume, duration).AsyncWaitForCompletion();
         }
       

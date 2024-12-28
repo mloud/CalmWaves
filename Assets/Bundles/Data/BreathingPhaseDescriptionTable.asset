@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: BreathingPhaseDescriptionTable
+  m_EditorClassIdentifier: Assembly-CSharp:Meditation.Data:BreathingPhaseDescriptionTable
+  data:
+  - breathingPhase: inhale
+    descriptions:
+    - 'Quick breathing: May lead to shallow breathing, increasing alertness.'
+    - 'Balanced: Optimal for daily relaxation and steady oxygen intake.'
+    - 'Deep breathing: Increases oxygen saturation, calms the nervous system.'
+    - 'Intense focus: Trains lung capacity but may be uncomfortable for beginners.'
+    durations:
+    - 2
+    - 4
+    - 7
+    - 8
+  - breathingPhase: holdAfterInhale
+    descriptions:
+    - 'Quick pause: Helps improve focus and maintain a rhythmic breath.'
+    - 'Oxygen optimization: Allows more oxygen transfer to cells, great for mindfulness.'
+    - 'Strengthens breath control: Increases tolerance to CO2 and calms the body.'
+    - 'Advanced practice: Requires experience, strengthens diaphragm control.'
+    durations:
+    - 2
+    - 4
+    - 7
+    - 8
+  - breathingPhase: exhale
+    descriptions:
+    - 'Quick exhale: May lead to hyperventilation; not ideal for relaxation.'
+    - 'Balanced: Supports everyday relaxation and steady CO2 release.'
+    - 'Long exhale: Activates the parasympathetic nervous system, reducing stress.'
+    - 'Extended exhale: Deep relaxation, lowers heart rate significantly.'
+    durations:
+    - 2
+    - 4
+    - 7
+    - 8
+  - breathingPhase: holdAfterExhale
+    descriptions:
+    - 'Gentle pause: Helps in keeping a steady rhythm without stress.'
+    - 'Focus booster: Enhances concentration and prepares for the next inhale.'
+    - 'Advanced pause: Promotes CO2 tolerance, improving breath efficiency over time.'
+    - 'Deep stillness: Requires advanced practice, induces profound calm but may
+      feel uncomfortable.'
+    durations:
+    - 2
+    - 4
+    - 7
+    - 8

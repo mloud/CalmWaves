@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Meditation.Apis;
 using Meditation.Data;
 using Meditation.Ui.Components;
 using OneDay.Core;
@@ -30,7 +31,11 @@ namespace Meditation.Ui
         [SerializeField] private TimeSpanText timeSpanText;
         [SerializeField] private GameObject settingsNameStateContainer;
         [SerializeField] private GameObject settingsTimerStateContainer;
-        
+        [SerializeField] private AExtendedText inhaleInfoLabel;
+        [SerializeField] private AExtendedText holdAfterInhaleInfoLabel;
+        [SerializeField] private AExtendedText exhaleInfoLabel;
+        [SerializeField] private AExtendedText holdAfterExhaleInfoLabel;
+
         private CustomBreathingSettings breathingSettings;
 
         private enum State
@@ -50,10 +55,26 @@ namespace Meditation.Ui
 
             inputField.onValueChanged.AddListener(OnNameChanged);
             inputField.text = "";
-            inhaleValueChanger.OnValueChanged += (v) => breathingSettings.BreathingTiming.InhaleDuration = v;
-            exhaleValueChanger.OnValueChanged += (v) => breathingSettings.BreathingTiming.ExhaleDuration = v;
-            afterInhaleHoldChanger.OnValueChanged += (v) => breathingSettings.BreathingTiming.AfterInhaleDuration = v;
-            afterExhaleHoldChanger.OnValueChanged += (v) => breathingSettings.BreathingTiming.AfterExhaleDuration = v;
+            inhaleValueChanger.OnValueChanged += async (v) =>
+            {
+                breathingSettings.BreathingTiming.InhaleDuration = v;
+                await RefreshInhaleDescription();
+            };
+            exhaleValueChanger.OnValueChanged += async v =>
+            {
+                breathingSettings.BreathingTiming.ExhaleDuration = v;
+                await RefreshExhaleDescription();
+            };
+            afterInhaleHoldChanger.OnValueChanged += async v =>
+            {
+                breathingSettings.BreathingTiming.AfterInhaleDuration = v;
+                await RefreshHoldAfterInhaleDescription();
+            };
+            afterExhaleHoldChanger.OnValueChanged += async v =>
+            {
+                breathingSettings.BreathingTiming.AfterExhaleDuration = v;
+                await RefreshHoldAfterExhaleDescription();
+            };
             roundsChanger.OnValueChanged += (v) => breathingSettings.Rounds = v;
             nextButton.onClick.AddListener(async ()=>await OnNext());
             UpdateNextButton();
@@ -68,11 +89,7 @@ namespace Meditation.Ui
             afterExhaleHoldChanger.Set((int)breathingSettings.GetAfterExhaleDuration());
             roundsChanger.Set(breathingSettings.Rounds);
             
-            
             await EnterState(State.ChoosingName);
-            
-            
-         
                 
             ServiceLocator.Get<IUiManager>().HideView();
         }
@@ -114,6 +131,11 @@ namespace Meditation.Ui
                     break;
                 
                 case State.SettingsTimer:
+                    await UniTask.WhenAll(
+                        RefreshHoldAfterExhaleDescription(),
+                        RefreshHoldAfterInhaleDescription(),
+                        RefreshExhaleDescription(),
+                        RefreshInhaleDescription());
                     await settingsNameStateContainer.SetVisibleWithFade(false, 0.2f, true);
                     await settingsTimerStateContainer.SetVisibleWithFade(true, 1.0f, true);
                     break;
@@ -140,5 +162,21 @@ namespace Meditation.Ui
             largeNameLabel.text = inputField.text;
             await EnterState(State.SettingsTimer);
         }
+
+        private async UniTask RefreshInhaleDescription() => 
+            inhaleInfoLabel.text = await ServiceLocator.Get<IBreathingApi>()
+                .GetBreathingPhaseDescription("inhale", breathingSettings.BreathingTiming.InhaleDuration);
+
+        private async UniTask RefreshExhaleDescription() => 
+            exhaleInfoLabel.text = await ServiceLocator.Get<IBreathingApi>()
+                .GetBreathingPhaseDescription("exhale", breathingSettings.BreathingTiming.ExhaleDuration);
+
+        private async UniTask RefreshHoldAfterInhaleDescription() => 
+            holdAfterInhaleInfoLabel.text = await ServiceLocator.Get<IBreathingApi>()
+                .GetBreathingPhaseDescription("holdAfterInhale", breathingSettings.BreathingTiming.AfterInhaleDuration);
+        private async UniTask RefreshHoldAfterExhaleDescription() => 
+            holdAfterExhaleInfoLabel.text = await ServiceLocator.Get<IBreathingApi>()
+                .GetBreathingPhaseDescription("holdAfterExhale", breathingSettings.BreathingTiming.AfterExhaleDuration);
+
     }
 }

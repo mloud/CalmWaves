@@ -39,6 +39,9 @@ namespace OneDay.Core.Modules.Ui.Components
 
         public override void Set(string text)
         {
+            if (text == targetText)
+                return;
+            
             if (!gameObject.activeInHierarchy)
             {
                 SetTextWithoutTransition(text);

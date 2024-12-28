@@ -15,5 +15,6 @@ namespace Meditation.Data
         public const string ContentStoreItemSettings = "StoreItemSettings";
         public const string ContentAudioDefinition = "AudioDefinitionTable";
         public const string ContentMessageDefinition = "MessageDefinitionTable";
+        public const string ContentBreathingPhaseDescription = "BreathingPhaseDescriptionTable";
     }
 }

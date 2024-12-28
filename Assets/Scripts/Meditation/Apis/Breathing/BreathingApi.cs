@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Meditation.Apis.Data;
+using Meditation.Data;
 using OneDay.Core;
 using OneDay.Core.Modules.Data;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace Meditation.Apis
 
         IBreathingHistory BreathingHistory {get;}
         UniTask<IBreathingSettings> GetBreathingSettingsForCurrentPartOfTheDay();
-
+        UniTask<string> GetBreathingPhaseDescription(string phaseName, float duration);
 
         int GetStreak();
         TimeSpan GetBreathingTime();
@@ -30,9 +31,6 @@ namespace Meditation.Apis
         UniTask<FinishedBreathing> FinishSession(float time);
   
         void IncreaseBreathingCountInSession();
-        
-        
-        
     }
 
     
@@ -75,6 +73,11 @@ namespace Meditation.Apis
         
         public UniTask PostInitialize() => UniTask.CompletedTask;
 
+        public async UniTask<string> GetBreathingPhaseDescription(string phaseName, float duration) => 
+            (await dataManager.GetAll<BreathingPhaseDescription>())
+                .FirstOrDefault(x => x.GetBreathingPhase() == phaseName)?
+            .GetDescription(duration);
+       
         public int GetStreak() => user.Streak;
         
         public TimeSpan GetBreathingTime() => breathingDuration;

@@ -32,6 +32,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93a522db01cc747ef9871734032db245
+    m_Address: BreathingPhaseDescriptionTable
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9a70a76562a434731847b57e2b2a476a
     m_Address: MoodDb
     m_ReadOnly: 0

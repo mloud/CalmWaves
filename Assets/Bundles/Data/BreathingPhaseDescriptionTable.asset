@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 99a35d2f15a34bf3bb2c8bcee591d5b1, type: 3}
   m_Name: BreathingPhaseDescriptionTable
   m_EditorClassIdentifier: Assembly-CSharp:Meditation.Data:BreathingPhaseDescriptionTable
   data:

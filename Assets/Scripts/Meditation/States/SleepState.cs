@@ -24,6 +24,8 @@ namespace Meditation.States
         private bool isTimerRunning;
         private bool dimMusic;
         private float dimTimer;
+
+        private const float DimTime = 5;
         public override async UniTask Initialize()
         {
             audioEnvironmentManager = ServiceLocator.Get<IAudioEnvironmentManager>();
@@ -34,7 +36,6 @@ namespace Meditation.States
                 .BindAction(view.AudioButton, OnAudioClicked)
                 .BindAction(view.ContinueButton, OnContinueClicked);
             
-            ServiceLocator.Get<IUpdateManager>().RegisterUpdate(CustomUpdate);
             view.TimerContainer.SetVisibleWithFade(false, 0, true);
             view.FadeOutMusicToggle.SetOn(false,false);
             view.FadeOutMusicToggle.onChange.AddListener(OnFadeOutMusicToggleChanged);
@@ -45,6 +46,7 @@ namespace Meditation.States
         {
             isTimerRunning = false;
             dimMusic = false;
+            await view.Hide(false);
             view.HoursValueChanger.Initialize(0, 0,59);
             view.MinutesValueChanger.Initialize(10, 0,59);
             view.SecondsValueChanger.Initialize(0, 0,59);
@@ -57,6 +59,8 @@ namespace Meditation.States
             await view.Show(true);
             view.TimerContainer.SetVisibleWithFade(true, 1.0f, true);
             await view.SettingsContainer.SetVisibleWithFade(true, 1.0f, true);
+            ServiceLocator.Get<IUpdateManager>().RegisterUpdate(CustomUpdate);
+
         }
 
         public override async UniTask ExecuteAsync()
@@ -69,7 +73,8 @@ namespace Meditation.States
             audioEnvironmentManager.Apply("default");
             audioEnvironmentManager.NormalizedVolume = 1;
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
-           
+            ServiceLocator.Get<IPerformanceManager>().SetScreenDimmed(false);
+            ServiceLocator.Get<IUpdateManager>().UnregisterUpdate(CustomUpdate);
             await view.Hide(true);
         }
       
@@ -110,7 +115,7 @@ namespace Meditation.States
         private async UniTask StartTimer(TimeSpan timeSpan, CancellationToken cancellationToken)
         {
             isTimerRunning = true;
-            dimTimer = 5;
+            dimTimer = DimTime;
             
             while (timeSpan.TotalSeconds > 0)
             {
@@ -154,7 +159,7 @@ namespace Meditation.States
                 if (Input.GetMouseButtonDown(0))
                 {
                     ServiceLocator.Get<IPerformanceManager>().SetScreenDimmed(false);
-                    dimTimer = 5;
+                    dimTimer = DimTime;
                 }
                 else
                 {

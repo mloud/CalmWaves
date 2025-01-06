@@ -12,7 +12,6 @@ namespace OneDay.Core.Modules.Ui
         private Vector2 screenLeft;
         private Vector2 screenCenter; // Position in the center of the screen
 
-
         private void Awake()
         {
             rectTransform = (RectTransform)transform;
@@ -23,7 +22,9 @@ namespace OneDay.Core.Modules.Ui
 
         public override async UniTask Show(bool useSmooth, float speedMultiplier = 1)
         {
+            DOTween.Kill(rectTransform);
             rectTransform.anchoredPosition = screenRight * 2; // Start at right
+            gameObject.SetActive(true);
             await rectTransform.DOAnchorPos(screenCenter, useSmooth ? duration : 0)
                 .SetEase(ease)
                 .AsyncWaitForCompletion();
@@ -31,9 +32,11 @@ namespace OneDay.Core.Modules.Ui
 
         public override async UniTask Hide(bool useSmooth, float speedMultiplier = 1)
         {
-            await rectTransform.DOAnchorPos(screenLeft * 2, useSmooth ? duration : 0)
-                .SetEase(ease)
-                .AsyncWaitForCompletion();
+            DOTween.Kill(rectTransform);
+            await rectTransform
+                .DOAnchorPos(screenLeft * 2, useSmooth ? duration : 0)
+                .SetEase(ease);
+            gameObject.SetActive(false);
         }
     }
 }

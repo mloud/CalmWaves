@@ -1,13 +1,10 @@
-using Meditation.Apis.Data;
-
-namespace Meditation
+namespace Meditation.Data
 {
     public interface IBreathingSettings
     {
         string GetName();
         string GetIcon();
         string GetDescription();
-        string GetMusic();
         string GetLabel();
         float GetInhaleDuration();
         float GetAfterInhaleDuration();
@@ -15,8 +12,6 @@ namespace Meditation
         float GetAfterExhaleDuration();
         float GetTotalTime();
         float GetOneBreatheTime();
-        BreathingTiming GetBreathingTiming();
-        BreathingTargetTime GetBreathingTargetTime();
         int Rounds { get; set; }
     }
 }

@@ -9,6 +9,8 @@ namespace Meditation.Data
         public const string UserCustomBreathingSettings = "CustomBreathingSettings";
         public const string UserNotificationSettings = "UserNotificationSettings";
         public const string AudioMixSettings = "AudioMixSettings";
+        public const string JourneyProgression = "JourneyProgression";
+
 
         // readonly
         public const string ContentNotificationSettings = "NotificationSettings";

@@ -13,8 +13,8 @@ namespace Meditation.Ui.Components
     public class CustomExerciseContainer : MonoBehaviour
     {
         public Button CreateNewButton => createNewButton;
-        public Action<CustomBreathingSettings> BreathingSettingsSelected { get; set; }
-        public Action<CustomBreathingSettings> BreathingSettingsDeleted { get; set; }
+        public Action<UserBreathingSettings> BreathingSettingsSelected { get; set; }
+        public Action<UserBreathingSettings> BreathingSettingsDeleted { get; set; }
         
         [SerializeField] private Button createNewButton;
         [SerializeField] private CustomBreathingButton buttonPrefab;
@@ -22,7 +22,7 @@ namespace Meditation.Ui.Components
         [SerializeField] private Transform container;
         [SerializeField] private ScrollRect scrollView;
         
-        public async UniTask Initialize(IEnumerable<CustomBreathingSettings> breathingSettings)
+        public async UniTask Initialize(IEnumerable<UserBreathingSettings> breathingSettings)
         {
             const int builtInButtons = 4;
             var sortedBreathingSettings = breathingSettings.OrderByDescending(x => x.CreateTime);

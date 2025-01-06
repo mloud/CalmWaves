@@ -29,12 +29,11 @@ namespace Core.Modules.Ui.Effects
 
         public override bool IsPlaying() => isPlaying;
         
-        private void Start()
-        {
-            textMeshPro = GetComponent<TMP_Text>();
-            textMeshPro.ForceMeshUpdate();
-            cachedMeshInfo = textMeshPro.textInfo.CopyMeshInfoVertexData();
-        }
+        // private void Start()
+        // {
+        //     textMeshPro.ForceMeshUpdate();
+        //     cachedMeshInfo = textMeshPro.textInfo.CopyMeshInfoVertexData();
+        // }
 
         private void Update()
         {

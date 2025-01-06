@@ -10,7 +10,7 @@ namespace Meditation.Ui
     {
         public Button BackButton => backButton;
         [SerializeField] protected Button backButton;
-     
+        
         protected override void OnInit()
         { }
 

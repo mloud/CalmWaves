@@ -4,9 +4,9 @@ using OneDay.Core.Modules.Data;
 
 namespace Meditation.Data
 {
-   public class CustomBreathingSettings : BaseDataObject, IBreathingSettings
+   public class UserBreathingSettings : BaseDataObject, IBreathingSettings
    {
-      public static CustomBreathingSettings Default() => new CustomBreathingSettings
+      public static UserBreathingSettings Default() => new UserBreathingSettings
       {
          Name = "",
          BreathingTiming = new BreathingTiming

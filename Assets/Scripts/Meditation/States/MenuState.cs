@@ -8,6 +8,7 @@ using Meditation.Apis.Audio;
 using Meditation.Apis.Visual;
 using Meditation.Core.Utils;
 using Meditation.Data;
+using Meditation.Data.Breathing;
 using Meditation.Ui;
 using Meditation.Ui.Audio;
 using Meditation.Ui.Chart;
@@ -19,7 +20,6 @@ using OneDay.Core.Modules.Data;
 using OneDay.Core.Modules.Sm;
 using OneDay.Core.Modules.Ui;
 
-
 namespace Meditation.States
 {
     public class MenuState : AState
@@ -29,6 +29,7 @@ namespace Meditation.States
         private IDataManager dataManager;
         private IBreathingApi breathingApi;
         private IUiManager uiManager;
+        private IJourneyManager journeyManager;
 
         private CancellationTokenSource cancellationTokenSource;
         
@@ -38,6 +39,7 @@ namespace Meditation.States
             breathingDbAsset = await ServiceLocator.Get<IDataManager>().GetBreathingSettings();
             uiManager = ServiceLocator.Get<IUiManager>();
             dataManager = ServiceLocator.Get<IDataManager>();
+            journeyManager = ServiceLocator.Get<IJourneyManager>();
             
             menuView = ServiceLocator.Get<IUiManager>().GetView<MenuView>();
             await menuView.InitializeBreathingButtons(breathingDbAsset.GetReference().GetAll() , OnMenuButtonClicked);
@@ -52,9 +54,12 @@ namespace Meditation.States
                 .BindAction(menuView.CustomExerciseContainer.CreateNewButton, OnCreateNewExercise)
                 .BindAction(menuView.MusicButton, OnMusicClicked)
                 .BindAction(menuView.SleepButton, OnSleepClicked)
-                .BindAction(menuView.SettingsButton, OnSettingsClicked);
+                .BindAction(menuView.SettingsButton, OnSettingsClicked)
+                .BindAction(menuView.JourneyButton, OnJourneyClicked);
+
+            
     
-            await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<CustomBreathingSettings>());
+            await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<UserBreathingSettings>());
             menuView.CustomExerciseContainer.BreathingSettingsSelected += OnCustomBreathingClicked;
             menuView.CustomExerciseContainer.BreathingSettingsDeleted += async (s) => await OnCustomBreathingDeleteClicked(s);
         }
@@ -82,6 +87,10 @@ namespace Meditation.States
             menuView.BreathingChart.Set(new DayTimeSpanChartData(breathingTimesThisWeek, chartMax));
             menuView.BreathingChart.Select(DateTime.Now.DayOfWeek);
             menuView.CustomExerciseContainer.ScrollTobBeginning();
+            var journeyProgression = (await journeyManager.GetProgression("LungCapacity20")) ??
+                                     JourneyProgression.First("LungCapacity20");
+            var journeyDefinition = await journeyManager.GetJourney("LungCapacity20");
+            menuView.JourneyProgression.Set(journeyProgression.CurrentProgress, journeyDefinition.GetMissions().Count());
             ServiceLocator.Get<IUiManager>().GetAllPanels().ForEach(view=>view.Show(true));
             await menuView.Show(true);
             menuView.MessageComponent.StartDisplaying();
@@ -143,7 +152,7 @@ namespace Meditation.States
             {
                 var settings = request.Popup.BreathingSettings;
                 await dataManager.Add(settings);
-                await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<CustomBreathingSettings>());
+                await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<UserBreathingSettings>());
                 request.Popup.Close().Forget();
                 
             }, true);
@@ -151,19 +160,19 @@ namespace Meditation.States
             await request.OpenTask;
         }
         
-        private void OnCustomBreathingClicked(CustomBreathingSettings settings)
+        private void OnCustomBreathingClicked(UserBreathingSettings settings)
         {
             StateMachine.SetStateAsync<BreathingState>(
                     StateData.Create(("Settings", settings)), false)
                 .Forget();
         }
 
-        private async UniTask OnCustomBreathingDeleteClicked(CustomBreathingSettings settings)
+        private async UniTask OnCustomBreathingDeleteClicked(UserBreathingSettings settings)
         {
-            var id = (await dataManager.GetAll<CustomBreathingSettings>())
+            var id = (await dataManager.GetAll<UserBreathingSettings>())
                 .First(x => x.CreateTime == settings.CreateTime).Id;
-            await dataManager.Remove<CustomBreathingSettings>(id);
-            await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<CustomBreathingSettings>());
+            await dataManager.Remove<UserBreathingSettings>(id);
+            await menuView.CustomExerciseContainer.Initialize(await dataManager.GetAll<UserBreathingSettings>());
         }
         
         private async UniTask OnNotificationClicked()
@@ -194,6 +203,12 @@ namespace Meditation.States
         {
             var request = uiManager.OpenPopup<MenuSettingsPopup>(null);
             await request.OpenTask;
+        }
+        
+        private void OnJourneyClicked()
+        {
+            StateMachine.SetStateAsync<JourneyState>(null, false)
+                .Forget();
         }
         
         private async UniTask PlayFloatingEffects(CancellationToken cancellationToken)

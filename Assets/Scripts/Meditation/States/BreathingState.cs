@@ -5,6 +5,7 @@ using Meditation.Apis;
 using Meditation.Apis.Audio;
 using Meditation.Apis.Data;
 using Meditation.Apis.Settings;
+using Meditation.Data;
 using Meditation.Ui;
 using Meditation.Ui.Views;
 using OneDay.Core;
@@ -34,6 +35,7 @@ namespace Meditation.States
         private bool running;
         private bool paused;
         private float breathingTime;
+        private StateData stateData;
         
         
         public override async UniTask Initialize()
@@ -58,12 +60,13 @@ namespace Meditation.States
 
         public override async UniTask EnterAsync(StateData stateData = null)
         {
+            this.stateData = stateData;
             breathingTime = 0;
             paused = false;
             breathingFinished = false;
             Debug.Assert(stateData != null, "State data is required when entering BreathingState");
             breathingSettings = stateData.GetValue<IBreathingSettings>("Settings");
-
+          
             cancellationTokenSource?.Dispose();
             cancellationTokenSource = new CancellationTokenSource();
             
@@ -85,10 +88,9 @@ namespace Meditation.States
                     () =>
                     {
                         canceled = true;
-                        StateMachine.SetStateAsync<MenuState>().Forget();
+                        Return(null, false);
                         request.Popup.Close().Forget();
                     });
-                //audioManager.PlayMusic(breathingSettings.GetMusic()).Forget();
                 request.Popup.BindAction(request.Popup.ContinueButton, () => request.Popup.Close().Forget());
 
                 await request.OpenTask;
@@ -120,9 +122,7 @@ namespace Meditation.States
                     await popupRequest.OpenTask;
                     await popupRequest.WaitForCloseFinished();
 
-                    StateMachine.SetStateAsync<MenuState>(
-                        finishedBreathing != null ? StateData.Create((StateDataKeys.BreathingFinished, true)) : null,
-                        false).Forget();
+                    Return(finishedBreathing, true);
                 }
             }
             catch (OperationCanceledException ex)
@@ -204,11 +204,30 @@ namespace Meditation.States
                 await popupRequest.WaitForCloseFinished();
             }
 
-            StateMachine.SetStateAsync<MenuState>(
-                StateData.Create((StateDataKeys.BreathingFinished,true)),
-                false).Forget();
+           await Return(finishedBreathing, false);
         }
 
+        private async UniTask Return(FinishedBreathing finishedBreathing, bool completed)
+        {
+            var breathingType = stateData.GetValue<string>("Type");
+            
+            if (string.IsNullOrEmpty(breathingType))
+            {
+                StateMachine.SetStateAsync<MenuState>(
+                    finishedBreathing != null ? StateData.Create((StateDataKeys.BreathingFinished, true)) : null,
+                    false).Forget();
+            }
+            else if (breathingType == "Journey")
+            {    
+                var context = stateData.GetValue<JourneyState.JourneyContext>("Data");
+                if (completed)
+                { 
+                    await ServiceLocator.Get<IJourneyManager>().FinishJourneyMission(context.JourneyId, context.Order);
+                }
+                StateMachine.SetStateAsync<JourneyState>(null, false).Forget();
+            }
+        }
+        
         private async UniTask OnSettingsClicked()
         {
             var request = ServiceLocator.Get<IUiManager>().OpenPopup<SettingsPopup>(null);

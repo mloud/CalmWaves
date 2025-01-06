@@ -18,10 +18,10 @@ namespace Meditation.Ui.Components
         [SerializeField] private float deleteButtonDuration = 4;
         public string Id { get; private set; }
 
-        private Action<CustomBreathingSettings> ButtonAction{ get; set; }
-        private Action<CustomBreathingSettings> DeleteAction{ get; set; }
+        private Action<UserBreathingSettings> ButtonAction{ get; set; }
+        private Action<UserBreathingSettings> DeleteAction{ get; set; }
 
-        private CustomBreathingSettings BreathingSetting { get; set; }
+        private UserBreathingSettings BreathingSetting { get; set; }
         private void Awake()
         {
             button.onClick.AddListener(OnButtonClick);
@@ -32,7 +32,7 @@ namespace Meditation.Ui.Components
         }
 
         // FULL
-        public void Set(CustomBreathingSettings breathingSettings, Action<CustomBreathingSettings> action, Action<CustomBreathingSettings> deleteAction)
+        public void Set(UserBreathingSettings breathingSettings, Action<UserBreathingSettings> action, Action<UserBreathingSettings> deleteAction)
         {
             nameLabel.text = breathingSettings.GetName();
             BreathingSetting = breathingSettings;

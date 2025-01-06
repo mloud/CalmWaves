@@ -15,7 +15,7 @@ namespace Meditation.Ui
 {
     public class CustomExercisePopup : UiPopup
     {
-        public CustomBreathingSettings BreathingSettings => breathingSettings;
+        public UserBreathingSettings BreathingSettings => breathingSettings;
         public Button SaveButton => saveButton;
         
         [SerializeField] private Button saveButton;
@@ -36,7 +36,7 @@ namespace Meditation.Ui
         [SerializeField] private AExtendedText exhaleInfoLabel;
         [SerializeField] private AExtendedText holdAfterExhaleInfoLabel;
 
-        private CustomBreathingSettings breathingSettings;
+        private UserBreathingSettings breathingSettings;
 
         private enum State
         {
@@ -82,13 +82,13 @@ namespace Meditation.Ui
 
         protected override async UniTask OnOpenStarted(IUiParameter parameter)
         {
-            breathingSettings = CustomBreathingSettings.Default();
+            breathingSettings = UserBreathingSettings.Default();
             inhaleValueChanger.Set((int)breathingSettings.GetInhaleDuration());
             exhaleValueChanger.Set((int)breathingSettings.GetExhaleDuration());
             afterInhaleHoldChanger.Set((int)breathingSettings.GetAfterInhaleDuration());
             afterExhaleHoldChanger.Set((int)breathingSettings.GetAfterExhaleDuration());
             roundsChanger.Set(breathingSettings.Rounds);
-            
+            timeSpanText.Set(TimeSpan.FromSeconds(breathingSettings.GetTotalTime()));
             await EnterState(State.ChoosingName);
                 
             ServiceLocator.Get<IUiManager>().HideView();

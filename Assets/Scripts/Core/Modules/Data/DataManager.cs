@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using Meditation;
 using Meditation.Data;
+using Meditation.Data.Breathing;
 using Newtonsoft.Json;
 using OneDay.Core.Debugging;
 using OneDay.Core.Extensions;
@@ -31,6 +31,7 @@ namespace OneDay.Core.Modules.Data
 
         UniTask<AddressableAsset<BreathingSettingsDb>> GetBreathingSettings();
         UniTask<AddressableAsset<BreathingSettingsDb>> GetDailyBreathingSettings();
+        UniTask<AddressableAsset<JourneySettingsDb>> GetJourneySettings();
         UniTask<AddressableAsset<MoodDb>> GetMoodSettings();
     }
     
@@ -53,6 +54,9 @@ namespace OneDay.Core.Modules.Data
             storages.Remove(typeof(T));
         }
 
+        public async UniTask<AddressableAsset<JourneySettingsDb>> GetJourneySettings() =>
+            await ServiceLocator.Get<IAssetManager>().GetAssetAsync<JourneySettingsDb>("JourneySettingsDb");
+        
         public async UniTask<AddressableAsset<BreathingSettingsDb>> GetBreathingSettings() =>
              await ServiceLocator.Get<IAssetManager>().GetAssetAsync<BreathingSettingsDb>("LibraryBreathingExerciseDb");
 

@@ -1,4 +1,5 @@
 using System;
+using Meditation.Data;
 using Newtonsoft.Json;
 using OneDay.Core.Modules.Data;
 
@@ -9,7 +10,6 @@ namespace Meditation.Apis.Data
         public DateTime DateTime { get; set; }
         public string Name { get; set; }
         public TimeSpan BreatheDuration { get; set; }
-        public BreathingTiming BreathingTiming { get; set; }
         public int Breaths { get; set; }
 
         // Parameterless constructor for Newtonsoft
@@ -18,7 +18,6 @@ namespace Meditation.Apis.Data
         public FinishedBreathing(IBreathingSettings breathingSettings, TimeSpan breatheDuration, int breaths)
         {
             Name = breathingSettings.GetName();
-            BreathingTiming = breathingSettings.GetBreathingTiming();
             DateTime = DateTime.Now;
             BreatheDuration = breatheDuration;
             Breaths = breaths;

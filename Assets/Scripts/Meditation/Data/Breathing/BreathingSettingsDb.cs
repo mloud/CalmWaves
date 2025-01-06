@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Meditation
+namespace Meditation.Data.Breathing
 {
     [CreateAssetMenu(fileName = "BreathingExerciseDb", menuName = "Breathing/BreathingExerciseDb")]
     public class BreathingSettingsDb : ScriptableObject
     {
         [SerializeField] private List<BreathingSettings> builtInSettings;
         
-        public IBreathingSettings Get(string settingsName)
+        public BreathingSettings Get(string settingsName)
         {
             var settingsList = builtInSettings.FindAll(x => x.GetName() == settingsName);
             switch (settingsList.Count)
@@ -24,6 +24,6 @@ namespace Meditation
             }
         }
 
-        public IEnumerable<IBreathingSettings> GetAll() => builtInSettings;
+        public IEnumerable<BreathingSettings> GetAll() => builtInSettings;
     }
 }

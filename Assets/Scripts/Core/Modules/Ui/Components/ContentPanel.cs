@@ -9,9 +9,9 @@ namespace OneDay.Core.Modules.Ui.Components
         [SerializeField] private RectTransform container;
         [SerializeField] private T prefab;
         private List<T> items;
-
+        public RectTransform Container => container;
         public IEnumerable<T> Items => items;
-        public T Get(int index) => container.GetChild(index).GetComponent<T>();
+        public T Get(int index) => items[index].GetComponent<T>();
         public int Count => items.Count;
 
         public void Prepare(int count)

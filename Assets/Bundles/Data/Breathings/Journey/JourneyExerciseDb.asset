@@ -1,0 +1,132 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe44c640cbb45b3b0733d35fe903298, type: 3}
+  m_Name: JourneyExerciseDb
+  m_EditorClassIdentifier: 
+  JourneyId: LungCapacity20
+  JourneyName: 'Lung Capacity Builder: 20-Day Breathing Challenge'
+  journey:
+  - name: 0
+    description: Begin your journey with a simple pattern that introduces controlled
+      breathing. Build awareness and start to feel more in tune with your breath.
+    intervals: 4,2,2,4
+    rounds: 10
+  - name: 1
+    description: Discover balance in your breath with equal inhale and exhale cycles.
+      This helps stabilize your breathing rhythm.
+    intervals: 4,4,4,4
+    rounds: 8
+  - name: 2
+    description: Focus on calming your mind by lengthening your exhale. This mission
+      promotes relaxation and better control.
+    intervals: 4,4,6,2
+    rounds: 8
+  - name: 3
+    description: Add an extra second to your inhale and exhale to gradually improve
+      lung capacity while maintaining comfort.
+    intervals: 5,3,5,3
+    rounds: 8
+  - name: 4
+    description: Explore longer holds after inhaling and exhaling. This strengthens
+      your lungs and builds breath retention skills.
+    intervals: 6,4,6,4
+    rounds: 6
+  - name: 5
+    description: Equalize all phases of your breath to six seconds each. Feel the
+      smooth flow of controlled breathing.
+    intervals: 6,6,6,6
+    rounds: 6
+  - name: 6
+    description: Lengthen your exhale slightly while maintaining balanced holds.
+      Build a foundation for deeper breathing.
+    intervals: 5,5,7,5
+    rounds: 6
+  - name: 7
+    description: Practice extending the duration of your inhale and hold for a more
+      profound lung expansion.
+    intervals: 6,6,6,4
+    rounds: 6
+  - name: 8
+    description: Focus on lengthening your exhale to 8 seconds while holding steady.
+      A calming exercise for the nervous system.
+    intervals: 6,4,8,4
+    rounds: 6
+  - name: 9
+    description: Balance all phases of your breathing for a complete, steady cycle.
+      Feel grounded and calm.
+    intervals: 6,6,6,6
+    rounds: 6
+  - name: 10
+    description: Add a second to your inhale and exhale. Begin to explore deeper
+      breathing with controlled holds.
+    intervals: 7,4,7,4
+    rounds: 6
+  - name: 11
+    description: Work with slightly longer cycles, focusing on your exhale to increase
+      breath control and relaxation.
+    intervals: 6,6,8,6
+    rounds: 6
+  - name: 12
+    description: Combine a long exhale with balanced holds, reinforcing your ability
+      to stay calm during deeper breathing.
+    intervals: 6,4,8,4
+    rounds: 6
+  - name: 13
+    description: Repeat a stable breathing pattern with a focus on smooth transitions
+      between phases.
+    intervals: 6,6,6,6
+    rounds: 6
+  - name: 14
+    description: uild up to 7-second inhales and exhales while keeping a steady rhythm.
+      Feel the strength in your breath.
+    intervals: 7,6,7,6
+    rounds: 6
+  - name: 15
+    description: Extend your breathing to a comfortable 8-second inhale and exhale.
+      Focus on maintaining smooth flow.
+    intervals: 8,4,8,4
+    rounds: 6
+  - name: 16
+    description: Embrace longer cycles with extended holds, allowing for deeper lung
+      engagement and relaxation.
+    intervals: 8,6,8,6
+    rounds: 6
+  - name: 17
+    description: Balance your entire breath cycle at 8 seconds each. Notice the improvements
+      in endurance.
+    intervals: 8,8,8,8
+    rounds: 6
+  - name: 18
+    description: Revisit 7-second cycles to refine your technique and focus on sustaining
+      the breath.
+    intervals: 7,6,7,6
+    rounds: 7
+  - name: 19
+    description: Challenge yourself with consistent 8-second phases, preparing your
+      lungs for advanced cycles.
+    intervals: 8,8,8,8
+    rounds: 4
+  chapterInfos:
+  - Name: Introductory Control
+    Description: Establish a foundation for controlled breathing
+    FromMission: 0
+  - Name: Building Endurance
+    Description: Gradually extend breath durations to increase lung capacity and
+      focus
+    FromMission: 10
+  - Name: Increasing Balance and Strength
+    Description: Enhance control and balance between all four breathing phases
+    FromMission: 25
+  - Name: Mastery and Application
+    Description: Achieve mastery of the final breathing pattern and integrate it
+      into daily life
+    FromMission: 40

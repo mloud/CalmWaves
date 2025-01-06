@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Meditation.Data;
 using Meditation.Managers.Messages.Ui;
 using Meditation.Ui.Calendar;
 using Meditation.Ui.Chart;
@@ -18,6 +19,7 @@ namespace Meditation.Ui.Views
     public class MenuView : UiView
     {
         public Button StartButton => startButton;
+        public Button JourneyButton => journeyButton;
         public Button AiButton => aiButton;
         public Button MeasuringButton => measuringButton;
         public Button MusicButton => musicButton;
@@ -27,6 +29,7 @@ namespace Meditation.Ui.Views
         public CustomExerciseContainer CustomExerciseContainer => customExerciseContainer;
         public List<ConditionComponent> ConditionComponents => conditionComponents;
         public MessageComponent MessageComponent => messageComponent;
+        public ProgressionComponent JourneyProgression => journeyProgression;
         
         [Header("Buttons")]
         [SerializeField] private Button sleepButton;
@@ -35,7 +38,8 @@ namespace Meditation.Ui.Views
         [SerializeField] private Button measuringButton;
         [SerializeField] private Button musicButton;
         [SerializeField] private Button settingsButton;
-    
+        [SerializeField] private Button journeyButton;
+        
         [SerializeField] private UiElement topPagePart;
         [SerializeField] private Transform container;
         [SerializeField] private AssetReferenceGameObject menuButton;
@@ -48,7 +52,8 @@ namespace Meditation.Ui.Views
         [SerializeField] private ExpandableArea expandableArea;
         [SerializeField] private List<ConditionComponent> conditionComponents;
         [SerializeField] private MessageComponent messageComponent;
-
+        [SerializeField] private ProgressionComponent journeyProgression;
+        
         private List<GameObject> breathingButtons;
 
         protected override void OnInit()

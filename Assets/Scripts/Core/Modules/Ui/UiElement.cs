@@ -11,6 +11,7 @@ namespace OneDay.Core.Modules.Ui
         [SerializeField] private float transitionInDuration = 0.5f;
         [SerializeField] private float transitionOutDuration = 0.5f;
         [SerializeField] private AShowAnimation showAnimation;
+
         public override async UniTask Show(bool useSmooth, float speedMultiplier = 1.0f)
         {
             Debug.Log($"[UI] Showing view:{gameObject} smooth:{useSmooth}");

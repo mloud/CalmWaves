@@ -10,9 +10,16 @@ namespace Core.Modules.Ui.Effects
         [SerializeField] private float duration = 1.0f;
         [SerializeField] private float delay;
         [SerializeField] private Ease ease;
+        [SerializeField] private bool startOnEnable;
         private Tween tween;
 
         private Vector3? originaPosition;
+        
+        public float Delay
+        {
+            get => delay;
+            set => delay = value;
+        }
         
         public override void Run()
         {
@@ -41,6 +48,14 @@ namespace Core.Modules.Ui.Effects
             }
 
             Stop();
+        }
+
+        private void OnEnable()
+        {
+            if (startOnEnable)
+            {
+                Run();
+            }
         }
     }
 }

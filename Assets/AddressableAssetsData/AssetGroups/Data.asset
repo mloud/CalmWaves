@@ -27,6 +27,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7027d5db07a5a4d2682c0338fac3ea0e
+    m_Address: JourneySettingsDb
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7fd9bf71e66a742709125678e213ea33
     m_Address: DailyBreathingExerciseDb
     m_ReadOnly: 0

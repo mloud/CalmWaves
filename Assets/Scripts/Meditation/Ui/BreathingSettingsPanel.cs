@@ -1,6 +1,6 @@
 using System;
-using Meditation.Core;
 using Meditation.Core.Utils;
+using Meditation.Data;
 using TMPro;
 using UnityEngine;
 
@@ -18,21 +18,21 @@ namespace Meditation.Ui
         {
             Debug.Assert(breathingSettings != null);
             durationLabel.text = $"{DateTimeUtils.GetTime(TimeSpan.FromSeconds(breathingSettings.GetTotalTime()))}";
-            inhaleDurationLabel.text = $"{breathingSettings.GetInhaleDuration()} sec";
+            inhaleDurationLabel.text = $"{breathingSettings.GetInhaleDuration()} s";
             if (breathingSettings.GetAfterInhaleDuration() > 0)
             {
                 afterInhaleHoldLabel.transform.parent.gameObject.SetActive(true);
-                afterInhaleHoldLabel.text = $"{breathingSettings.GetAfterInhaleDuration()} sec";
+                afterInhaleHoldLabel.text = $"{breathingSettings.GetAfterInhaleDuration()} s";
             }
             else
             {
                 afterInhaleHoldLabel.transform.parent.gameObject.SetActive(false);
             }
-            exhaleDurationLabel.text = $"{breathingSettings.GetExhaleDuration()} sec";
+            exhaleDurationLabel.text = $"{breathingSettings.GetExhaleDuration()} s";
             if (breathingSettings.GetAfterExhaleDuration() > 0)
             {
                 afterExhaleHoldLabel.transform.parent.gameObject.SetActive(true);
-                afterExhaleHoldLabel.text = $"{breathingSettings.GetAfterExhaleDuration()} sec";
+                afterExhaleHoldLabel.text = $"{breathingSettings.GetAfterExhaleDuration()} s";
             }
             else
             {

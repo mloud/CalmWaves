@@ -90,7 +90,7 @@ namespace Meditation.States
             var journeyProgression = (await journeyManager.GetProgression("LungCapacity20")) ??
                                      JourneyProgression.First("LungCapacity20");
             var journeyDefinition = await journeyManager.GetJourney("LungCapacity20");
-            menuView.JourneyProgression.Set(journeyProgression.CurrentProgress, journeyDefinition.GetMissions().Count());
+            menuView.JourneyProgression.Set(journeyProgression.CurrentProgress + 1, journeyDefinition.GetMissions().Count());
             ServiceLocator.Get<IUiManager>().GetAllPanels().ForEach(view=>view.Show(true));
             await menuView.Show(true);
             menuView.MessageComponent.StartDisplaying();

@@ -71,12 +71,11 @@ namespace Meditation.Apis
             }
             else
             {
-                Debug.Assert((missionOrder <= progression.CurrentProgress) ||
-                             (missionOrder == progression.CurrentProgress + 1));
+                Debug.Assert(missionOrder <= progression.CurrentProgress);
         
-                if (missionOrder == (progression.CurrentProgress + 1))
+                if (missionOrder == progression.CurrentProgress)
                 {
-                    progression.CurrentProgress = missionOrder + 1;
+                    progression.CurrentProgress = Math.Min(missionOrder + 1, journeyDefinition.GetMissions().Count() - 1);
                     progression.LastFinishedTime = DateTime.Now;
                 }
                 await dataManager.Actualize(progression);
